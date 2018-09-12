@@ -1,5 +1,17 @@
-# cudnn_scope
-Benchmark cuDNN for different Deep Learning layers.
+# cuDNN|Scope
+
+Benchmark cuDNN for different DL layers.
+
+## Contributors
+
+* [Cheng Li](mailto:cli99@illinois.edu)
+* [Abdul Dakkak](mailto:dakkak@illinois.edu)
+
+## Documentation
+
+See the `docs` folder for a description of the benchmarks.
+
+---
 
 Currently available:
 
