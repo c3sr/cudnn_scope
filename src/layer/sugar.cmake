@@ -21,6 +21,7 @@ sugar_files(
 
 sugar_files(
     BENCHMARK_SOURCES
+    init.cpp
     #   conv_bwd_bias.cpp
     #   batchnorm_bwd.cpp
     #   softmax_bwd.cpp

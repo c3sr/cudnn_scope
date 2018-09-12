@@ -14,7 +14,7 @@ include(sugar_include)
 sugar_include(example)
 
 sugar_files(
-  example_HEADERS
+  layer
   config.hpp.in
 )
 
