@@ -7,6 +7,8 @@
 
 #include <cudnn.h>
 
+#include <cuda_fp16.h>
+
 #include "utils/utils.hpp"
 
 #if CUDNN_VERSION >= 7000

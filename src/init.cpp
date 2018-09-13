@@ -18,6 +18,13 @@ void cudnn_before_init() {
 }
 
 int cudnn_init() {
+
+  int device_count;
+  if (PRINT_IF_ERROR(cudaGetDeviceCount(&device_count))) {
+    return false;
+  }
+  has_cuda = device_count != 0;
+
   return PRINT_IF_ERROR(cudnnCreate(&cudnn_handle));
 }
 

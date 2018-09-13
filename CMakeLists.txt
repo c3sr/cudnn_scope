@@ -13,9 +13,10 @@ find_package(CuDNN REQUIRED)
 sugar_include("src")
 
 # The plugin is a static library that Scope will be linked with
-add_library(cuDNN_scope OBJECT ${cuDNN_SOURCES} ${cuDNN_CUDA_SOURCES})
-target_include_directories(cuDNN_scope PRIVATE 
+add_library(cuDNN_scope OBJECT ${BENCHMARK_SOURCES} )
+target_include_directories(cuDNN_scope PRIVATE
     ${SCOPE_SRC_DIR}
+    ${SCOPE_SRC_DIR}/scope
     ${THIRDPARTY_DIR}
     ${TOP_DIR}/include
     ${CUDA_INCLUDE_DIRS}
@@ -33,7 +34,7 @@ scope_status(GIT_LOCAL_CHANGES=${GIT_LOCAL_CHANGES})
 
 target_compile_features(cuDNN_scope PUBLIC cxx_std_11)
 set_property(TARGET cuDNN_scope PROPERTY CUDA_STANDARD 11)
-target_link_libraries(cuDNN_scope PRIVATE 
+target_link_libraries(cuDNN_scope PRIVATE
     benchmark::benchmark
     ${CUDNN_LIBRARY}
     ${CUDA_LIBRARIES}
