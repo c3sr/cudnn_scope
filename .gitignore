@@ -690,3 +690,5 @@ paket-files/
 
 networks
 build*
+
+.vscode

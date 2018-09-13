@@ -20,7 +20,17 @@ void cudnn_before_init() {
 }
 
 int cudnn_init() {
-  cuda_device_id = 0;
+
+  const int cuda_device_id = FLAG(cuda_device_ids)[0];
+
+  if (PRINT_IF_ERROR(utils::cuda_reset_device(cuda_device_id))) {
+    state.SkipWithError("cudnn_init failed to reset CUDA device");
+    return;
+  }
+  if (PRINT_IF_ERROR(cudaSetDevice(cuda_device_id))) {
+    state.SkipWithError("cudnn_init failed to set CUDA device");
+    return;
+  }
 
   return PRINT_IF_ERROR(cudnnCreate(&cudnn_handle));
 }
