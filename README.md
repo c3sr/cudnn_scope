@@ -11,9 +11,11 @@ Benchmark cuDNN for different DL layers.
 
 See the `docs` folder for a description of the benchmarks.
 
-Currently available:
+## cuDNN API for DL layers
 
-# Activation
+Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/master/src/args.hpp) or derived form it. The arguments are from the [convolution in Baidu DeepBench](https://github.com/baidu-research/DeepBench/blob/master/code/kernels/conv_problems.h)
+
+### Activation
 
 * [CUDNN_ACTIVATION_BWD](activation_bwd.cpp)
 * [CUDNN_ACTIVATION_FWD](activation_fwd.cpp)
@@ -25,7 +27,7 @@ Currently available:
 [cudnnActivationMode_t](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnActivationMode_t)
 [cudnnSetActivationDescriptor](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSetActivationDescriptor)
 
-# Batchnorm
+### Batchnorm
 
 * [CUDNN_BATCHNORM_BWD](batchnorm_bwd.cpp)
 * [CUDNN_BATCHNORM_FWD_INFERENCE](batchnorm_fwd.cpp)
@@ -40,7 +42,7 @@ Currently available:
 [cudnnDeriveBNTensorDescriptor](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnDeriveBNTensorDescriptor)
 [cudnnBatchNormMode_t](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormMode_t)
 
-# Convoluation
+### Convoluation
 
 * [CUDNN_CONV_BIAS_ACTIVATION_FWD](conv_bias_activation_fwd.cpp)
 * [CUDNN_CONV_BWD_BIAS](conv_bwd_bias.cpp)
@@ -65,7 +67,7 @@ Currently available:
 [cudnnGetConvolution2dForwardOutputDim](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnGetConvolution2dForwardOutputDim)
 [cudnnGetConvolutionForwardWorkspaceSize](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnGetConvolutionForwardWorkspaceSize)
 
-# Dropout
+### Dropout
 
 * [CUDNN_DROPOUT_BWD](dropout_bwd.cpp)
 * [CUDNN_DROPOUT_FWD](dropout_fwd.cpp)
@@ -78,7 +80,7 @@ Currently available:
 [cudnnSetDropoutDescriptor](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSetDropoutDescriptor)
 [cudnnDropoutGetReserveSpaceSize](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnDropoutGetReserveSpaceSize)
 
-# Pooling
+### Pooling
 
 * [CUDNN_POOLING_BWD](pooling_bwd.cpp)
 * [CUDNN_POOLING_FWD](pooling_fwd.cpp)
@@ -90,7 +92,7 @@ Currently available:
 [cudnnGetPooling2dForwardOutputDim](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnGetPooling2dForwardOutputDim)
 [cudnnSetPooling2dDescriptor](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSetPooling2dDescriptor)
 
-# Softmax
+### Softmax
 
 * [CUDNN_SOFTMAX_BWD](softmax_bwd.cpp)
 * [CUDNN_SOFTMAX_FWD](softmax_fwd.cpp)
