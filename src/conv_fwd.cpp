@@ -12,12 +12,11 @@
 
 #include <cudnn.h>
 
-#include "init/init.hpp"
-#include "utils/utils.hpp"
-
-#include "layer/args.hpp"
-#include "layer/helper.hpp"
-#include "layer/utils.hpp"
+#include "args.hpp"
+#include "error.hpp"
+#include "helper.hpp"
+#include "init.hpp"
+#include "utils.hpp"
 
 // http://www.goldsborough.me/cuda/ml/cudnn/c++/2017/10/01/14-37-23-convolutions_with_cudnn/
 // http://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionFwdAlgo_t
@@ -373,6 +372,5 @@ BENCHMARK_CUDNN(LAYER_CUDNN_CONV_FWD_HALF_TENSOROP);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 BENCHMARK_CUDNN(LAYER_CUDNN_CONV_FWD_FLOAT);
 // BENCHMARK_CUDNN(LAYER_CUDNN_CONV_FWD_DOUBLE);
-
 
 #endif // GENERATED_BENCHMARK_LAYER

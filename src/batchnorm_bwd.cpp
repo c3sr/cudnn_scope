@@ -12,12 +12,11 @@
 
 #include <cudnn.h>
 
-#include "init/init.hpp"
-#include "utils/utils.hpp"
-
-#include "layer/args.hpp"
-#include "layer/helper.hpp"
-#include "layer/utils.hpp"
+#include "args.hpp"
+#include "error.hpp"
+#include "helper.hpp"
+#include "init.hpp"
+#include "utils.hpp"
 
 // calculates convolution output dimension
 static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
@@ -188,7 +187,7 @@ static void CUDNN_Impl(benchmark::State& state) {
     switch (mode) {
       case CUDNN_BATCHNORM_PER_ACTIVATION:
       case CUDNN_BATCHNORM_SPATIAL:
-      /* case CUDNN_BATCHNORM_SPATIAL_PERSISTENT: */
+        /* case CUDNN_BATCHNORM_SPATIAL_PERSISTENT: */
         return static_cast<double>(in_n * in_c * in_h * in_w);
       default:
         return static_cast<double>(-1);

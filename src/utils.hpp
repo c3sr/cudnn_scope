@@ -7,6 +7,8 @@
 
 #include <cudnn.h>
 
+#include "utils/utils.hpp"
+
 #if CUDNN_VERSION >= 7000
 #define CUDNN_SUPPORTS_TENSOR_OPS 1
 #endif // CUDNN_VERSION >= 7000

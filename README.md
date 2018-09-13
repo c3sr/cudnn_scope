@@ -11,8 +11,6 @@ Benchmark cuDNN for different DL layers.
 
 See the `docs` folder for a description of the benchmarks.
 
----
-
 Currently available:
 
 # Activation

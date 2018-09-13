@@ -12,50 +12,34 @@
 
 #include <cudnn.h>
 
-#include "init/init.hpp"
-#include "utils/utils.hpp"
+#include "args.hpp"
+#include "error.hpp"
+#include "helper.hpp"
+#include "init.hpp"
+#include "utils.hpp"
 
-#include "layer/args.hpp"
-#include "layer/helper.hpp"
-#include "layer/utils.hpp"
-
-// calculates convolution output dimension
-static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
-  return (input_dim - filter_dim + 2 * padd) / stride + 1;
-}
-
-// https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnPoolingBackward
+// https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnPoolingForward
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnGetPooling2dForwardOutputDim
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSetPooling2dDescriptor
 template <typename T, cudnnPoolingMode_t pooling_mode>
-static void CUDNN_Impl(benchmark::State& state) {
+static void LAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
   }
 
-  //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto width         = state.range(0);
-  const auto height        = state.range(1);
-  const auto channels      = state.range(2);
-  const auto batch_size    = state.range(3);
-  const auto num_filters   = state.range(4);
-  const auto filter_width  = state.range(5);
-  const auto filter_height = state.range(6);
-  const auto pad_width     = state.range(7);
-  const auto pad_height    = state.range(8);
-  const auto stride_width  = state.range(9);
-  const auto stride_height = state.range(10);
+  const auto in_n         = state.range(0);
+  const auto in_c         = state.range(1);
+  const auto in_h         = state.range(2);
+  const auto in_w         = state.range(3);
+  const auto win_h        = state.range(4);
+  const auto win_w        = state.range(5);
+  const auto vert_padding = state.range(6);
+  const auto hori_padding = state.range(7);
+  const auto vert_stride  = state.range(8);
+  const auto hori_stride  = state.range(9);
 
-  const auto win_h = 2, win_w = 2;
-  const auto vert_padding = 0, hori_padding = 0;
-  const auto vert_stride = 2, hori_stride = 2;
   const float alpha = 1, beta = 0;
-
-  const auto in_n = batch_size;
-  const auto in_c = num_filters;
-  const auto in_h = calc_conv_out_dim(height, filter_height, pad_height, stride_height);
-  const auto in_w = calc_conv_out_dim(width, filter_width, pad_width, stride_width);
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,
@@ -109,8 +93,6 @@ static void CUDNN_Impl(benchmark::State& state) {
   std::fill(input.begin(), input.end(), detail::one<T>());
 
   const auto output_bytes = out_n * out_w * out_h * out_c * sizeof(T);
-  auto output             = std::vector<T>(output_bytes / sizeof(T));
-  std::fill(output.begin(), output.end(), detail::one<T>());
 
   DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
@@ -118,23 +100,11 @@ static void CUDNN_Impl(benchmark::State& state) {
   }
   const auto d_x = x_memory.get();
 
-  DeviceMemory<T> dx_memory(state, input_bytes);
-  if (!dx_memory.is_valid) {
-    return;
-  }
-  const auto d_dx = dx_memory.get();
-
-  DeviceMemory<T> y_memory(state, output.data(), output_bytes);
+  DeviceMemory<T> y_memory(state, output_bytes);
   if (!y_memory.is_valid) {
     return;
   }
   const auto d_y = y_memory.get();
-
-  DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
-  if (!y_memory.is_valid) {
-    return;
-  }
-  const auto d_dy = dy_memory.get();
 
   cudaEvent_t start, stop;
   PRINT_IF_ERROR(cudaEventCreate(&start));
@@ -143,25 +113,15 @@ static void CUDNN_Impl(benchmark::State& state) {
   for (auto _ : state) {
     cudaEventRecord(start, NULL);
 
-    const cudnnStatus_t cudnn_err = cudnnPoolingBackward(cudnn_handle,
-                                                         pooling_descriptor,
-                                                         &alpha,
-                                                         y_descriptor,
-                                                         d_y,
-                                                         y_descriptor,
-                                                         d_dy,
-                                                         x_descriptor,
-                                                         d_x,
-                                                         &beta,
-                                                         x_descriptor,
-                                                         d_dx);
+    const cudnnStatus_t cudnn_err =
+        cudnnPoolingForward(cudnn_handle, pooling_descriptor, &alpha, x_descriptor, d_x, &beta, y_descriptor, d_y);
 
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
 
     state.PauseTiming();
     if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnPoolingBackward");
+      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnPoolingForward");
       break;
     }
     if (PRINT_IF_ERROR(cuda_err)) {
@@ -204,29 +164,37 @@ static void CUDNN_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
+#ifdef GENERATED_BENCHMARK_LAYER
+
+#define ENABLE_LAYER_CUDNN_POOLING_FWD 1
+#include "generated_benchmarks.hpp"
+#undef ENABLE_LAYER_CUDNN_POOLING_FWD
+
+#else // GENERATED_BENCHMARK_LAYER
+
 template <cudnnPoolingMode_t pooling_mode>
-static void LAYER_CUDNN_POOLING_BWD_INT8(benchmark::State& state) {
-  CUDNN_Impl<int8_t, pooling_mode>(state);
+static void LAYER_CUDNN_POOLING_FWD_INT8(benchmark::State& state) {
+  LAYER_CUDNN_POOLING_FWD_Impl<int8_t, pooling_mode>(state);
 }
 
 template <cudnnPoolingMode_t pooling_mode>
-static void LAYER_CUDNN_POOLING_BWD_INT32(benchmark::State& state) {
-  CUDNN_Impl<int32_t, pooling_mode>(state);
+static void LAYER_CUDNN_POOLING_FWD_INT32(benchmark::State& state) {
+  LAYER_CUDNN_POOLING_FWD_Impl<int32_t, pooling_mode>(state);
 }
 
 template <cudnnPoolingMode_t pooling_mode>
-static void LAYER_CUDNN_POOLING_BWD_HALF(benchmark::State& state) {
-  CUDNN_Impl<__half, pooling_mode>(state);
+static void LAYER_CUDNN_POOLING_FWD_HALF(benchmark::State& state) {
+  LAYER_CUDNN_POOLING_FWD_Impl<__half, pooling_mode>(state);
 }
 
 template <cudnnPoolingMode_t pooling_mode>
-static void LAYER_CUDNN_POOLING_BWD_FLOAT(benchmark::State& state) {
-  CUDNN_Impl<float, pooling_mode>(state);
+static void LAYER_CUDNN_POOLING_FWD_FLOAT(benchmark::State& state) {
+  LAYER_CUDNN_POOLING_FWD_Impl<float, pooling_mode>(state);
 }
 
 template <cudnnPoolingMode_t pooling_mode>
-static void LAYER_CUDNN_POOLING_BWD_DOUBLE(benchmark::State& state) {
-  CUDNN_Impl<double, pooling_mode>(state);
+static void LAYER_CUDNN_POOLING_FWD_DOUBLE(benchmark::State& state) {
+  LAYER_CUDNN_POOLING_FWD_Impl<double, pooling_mode>(state);
 }
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
@@ -237,8 +205,10 @@ static void LAYER_CUDNN_POOLING_BWD_DOUBLE(benchmark::State& state) {
   BENCHMARK_TEMPLATE(b, CUDNN_POOLING_AVERAGE_COUNT_EXCLUDE_PADDING)->CONV_PROBLEMS()->UseManualTime();                \
   BENCHMARK_TEMPLATE(b, CUDNN_POOLING_MAX_DETERMINISTIC)->CONV_PROBLEMS()->UseManualTime();
 
-/* BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_INT8); */
-/* BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_INT32); */
-BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_HALF);
-BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_FLOAT);
-BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_DOUBLE);
+/* BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_FWD_INT8); */
+/* BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_FWD_INT32); */
+BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_FWD_HALF);
+BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_FWD_FLOAT);
+// BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_FWD_DOUBLE);
+
+#endif // GENERATED_BENCHMARK_LAYER

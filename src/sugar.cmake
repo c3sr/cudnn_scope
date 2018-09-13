@@ -3,18 +3,44 @@
 # see wiki for more info:
 #   https://github.com/ruslo/sugar/wiki/Collecting-sources
 
-if(DEFINED EXAMPLE_SCOPE_SRC_SUGAR_CMAKE_)
+if(DEFINED SRC_LAYER_SUGAR_CMAKE_)
   return()
 else()
-  set(EXAMPLE_SCOPE_SRC_SUGAR_CMAKE_ 1)
+  set(SRC_LAYER_SUGAR_CMAKE_ 1)
 endif()
 
-include(sugar_include)
-
-sugar_include(example)
+include(sugar_files)
 
 sugar_files(
-  layer
-  config.hpp.in
+    BENCHMARK_HEADERS
+    helper.hpp
+    utils.hpp
+    args.hpp
+    layer_benchmarks.hpp
 )
 
+sugar_files(
+    BENCHMARK_SOURCES
+    init.cpp
+    conv_bwd_bias.cpp
+    batchnorm_bwd.cpp
+    softmax_bwd.cpp
+    ctc_loss.cpp
+    softmax_fwd.cpp
+    batchnorm_fwd.cpp
+    element_wise.cpp
+    dropout_bwd.cpp
+    find_conv_alg.cpp
+    activation_fwd.cpp
+    conv_bwd_data.cpp
+    activation_bwd.cpp
+    pooling_bwd.cpp
+    dropout_fwd.cpp
+    conv_bias_activation_fwd.cpp
+    scale.cpp
+    reduce.cpp
+    conv_fwd.cpp
+    conv_bwd_filter.cpp
+    find_rnn_alg.cpp
+    pooling_fwd.cpp
+)

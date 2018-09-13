@@ -12,12 +12,11 @@
 
 #include <cudnn.h>
 
-#include "init/init.hpp"
-#include "utils/utils.hpp"
-
-#include "layer/args.hpp"
-#include "layer/helper.hpp"
-#include "layer/utils.hpp"
+#include "args.hpp"
+#include "error.hpp"
+#include "helper.hpp"
+#include "init.hpp"
+#include "utils.hpp"
 
 // calculates convolution output dimension
 static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
@@ -357,8 +356,7 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_DOUBLE(benchmark::State& state)
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();       \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime()
 
-#define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_CUDNN0(b, CUDNN_ACTIVATION_RELU)                                                                         
+#define BENCHMARK_CUDNN(b) BENCHMARK_CUDNN0(b, CUDNN_ACTIVATION_RELU)
 
 /* BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_INT8); */
 /* BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_INT32); */

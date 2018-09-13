@@ -13,10 +13,8 @@
 
 #include <cudnn.h>
 
-#include "init/init.hpp"
-#include "utils/utils.hpp"
-
-#include "layer/utils.hpp"
+#include "init.hpp"
+#include "utils.hpp"
 
 #ifndef BENCHMARK_NAME
 #define BENCHMARK_NAME "CUDNN"

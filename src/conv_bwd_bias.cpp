@@ -12,12 +12,11 @@
 
 #include <cudnn.h>
 
-#include "init/init.hpp"
-#include "utils/utils.hpp"
-
-#include "layer/args.hpp"
-#include "layer/helper.hpp"
-#include "layer/utils.hpp"
+#include "args.hpp"
+#include "error.hpp"
+#include "helper.hpp"
+#include "init.hpp"
+#include "utils.hpp"
 
 // calculates convolution output dimension
 static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
