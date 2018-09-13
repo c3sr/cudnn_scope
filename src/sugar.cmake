@@ -12,7 +12,7 @@ endif()
 include(sugar_files)
 
 sugar_files(
-    BENCHMARK_HEADERS
+    cudnn_BENCHMARK_HEADERS
     helper.hpp
     utils.hpp
     args.hpp
@@ -20,7 +20,7 @@ sugar_files(
 )
 
 sugar_files(
-    BENCHMARK_SOURCES
+    cudnn_BENCHMARK_SOURCES
     init.cpp
     conv_bwd_bias.cpp
     batchnorm_bwd.cpp

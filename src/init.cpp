@@ -6,9 +6,11 @@
 #include <cudnn.h>
 
 #include "config.hpp"
+#include "error.hpp"
 #include "init/init.hpp"
 
 cudnnHandle_t cudnn_handle;
+int cuda_device_id = 0;
 
 void cudnn_before_init() {
   // Create a version string and tell scope about it
@@ -18,12 +20,7 @@ void cudnn_before_init() {
 }
 
 int cudnn_init() {
-
-  int device_count;
-  if (PRINT_IF_ERROR(cudaGetDeviceCount(&device_count))) {
-    return false;
-  }
-  has_cuda = device_count != 0;
+  cuda_device_id = 0;
 
   return PRINT_IF_ERROR(cudnnCreate(&cudnn_handle));
 }

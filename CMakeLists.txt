@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-project(cuDNN|Scope LANGUAGES CXX VERSION 1.0.0)
+project(cudnn|Scope LANGUAGES CXX VERSION 1.0.0)
 
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
@@ -13,15 +13,15 @@ find_package(CuDNN REQUIRED)
 sugar_include("src")
 
 # The plugin is a static library that Scope will be linked with
-add_library(cuDNN_scope OBJECT ${BENCHMARK_SOURCES} )
-target_include_directories(cuDNN_scope PRIVATE
+add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_SOURCES} )
+target_include_directories(cudnn_scope PRIVATE
     ${SCOPE_SRC_DIR}
     ${SCOPE_SRC_DIR}/scope
-    ${THIRDPARTY_DIR}
-    ${TOP_DIR}/include
+    ${SCOPE_THIRDPARTY_DIR}
+    ${SCOPE_TOP_DIR}/include
     ${CUDA_INCLUDE_DIRS}
     ${PROJECT_BINARY_DIR}/src
-    "src"
+    ${PROJECT_SOURCE_DIR}/src
     ${CUDNN_INCLUDE_DIR}
 )
 
@@ -32,10 +32,13 @@ scope_status(GIT_REFSPEC=${GIT_REFSPEC})
 scope_status(GIT_HASH=${GIT_HASH})
 scope_status(GIT_LOCAL_CHANGES=${GIT_LOCAL_CHANGES})
 
-target_compile_features(cuDNN_scope PUBLIC cxx_std_11)
-set_property(TARGET cuDNN_scope PROPERTY CUDA_STANDARD 11)
-target_link_libraries(cuDNN_scope PRIVATE
+set_property(TARGET cudnn_scope PROPERTY CUDA_STANDARD 11)
+target_compile_features(cudnn_scope PUBLIC cxx_std_11)
+target_compile_options(cudnn_scope PRIVATE -Wno-narrowing)
+target_link_libraries(cudnn_scope PRIVATE
     benchmark::benchmark
+)
+target_link_libraries(cudnn_scope PUBLIC
     ${CUDNN_LIBRARY}
     ${CUDA_LIBRARIES}
     ${CUDA_CUBLAS_LIBRARIES}

@@ -33,7 +33,7 @@ void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  if (math_type == CUDNN_TENSOR_OP_MATH && !detail::SupportsTensorCore(FLAG(cuda_device_id))) {
+  if (math_type == CUDNN_TENSOR_OP_MATH && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;
   }

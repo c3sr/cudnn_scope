@@ -1,4 +1,6 @@
 #pragma once
 
+#include "init/init.hpp"
+
 extern cudnnHandle_t cudnn_handle;
-extern bool has_cuda;
+extern int cuda_device_id;
