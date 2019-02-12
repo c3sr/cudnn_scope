@@ -1,4 +1,4 @@
-option(ENABLE_CUDNN "Enable CUDNN|Scope (github.com/c3sr/cudnn_scope)" ON)
+option(ENABLE_CUDNN "Enable CUDNN|Scope (github.com/c3sr/cudnn_scope)" OFF)
 if (NOT ENABLE_CUDNN)
   return()
 endif()
