@@ -24,15 +24,19 @@ int cudnn_init() {
   const int cuda_device_id = FLAG(cuda_device_ids)[0];
 
   if (PRINT_IF_ERROR(utils::cuda_reset_device(cuda_device_id))) {
-    state.SkipWithError("cudnn_init failed to reset CUDA device");
-    return;
+    LOG(error, "cudnn_init failed to reset CUDA device");
+    return -1;
   }
   if (PRINT_IF_ERROR(cudaSetDevice(cuda_device_id))) {
-    state.SkipWithError("cudnn_init failed to set CUDA device");
-    return;
+    LOG(error, "cudnn_init failed to set CUDA device");
+    return -1;
   }
 
-  return PRINT_IF_ERROR(cudnnCreate(&cudnn_handle));
+  if (PRINT_IF_ERROR(cudnnCreate(&cudnn_handle))) {
+    LOG(error, "cudnn_init failed create CUDNN handle");
+    return -1;
+  }
+  return 0;
 }
 
 SCOPE_REGISTER_BEFORE_INIT(cudnn_before_init);
