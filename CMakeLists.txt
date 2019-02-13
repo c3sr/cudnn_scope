@@ -19,11 +19,11 @@ sugar_include("src")
 
 # The plugin is a static library that Scope will be linked with
 scope_add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_SOURCES} )
+target_include_scope_directories(cudnn_scope)
 target_include_directories(cudnn_scope PRIVATE
     ${SCOPE_SRC_DIR}
     ${SCOPE_SRC_DIR}/scope
     ${SCOPE_THIRDPARTY_DIR}
-    ${SCOPE_TOP_DIR}/include
     ${CUDA_INCLUDE_DIRS}
     ${PROJECT_BINARY_DIR}/src
     ${PROJECT_SOURCE_DIR}/src
