@@ -21,12 +21,13 @@ sugar_include("src")
 scope_add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_SOURCES} )
 target_include_scope_directories(cudnn_scope)
 target_include_directories(cudnn_scope PRIVATE
+    ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/third_party
     ${SCOPE_SRC_DIR}
     ${SCOPE_SRC_DIR}/scope
     ${SCOPE_THIRDPARTY_DIR}
     ${CUDA_INCLUDE_DIRS}
-    ${PROJECT_BINARY_DIR}/src
-    ${PROJECT_SOURCE_DIR}/src
     ${CUDNN_INCLUDE_DIR}
 )
 

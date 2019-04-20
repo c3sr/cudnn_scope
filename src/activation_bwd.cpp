@@ -48,7 +48,7 @@ struct ActivationBWD : public benchmark::Fixture {
     }
   }
 
-  void ActivationBWD(const ::benchmark::State& state) {
+  void ActivationBWD(const ::benchmark::State& state, cudnnActivationMode_t iactivation_mode) {
 
     if (!has_cuda) {
       THROW_IF_ERROR(BENCHMARK_NAME " no CUDA device found");
@@ -66,7 +66,7 @@ struct ActivationBWD : public benchmark::Fixture {
     pad_height      = state.range(8);
     stride_width    = state.range(9);
     stride_height   = state.range(10);
-    activation_mode = (cudnnActivationMode_t) state.range(11);
+    activation_mode = iactivation_mode;
   }
 
   void SetUp(const ::benchmark::State& state) {
@@ -126,7 +126,7 @@ struct ActivationBWD : public benchmark::Fixture {
   }
 
   // result is reported in nanoseconds
-  int64_t Run(const ::benchmark::State& state) {
+  int64_t Run() {
     cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
     const auto d_x                       = x_memory.get();
     const auto d_y                       = y_memory.get();
@@ -150,15 +150,51 @@ struct ActivationBWD : public benchmark::Fixture {
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
 
-    state.PauseTiming();
-
     THROW_IF_ERROR_WITH_MSG(cudnn_err, BENCHMARK_NAME " failed to perform cudnnActivationBackward");
     THROW_IF_ERROR_WITH_MSG(cuda_err, BENCHMARK_NAME " failed to launch kernel");
 
     float msecTotal = 0.0f;
     THROW_IF_ERROR_WITH_MSG(cudaEventElapsedTime(&msecTotal, start, stop), BENCHMARK_NAME " failed to launch kernel");
 
-    return int64_t(msecTotal * 1000000);
+    return ms_to_ns(msecTotal);
+  }
+
+  double ComputeFlops(cudnnActivationMode_t mode) {
+    switch (mode) {
+      case CUDNN_ACTIVATION_SIGMOID:
+      case CUDNN_ACTIVATION_RELU:
+      case CUDNN_ACTIVATION_TANH:
+      case CUDNN_ACTIVATION_CLIPPED_RELU:
+      case CUDNN_ACTIVATION_ELU:
+        /* case CUDNN_ACTIVATION_IDENTITY: */
+        return static_cast<double>(in_n * in_c * in_h * in_w);
+      default:
+        return static_cast<double>(-1);
+    }
+  };
+
+  std::map<std::string, int64_t> Info() {
+    const double predicted_flops = ComputeFlops();
+
+    return {
+        {"input_size", in_n * in_c * in_h * in_w},
+        {"input_batch_size", in_n},
+        {"input_channels", in_c},
+        {"input_height", in_h},
+        {"input_width", in_w},
+        {"output_size", out_n * out_c * out_h * out_w},
+        {"output_batch_size", out_n},
+        {"output_channels", out_c},
+        {"output_height", out_h},
+        {"output_width", out_w},
+        {"activation_mode", (int) activation_mode},
+        {"predicted_flops_count", predicted_flops},
+    };
+  }
+
+  std::string JSONAttributes() {
+    json j = this->Info();
+    return j.dump();
   }
 
   void TearDown(const ::benchmark::State& state) {
@@ -166,36 +202,11 @@ struct ActivationBWD : public benchmark::Fixture {
     THROW_IF_ERROR(cudaEventDestroy(start));
     THROW_IF_ERROR(cudaEventDestroy(stop));
 
-    state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
-                           {"input_batch_size", in_n},
-                           {"input_channels", in_c},
-                           {"input_height", in_h},
-                           {"input_width", in_w},
-                           {"output_size", out_n * out_c * out_h * out_w},
-                           {"output_batch_size", out_n},
-                           {"output_channels", out_c},
-                           {"output_height", out_h},
-                           {"output_width", out_w},
-                           {"activation_mode", (int) activation_mode}});
+    state.counters.insert(this->Info());
 
-    const auto compute_flops = [&](cudnnActivationMode_t mode) {
-      switch (mode) {
-        case CUDNN_ACTIVATION_SIGMOID:
-        case CUDNN_ACTIVATION_RELU:
-        case CUDNN_ACTIVATION_TANH:
-        case CUDNN_ACTIVATION_CLIPPED_RELU:
-        case CUDNN_ACTIVATION_ELU:
-          /* case CUDNN_ACTIVATION_IDENTITY: */
-          return static_cast<double>(in_n * in_c * in_h * in_w);
-        default:
-          return static_cast<double>(-1);
-      }
-    };
-
-    const double predicted_flops = compute_flops(activation_mode);
+    const double predicted_flops = ComputeFlops();
     state.counters.insert(
-        {{"predicted_flops_count", predicted_flops},
-         {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
+        {{"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
 
     state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
   }
@@ -228,12 +239,16 @@ private:
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnActivationBackward
 template <typename T, cudnnActivationMode_t activation_mode>
 static void CUDNN_Impl(benchmark::State& state) {
-
+  const ActivationBWD bench<T>(state, activation_mode);
+  bench.SetUp(state);
   for (auto _ : state) {
-
-    state.SetIterationTime(msecTotal / 1000);
+    BEGIN_TRY;
+    const auto nanoseconds = bench.Run(state);
+    SKIP_ON_THROW;
+    state.SetIterationTime(ns_to_s(nanoseconds));
     state.ResumeTiming();
   }
+  bench.TearDown(state);
 }
 
 template <cudnnActivationMode_t activation_mode>
