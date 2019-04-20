@@ -16,6 +16,7 @@
 
 #include "init.hpp"
 #include "utils.hpp"
+#include "c_api.h"
 
 #ifndef BENCHMARK_NAME
 #define BENCHMARK_NAME "CUDNN"

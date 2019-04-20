@@ -132,8 +132,8 @@ struct ActivationBWD : public benchmark::Fixture {
     const auto d_y                       = y_memory.get();
     const auto d_dx                      = dx_memory.get();
     const auto d_dy                      = dy_memory.get();
-    cudaEventRecord(start, NULL);
 
+    cudaEventRecord(start, NULL);
     const cudnnStatus_t cudnn_err = cudnnActivationBackward(cudnn_handle,
                                                             activation_descriptor,
                                                             &alpha,
@@ -146,7 +146,6 @@ struct ActivationBWD : public benchmark::Fixture {
                                                             &beta,
                                                             x_descriptor,
                                                             d_dx);
-
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
 
