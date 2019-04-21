@@ -37,7 +37,7 @@ struct DeviceMemory {
     }
     is_valid = true;
   }
-  DeviceMemory(benchmark::State &state, const T *data, const size_t &size) : size(size) {
+  DeviceMemory(benchmark::State &state, const T *data, const size_t &size0) : size(size0) {
     if (PRINT_IF_ERROR(cudaMalloc(&ptr, size))) {
       state.SkipWithError(BENCHMARK_NAME " device memory allocation failed");
       return;
