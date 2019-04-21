@@ -3,6 +3,8 @@ if (NOT ENABLE_CUDNN)
   return()
 endif()
 
+option(ENABLE_CUDNN_DLPERF "Enable CUDNN|Scope Generated benchmarks" OFF)
+
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 project(cudnn|Scope LANGUAGES CXX VERSION 1.0.0)
 
@@ -40,6 +42,9 @@ scope_status(GIT_LOCAL_CHANGES=${GIT_LOCAL_CHANGES})
 set_property(TARGET cudnn_scope PROPERTY CUDA_STANDARD 11)
 target_compile_features(cudnn_scope PUBLIC cxx_std_11)
 target_compile_options(cudnn_scope PRIVATE -Wno-narrowing)
+if (ENABLE_CUDNN_DLPERF)
+  add_definitions(-DGENERATED_BENCHMARK_LAYER=1)
+endif (ENABLE_CUDNN_DLPERF)
 target_link_libraries(cudnn_scope PRIVATE
     benchmark::benchmark
 )
