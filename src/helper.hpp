@@ -10,52 +10,15 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 #include <cudnn.h>
 
 #include "init.hpp"
 #include "utils.hpp"
-#include "c_api.h"
 
 #ifndef BENCHMARK_NAME
 #define BENCHMARK_NAME "CUDNN"
 #endif // BENCHMARK_NAME
-
-// for convenience
-using json = nlohmann::json;
-
-#define BEGIN_TRY try {
-#define SKIP_ON_THROW                                                                                                  \
-  }                                                                                                                    \
-  catch (const std::exception &e) {                                                                                    \
-    state.SkipWithError(e.what());                                                                                     \
-  }                                                                                                                    \
-  catch (const std::string &e) {                                                                                       \
-    state.SkipWithError(e.c_str());                                                                                    \
-  }                                                                                                                    \
-  catch (...) {                                                                                                        \
-    state.SkipWithError("unknown exception");                                                                          \
-  }
-#define LOG_ON_THROW                                                                                                   \
-  }                                                                                                                    \
-  catch (const std::exception &e) {                                                                                    \
-    LOG(critical, e.what());                                                                                           \
-  }                                                                                                                    \
-  catch (const std::string &e) {                                                                                       \
-    LOG(critical, e.c_str());                                                                                          \
-  }                                                                                                                    \
-  catch (...) {                                                                                                        \
-    LOG(critical, "unknown exception");                                                                                \
-  }
-
-static double ns_to_s(const int64_t ns) {
-  return ns / 1.0e-9;
-}
-
-static int64_t ms_to_ns(const double ms) {
-  return ms * 1000000;
-}
 
 template <typename T>
 struct DeviceMemory {
@@ -63,7 +26,7 @@ struct DeviceMemory {
   T *ptr{nullptr};
   bool is_valid{false};
   size_t size;
-  DeviceMemory(benchmark::State &state, const size_t &size) : size(size) {
+  DeviceMemory(benchmark::State &state, const size_t &size0) : size(size0) {
     if (PRINT_IF_ERROR(cudaMalloc(&ptr, size))) {
       state.SkipWithError(BENCHMARK_NAME " device memory allocation failed");
       return;
@@ -74,7 +37,7 @@ struct DeviceMemory {
     }
     is_valid = true;
   }
-  DeviceMemory(benchmark::State &state, const T *data, const size_t &size) : size(size) {
+  DeviceMemory(benchmark::State &state, const T *data, const size_t &size0) : size(size0) {
     if (PRINT_IF_ERROR(cudaMalloc(&ptr, size))) {
       state.SkipWithError(BENCHMARK_NAME " device memory allocation failed");
       return;
@@ -152,20 +115,23 @@ struct Tensor {
   bool is_valid{false};
   cudnnTensorDescriptor_t descriptor{nullptr};
 
-  Tensor(const std::initializer_list<int> &shape0) : shape(shape0) {
+  Tensor(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
 
     assert(shape.size() <= 4);
     int dims[4] = {1, 1, 1, 1};
     for (size_t ii = 0; ii < shape.size(); ++ii) {
       dims[ii] = shape[ii];
     }
-    THROW_IF_ERROR_WITH_MSG(cudnnCreateTensorDescriptor(&descriptor),
-                            BENCHMARK_NAME " failed to cudnnCreateTensorDescriptor");
+    if (PRINT_IF_ERROR(cudnnCreateTensorDescriptor(&descriptor))) {
+      state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateTensorDescriptor");
+      return;
+    }
 
-    THROW_IF_ERROR_WITH_MSG(
-        cudnnSetTensor4dDescriptor(descriptor, layout, value_type, dims[0], dims[1], dims[2], dims[3]),
-        BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor");
-
+    if (PRINT_IF_ERROR(
+            cudnnSetTensor4dDescriptor(descriptor, layout, value_type, dims[0], dims[1], dims[2], dims[3]))) {
+      state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor");
+      return;
+    }
     is_valid = true;
   }
 
@@ -173,7 +139,7 @@ struct Tensor {
     if (!is_valid) {
       return;
     }
-    THROW_IF_ERROR_WITH_MSG(cudnnDestroyTensorDescriptor(descriptor), BENCHMARK_NAME " failed to destroy tensor");
+    PRINT_IF_ERROR(cudnnDestroyTensorDescriptor(descriptor));
   }
 
   cudnnTensorDescriptor_t get() const {

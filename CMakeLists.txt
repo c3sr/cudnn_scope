@@ -3,6 +3,8 @@ if (NOT ENABLE_CUDNN)
   return()
 endif()
 
+option(ENABLE_CUDNN_DLPERF "Enable CUDNN|Scope Generated benchmarks" OFF)
+
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 project(cudnn|Scope LANGUAGES CXX VERSION 1.0.0)
 
@@ -21,13 +23,12 @@ sugar_include("src")
 scope_add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_SOURCES} )
 target_include_scope_directories(cudnn_scope)
 target_include_directories(cudnn_scope PRIVATE
-    ${PROJECT_BINARY_DIR}/src
-    ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_SOURCE_DIR}/third_party
     ${SCOPE_SRC_DIR}
     ${SCOPE_SRC_DIR}/scope
     ${SCOPE_THIRDPARTY_DIR}
     ${CUDA_INCLUDE_DIRS}
+    ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src
     ${CUDNN_INCLUDE_DIR}
 )
 
@@ -41,6 +42,9 @@ scope_status(GIT_LOCAL_CHANGES=${GIT_LOCAL_CHANGES})
 set_property(TARGET cudnn_scope PROPERTY CUDA_STANDARD 11)
 target_compile_features(cudnn_scope PUBLIC cxx_std_11)
 target_compile_options(cudnn_scope PRIVATE -Wno-narrowing)
+if (ENABLE_CUDNN_DLPERF)
+  add_definitions(-DGENERATED_BENCHMARK_LAYER=1)
+endif (ENABLE_CUDNN_DLPERF)
 target_link_libraries(cudnn_scope PRIVATE
     benchmark::benchmark
 )
