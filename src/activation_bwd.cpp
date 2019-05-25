@@ -161,6 +161,8 @@ static void CUDNN_Impl(benchmark::State& state) {
 
   const auto compute_flops = [&](cudnnActivationMode_t mode) {
     switch (mode) {
+      case CUDNN_ACTIVATION_IDENTITY:
+          return static_cast<double>(0);
       case CUDNN_ACTIVATION_SIGMOID:
       case CUDNN_ACTIVATION_RELU:
       case CUDNN_ACTIVATION_TANH:

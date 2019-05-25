@@ -215,7 +215,7 @@ static void LAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
     switch (mode) {
       case CUDNN_BATCHNORM_PER_ACTIVATION:
       case CUDNN_BATCHNORM_SPATIAL:
-        /* case CUDNN_BATCHNORM_SPATIAL_PERSISTENT: */
+      case CUDNN_BATCHNORM_SPATIAL_PERSISTENT:
         return static_cast<double>(in_n * in_c * in_h * in_w);
       default:
         return static_cast<double>(-1);

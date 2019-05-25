@@ -122,6 +122,8 @@ static void LAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
 
   const auto compute_flops = [&](cudnnActivationMode_t mode) {
     switch (mode) {
+      case CUDNN_ACTIVATION_IDENTITY:
+          return static_cast<double>(0);
       case CUDNN_ACTIVATION_SIGMOID:
       case CUDNN_ACTIVATION_RELU:
       case CUDNN_ACTIVATION_TANH:
@@ -184,6 +186,7 @@ static void LAYER_CUDNN_ACTIVATION_FWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
+  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_IDENTITY)->CONV_PROBLEMS()->UseManualTime();                                   \
   BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_SIGMOID)->CONV_PROBLEMS()->UseManualTime();                                   \
   BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->CONV_PROBLEMS()->UseManualTime();                                      \
   BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_TANH)->CONV_PROBLEMS()->UseManualTime();                                      \
