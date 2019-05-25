@@ -32,6 +32,13 @@ namespace detail {
         return "CUDNN_STATUS_NOT_SUPPORTED";
       case CUDNN_STATUS_LICENSE_ERROR:
         return "CUDNN_STATUS_LICENSE_ERROR";
+      case CUDNN_STATUS_RUNTIME_IN_PROGRESS:
+        return "CUDNN_STATUS_RUNTIME_IN_PROGRESS";
+      case CUDNN_STATUS_RUNTIME_PREREQUISITE_MISSING:
+        return "CUDNN_STATUS_RUNTIME_PREREQUISITE_MISSING";
+      case CUDNN_STATUS_RUNTIME_FP_OVERFLOW:
+        return "CUDNN_STATUS_RUNTIME_FP_OVERFLOW";
+
       default:
         return "Unknown CUDNN error.";
     }

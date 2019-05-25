@@ -267,6 +267,8 @@ void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
                    std::log2(static_cast<double>(H) * static_cast<double>(W));
       case CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED:
       case CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD:
+      case CUDNN_CONVOLUTION_FWD_ALGO_DIRECT:
+      case CUDNN_CONVOLUTION_FWD_ALGO_COUNT:
         return static_cast<double>(-1); // todo ... implement
       default:
         return static_cast<double>(-1);
@@ -286,7 +288,7 @@ void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 
   cudnnStatus_t cudnn_err;
-  int max_count = 10;
+  static const int max_count = 10;
   /* cudnn_err = cudnnGetConvolutionForwardAlgorithmMaxCount(cudnn_handle, &max_count); */
   /* if (PRINT_IF_ERROR(cudnn_err)) { */
   /*   state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnGetConvolutionForwardAlgorithmMaxCount"); */
@@ -358,6 +360,7 @@ static void LAYER_CUDNN_CONV_FWD_DOUBLE(benchmark::State& state) {
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->CONV_PROBLEMS()->UseManualTime();                   \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->CONV_PROBLEMS()->UseManualTime();           \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->CONV_PROBLEMS()->UseManualTime();                            \
+  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_COUNT)->CONV_PROBLEMS()->UseManualTime();                          \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->CONV_PROBLEMS()->UseManualTime();                          \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->CONV_PROBLEMS()->UseManualTime();                             \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->CONV_PROBLEMS()->UseManualTime();                      \
