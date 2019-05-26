@@ -183,7 +183,10 @@ static void LAYER_CUDNN_ACTIVATION_BWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
-
+template <typename T, cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_IDENTITY_BWD_Impl(benchmark::State& state) {
+  LAYER_CUDNN_ACTIVATION_BWD_Impl<T, activation_mode>(state);
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
@@ -233,6 +236,10 @@ static void LAYER_CUDNN_ACTIVATION_BWD_DOUBLE(benchmark::State& state) {
 /* BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_INT32); */
 BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_HALF);
 BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_FLOAT);
+<<<<<<< HEAD:src/cudnn_activation_bwd.cpp
 // BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_DOUBLE);
+=======
+BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_DOUBLE);
+>>>>>>> 89eb1dc9b0405b0b63c1c9aeeebf276da8ececb8:src/activation_bwd.cpp
 
 #endif // GENERATED_BENCHMARK_LAYER

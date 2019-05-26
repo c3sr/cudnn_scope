@@ -35,8 +35,8 @@ Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/m
 
 ### Activation
 
-* [CUDNN_ACTIVATION_BWD](activation_bwd.cpp)
-* [CUDNN_ACTIVATION_FWD](activation_fwd.cpp)
+* [CUDNN_ACTIVATION_BWD](src/activation_bwd.cpp)
+* [CUDNN_ACTIVATION_FWD](src/activation_fwd.cpp)
 
 [cudnnActivationBackward](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnActivationBackward)
 
@@ -47,7 +47,7 @@ Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/m
 
 ### Batchnorm
 
-* [CUDNN_BATCHNORM_BWD](batchnorm_bwd.cpp)
+* [CUDNN_BATCHNORM_BWD](src/batchnorm_bwd.cpp)
 * [CUDNN_BATCHNORM_FWD_INFERENCE](batchnorm_fwd.cpp)
 * [CUDNN_BATCHNORM_FWD_TRAINING](batchnorm_fwd.cpp)
 
@@ -62,11 +62,11 @@ Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/m
 
 ### Convoluation
 
-* [CUDNN_CONV_BIAS_ACTIVATION_FWD](conv_bias_activation_fwd.cpp)
+* [CUDNN_CONV_BIAS_ACTIVATION_FWD](src/conv_bias_activation_fwd.cpp)
 * [CUDNN_CONV_BWD_BIAS](conv_bwd_bias.cpp)
 * [CUDNN_CONV_BWD_DATA](conv_bwd_data.cpp)
 * [CUDNN_CONV_BWD_FILTER](conv_bwd_filter.cpp)
-* [CUDNN_CONV_FWD](conv_fwd.cpp)
+* [CUDNN_CONV_FWD](src/conv_fwd.cpp)
 
 [cudnnConvolutionBiasActivationForward](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionBiasActivationForward)
 
@@ -87,8 +87,8 @@ Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/m
 
 ### Dropout
 
-* [CUDNN_DROPOUT_BWD](dropout_bwd.cpp)
-* [CUDNN_DROPOUT_FWD](dropout_fwd.cpp)
+* [CUDNN_DROPOUT_BWD](src/dropout_bwd.cpp)
+* [CUDNN_DROPOUT_FWD](src/dropout_fwd.cpp)
 
 [cudnnDropoutBackward](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnDropoutBackward)
 
@@ -100,8 +100,8 @@ Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/m
 
 ### Pooling
 
-* [CUDNN_POOLING_BWD](pooling_bwd.cpp)
-* [CUDNN_POOLING_FWD](pooling_fwd.cpp)
+* [CUDNN_POOLING_BWD](src/pooling_bwd.cpp)
+* [CUDNN_POOLING_FWD](src/pooling_fwd.cpp)
 
 [cudnnPoolingBackward](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnPoolingBackward)
 
@@ -112,9 +112,9 @@ Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/m
 
 ### Softmax
 
-* [CUDNN_SOFTMAX_BWD](softmax_bwd.cpp)
-* [CUDNN_SOFTMAX_FWD](softmax_fwd.cpp)
-  
+* [CUDNN_SOFTMAX_BWD](src/softmax_bwd.cpp)
+* [CUDNN_SOFTMAX_FWD](src/softmax_fwd.cpp)
+
 [cudnnSoftmaxBackward](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSoftmaxBackward)
 
 [cudnnSoftmaxForward](https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSoftmaxForward)
