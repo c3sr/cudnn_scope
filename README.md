@@ -11,6 +11,24 @@ Benchmark cuDNN for different DL layers.
 
 See the `docs` folder for a description of the benchmarks.
 
+
+## Usage
+
+### Use predefined parameters to generate the benchmarks
+
+The parameters for the convolution benchmarks are taken from Baidu Research [DeepBench](https://github.com/baidu-research/DeepBench/blob/master/code/kernels/conv_problems.h).
+Benchmarks for the other layer types also use these parameters for now.
+
+### Use model-defined parameters to generate the benchmarks
+
+GENERATED_BENCHMARK_LAYER
+
+## Customize
+
+To update sugar files for compilation, run 
+```
+ python $SCOPE_PATH/tools/generate_sugar_files.py --top $SCOPE_PATH/scopes/cudnn_scope/src/
+```
 ## cuDNN API for DL layers
 
 Inputs to layers are either [arg.hpp](https://github.com/c3sr/cudnn_scope/blob/master/src/args.hpp) or derived form it. The arguments are from the [convolution in Baidu DeepBench](https://github.com/baidu-research/DeepBench/blob/master/code/kernels/conv_problems.h)

@@ -148,6 +148,8 @@ static void LAYER_CUDNN_IDENTITY_FWD_Impl(benchmark::State& state) {
   LAYER_CUDNN_ACTIVATION_FWD_Impl<T, activation_mode>(state);
 }
 
+
+
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_ACTIVATION_FWD 1

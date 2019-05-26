@@ -25,7 +25,7 @@ static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int
 
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionBackwardBias
 template <typename T>
-static void CUDNN_Impl(benchmark::State& state) {
+static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -145,24 +145,33 @@ static void CUDNN_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
+
+#ifdef GENERATED_BENCHMARK_LAYER
+
+#define ENABLE_LAYER_CUDNN_CONV_BWD_BIAS 1
+#include "generated_benchmarks.hpp"
+#undef ENABLE_LAYER_CUDNN_CONV_BWD_BIAS
+
+#else // GENERATED_BENCHMARK_LAYER
+
 static void LAYER_CUDNN_CONV_BWD_BIAS_INT8(benchmark::State& state) {
-  CUDNN_Impl<int8_t>(state);
+  LAYER_CUDNN_CONV_BWD_BIAS_Impl<int8_t>(state);
 }
 
 static void LAYER_CUDNN_CONV_BWD_BIAS_INT32(benchmark::State& state) {
-  CUDNN_Impl<int32_t>(state);
+  LAYER_CUDNN_CONV_BWD_BIAS_Impl<int32_t>(state);
 }
 
 static void LAYER_CUDNN_CONV_BWD_BIAS_HALF(benchmark::State& state) {
-  CUDNN_Impl<__half>(state);
+  LAYER_CUDNN_CONV_BWD_BIAS_Impl<__half>(state);
 }
 
 static void LAYER_CUDNN_CONV_BWD_BIAS_FLOAT(benchmark::State& state) {
-  CUDNN_Impl<float>(state);
+  LAYER_CUDNN_CONV_BWD_BIAS_Impl<float>(state);
 }
 
 static void LAYER_CUDNN_CONV_BWD_BIAS_DOUBLE(benchmark::State& state) {
-  CUDNN_Impl<double>(state);
+  LAYER_CUDNN_CONV_BWD_BIAS_Impl<double>(state);
 }
 
 #define CONV_PROBLEMS ALL_INFERENCE_SERVER_CONV_PROBLEMS
@@ -171,4 +180,6 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_DOUBLE(benchmark::State& state) {
 // BENCHMARK(LAYER_CUDNN_CONV_BWD_BIAS_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 BENCHMARK(LAYER_CUDNN_CONV_BWD_BIAS_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 BENCHMARK(LAYER_CUDNN_CONV_BWD_BIAS_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-BENCHMARK(LAYER_CUDNN_CONV_BWD_BIAS_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+// BENCHMARK(LAYER_CUDNN_CONV_BWD_BIAS_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+
+#endif // GENERATED_BENCHMARK_LAYER

@@ -26,7 +26,7 @@ static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormMode_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormalizationBackward
 template <typename T, cudnnBatchNormMode_t batchnorm_mode>
-static void CUDNN_Impl(benchmark::State& state) {
+static void LAYER_CUDNN_BATCHNORM_BWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -203,29 +203,39 @@ static void CUDNN_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
+
+
+#ifdef GENERATED_BENCHMARK_LAYER
+
+#define ENABLE_LAYER_CUDNN_BATCHNORM_BWD 1
+#include "generated_benchmarks.hpp"
+#undef ENABLE_LAYER_CUDNN_BATCHNORM_BWD
+
+#else // GENERATED_BENCHMARK_LAYER
+
 template <cudnnBatchNormMode_t batchnorm_mode>
 static void LAYER_CUDNN_BATCHNORM_BWD_INT8(benchmark::State& state) {
-  CUDNN_Impl<int8_t, batchnorm_mode>(state);
+  LAYER_CUDNN_BATCHNORM_BWD_Impl<int8_t, batchnorm_mode>(state);
 }
 
 template <cudnnBatchNormMode_t batchnorm_mode>
 static void LAYER_CUDNN_BATCHNORM_BWD_INT32(benchmark::State& state) {
-  CUDNN_Impl<int32_t, batchnorm_mode>(state);
+  LAYER_CUDNN_BATCHNORM_BWD_Impl<int32_t, batchnorm_mode>(state);
 }
 
 template <cudnnBatchNormMode_t batchnorm_mode>
 static void LAYER_CUDNN_BATCHNORM_BWD_HALF(benchmark::State& state) {
-  CUDNN_Impl<__half, batchnorm_mode>(state);
+  LAYER_CUDNN_BATCHNORM_BWD_Impl<__half, batchnorm_mode>(state);
 }
 
 template <cudnnBatchNormMode_t batchnorm_mode>
 static void LAYER_CUDNN_BATCHNORM_BWD_FLOAT(benchmark::State& state) {
-  CUDNN_Impl<float, batchnorm_mode>(state);
+  LAYER_CUDNN_BATCHNORM_BWD_Impl<float, batchnorm_mode>(state);
 }
 
 template <cudnnBatchNormMode_t batchnorm_mode>
 static void LAYER_CUDNN_BATCHNORM_BWD_DOUBLE(benchmark::State& state) {
-  CUDNN_Impl<double, batchnorm_mode>(state);
+  LAYER_CUDNN_BATCHNORM_BWD_Impl<double, batchnorm_mode>(state);
 }
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
@@ -239,4 +249,6 @@ static void LAYER_CUDNN_BATCHNORM_BWD_DOUBLE(benchmark::State& state) {
 /* BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_BWD_INT32); */
 BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_BWD_HALF);
 BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_BWD_FLOAT);
-BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_BWD_DOUBLE);
+// BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_BWD_DOUBLE);
+
+#endif // GENERATED_BENCHMARK_LAYER

@@ -152,6 +152,8 @@ static void LAYER_CUDNN_DROPOUT_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
+
+
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_DROPOUT_FWD 1
