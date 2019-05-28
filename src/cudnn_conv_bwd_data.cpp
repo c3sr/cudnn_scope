@@ -43,10 +43,10 @@ static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   const cudnnConvolutionMode_t conv_mode = CUDNN_CONVOLUTION;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto width         = state.range(0);
-  const auto height        = state.range(1);
-  const auto channels      = state.range(2);
-  const auto batch_size    = state.range(3);
+  const auto batch_size      = state.range(0);
+  const auto channels        = state.range(1);
+  const auto height          = state.range(2);
+  const auto width           = state.range(3);
   const auto num_filters   = state.range(4);
   const auto filter_width  = state.range(5);
   const auto filter_height = state.range(6);
@@ -54,6 +54,8 @@ static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   const auto pad_height    = state.range(8);
   const auto stride_width  = state.range(9);
   const auto stride_height = state.range(10);
+  const auto dilation_height = state.range(11);
+  const auto dilation_width  = state.range(12);
 
   cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
@@ -65,8 +67,8 @@ static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
                                                      /*pad_width=*/pad_width,
                                                      /*vertical_stride=*/stride_height,
                                                      /*horizontal_stride=*/stride_width,
-                                                     /*dilation_height=*/1,
-                                                     /*dilation_width=*/1,
+                                                     /*dilation_height=*/dilation_height,
+                                                     /*dilation_width=*/dilation_width,
                                                      /*mode=*/conv_mode,
                                                      /*computeType=*/accumDataType<T>::type))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolution2dDescriptor");

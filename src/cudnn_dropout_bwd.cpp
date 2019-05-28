@@ -32,28 +32,16 @@ static void LAYER_CUDNN_DROPOUT_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-  //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto width         = state.range(0);
-  const auto height        = state.range(1);
-  const auto channels      = state.range(2);
-  const auto batch_size    = state.range(3);
-  const auto num_filters   = state.range(4);
-  const auto filter_width  = state.range(5);
-  const auto filter_height = state.range(6);
-  const auto pad_width     = state.range(7);
-  const auto pad_height    = state.range(8);
-  const auto stride_width  = state.range(9);
-  const auto stride_height = state.range(10);
+  // n, c, h, w
+  const auto in_n = state.range(0);
+  const auto in_c = state.range(1);
+  const auto in_h = state.range(2) == -1 ? 1 : state.range(2);
+  const auto in_w = state.range(3) == -1 ? 1 : state.range(3);
 
   const float dropout = 0.5;
   const uint64_t seed = 0;
 
-  const auto in_n = batch_size;
-  const auto in_c = num_filters;
-  const auto in_h = calc_conv_out_dim(height, filter_height, pad_height, stride_height);
-  const auto in_w = calc_conv_out_dim(width, filter_width, pad_width, stride_width);
-
-  const int64_t out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
+  const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,

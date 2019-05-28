@@ -27,6 +27,7 @@ static void LAYER_CUDNN_DROPOUT_FWD_Impl(benchmark::State& state) {
     return;
   }
 
+  // n, c, h, w
   const auto in_n = state.range(0);
   const auto in_c = state.range(1);
   const auto in_h = state.range(2) == -1 ? 1 : state.range(2);

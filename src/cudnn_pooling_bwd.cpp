@@ -32,29 +32,19 @@ static void LAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
   }
+  
+  const auto in_n         = state.range(0);
+  const auto in_c         = state.range(1);
+  const auto in_h         = state.range(2);
+  const auto in_w         = state.range(3);
+  const auto win_h        = state.range(4);
+  const auto win_w        = state.range(5);
+  const auto vert_padding = state.range(6);
+  const auto hori_padding = state.range(7);
+  const auto vert_stride  = state.range(8);
+  const auto hori_stride  = state.range(9);
 
-  //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto width         = state.range(0);
-  const auto height        = state.range(1);
-  const auto channels      = state.range(2);
-  const auto batch_size    = state.range(3);
-  const auto num_filters   = state.range(4);
-  const auto filter_width  = state.range(5);
-  const auto filter_height = state.range(6);
-  const auto pad_width     = state.range(7);
-  const auto pad_height    = state.range(8);
-  const auto stride_width  = state.range(9);
-  const auto stride_height = state.range(10);
-
-  const auto win_h = 2, win_w = 2;
-  const auto vert_padding = 0, hori_padding = 0;
-  const auto vert_stride = 2, hori_stride = 2;
   const float alpha = 1, beta = 0;
-
-  const auto in_n = batch_size;
-  const auto in_c = num_filters;
-  const auto in_h = calc_conv_out_dim(height, filter_height, pad_height, stride_height);
-  const auto in_w = calc_conv_out_dim(width, filter_width, pad_width, stride_width);
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,
