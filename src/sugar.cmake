@@ -17,7 +17,6 @@ sugar_files(
     c_api.h
     error.hpp
     generated_benchmarks.hpp
-    generated_benchmarks_all.hpp
     helper.hpp
     init.hpp
     utils.hpp
