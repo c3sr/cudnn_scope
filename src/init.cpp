@@ -10,16 +10,18 @@
 #include "init/init.hpp"
 
 cudnnHandle_t cudnn_handle;
+cublasHandle_t cublas_handle;
+
 int cuda_device_id = 0;
 
-void cudnn_before_init() {
+static void cudnn_before_init() {
   // Create a version string and tell scope about it
   // These values are defined in cudnn_scope/config.hpp.in
   RegisterVersionString(
       version(SCOPE_PROJECT_NAME, SCOPE_VERSION, SCOPE_GIT_REFSPEC, SCOPE_GIT_HASH, SCOPE_GIT_LOCAL_CHANGES));
 }
 
-int cudnn_init() {
+static int cudnn_init() {
 
   cuda_device_id = FLAG(cuda_device_ids)[0];
 
@@ -39,5 +41,14 @@ int cudnn_init() {
   return 0;
 }
 
+static int cublas_init() {
+  if (PRINT_IF_ERROR(cublasCreate(&cublas_handle))) {
+    LOG(error, "cublas_init failed create CUBLAS handle");
+      return -1;
+  };
+  return 0;
+}
+
 SCOPE_REGISTER_BEFORE_INIT(cudnn_before_init);
 SCOPE_REGISTER_INIT(cudnn_init);
+SCOPE_REGISTER_INIT(cublas_init);

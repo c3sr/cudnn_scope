@@ -1,4 +1,4 @@
-#define BENCHMARK_NAME "CUBLAS/GEMM_FWD"
+#define BENCHMARK_NAME "CUBLAS/GEMM_BWD"
 #define IMPLEMENTATION_NAME BENCHMARK_NAME
 
 #include <benchmark/benchmark.h>
@@ -45,7 +45,7 @@ static T zero() {
 
 // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
 template <typename T>
-static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
+static void LAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -185,38 +185,38 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
-#define ENABLE_LAYER_CUBLAS_GEMM_FWD 1
+#define ENABLE_LAYER_CUBLAS_GEMM_BWD 1
 #include "generated_benchmarks.hpp"
-#undef ENABLE_LAYER_CUBLAS_GEMM_FWD
+#undef ENABLE_LAYER_CUBLAS_GEMM_BWD
 
 #else // GENERATED_BENCHMARK_LAYER
 
-// static void LAYER_CUBLAS_GEMM_FWD_INT8(benchmark::State& state) {
-//   LAYER_CUBLAS_GEMM_FWD_Impl<int8_t>(state);
+// static void LAYER_CUBLAS_GEMM_BWD_INT8(benchmark::State& state) {
+//   LAYER_CUBLAS_GEMM_BWD_Impl<int8_t>(state);
 // }
 
-// static void LAYER_CUBLAS_GEMM_FWD_INT32(benchmark::State& state) {
-//   LAYER_CUBLAS_GEMM_FWD_Impl<int32_t>(state);
+// static void LAYER_CUBLAS_GEMM_BWD_INT32(benchmark::State& state) {
+//   LAYER_CUBLAS_GEMM_BWD_Impl<int32_t>(state);
 // }
 
-// static void LAYER_CUBLAS_GEMM_FWD_HALF(benchmark::State& state) {
-//   LAYER_CUBLAS_GEMM_FWD_Impl<__half>(state);
+// static void LAYER_CUBLAS_GEMM_BWD_HALF(benchmark::State& state) {
+//   LAYER_CUBLAS_GEMM_BWD_Impl<__half>(state);
 // }
 
-static void LAYER_CUBLAS_GEMM_FWD_FLOAT(benchmark::State& state) {
-  LAYER_CUBLAS_GEMM_FWD_Impl<float>(state);
+static void LAYER_CUBLAS_GEMM_BWD_FLOAT(benchmark::State& state) {
+  LAYER_CUBLAS_GEMM_BWD_Impl<float>(state);
 }
 
-// static void LAYER_CUBLAS_GEMM_FWD_DOUBLE(benchmark::State& state) {
-//   LAYER_CUBLAS_GEMM_FWD_Impl<double>(state);
+// static void LAYER_CUBLAS_GEMM_BWD_DOUBLE(benchmark::State& state) {
+//   LAYER_CUBLAS_GEMM_BWD_Impl<double>(state);
 // }
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
-/* BENCHMARK(LAYER_CUBLAS_GEMM_FWD_INT8)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
-/* BENCHMARK(LAYER_CUBLAS_GEMM_FWD_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
-// BENCHMARK(LAYER_CUBLAS_GEMM_FWD_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-BENCHMARK(LAYER_CUBLAS_GEMM_FWD_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-// BENCHMARK(LAYER_CUBLAS_GEMM_FWD_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+/* BENCHMARK(LAYER_CUBLAS_GEMM_BWD_INT8)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
+/* BENCHMARK(LAYER_CUBLAS_GEMM_BWD_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
+// BENCHMARK(LAYER_CUBLAS_GEMM_BWD_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+BENCHMARK(LAYER_CUBLAS_GEMM_BWD_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+// BENCHMARK(LAYER_CUBLAS_GEMM_BWD_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 
 #endif // GENERATED_BENCHMARK_LAYER
