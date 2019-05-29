@@ -13,8 +13,8 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 include(ScopeStatus)
 
-
 find_package(CuDNN REQUIRED)
+find_package(CUDA)
 
 # Look for sugar.cmake files in the plugin src directory
 sugar_include("src")

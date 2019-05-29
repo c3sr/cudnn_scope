@@ -1,4 +1,5 @@
-#define BENCHMARK_NAME "CUDNN/DROPOUT_FWD"
+#define BENCHMARK_NAME "CUBLAS/GEMM_FWD"
+#define IMPLEMENTATION_NAME BENCHMARK_NAME
 
 #include <benchmark/benchmark.h>
 
@@ -10,9 +11,9 @@
 #include <stdlib.h>
 #include <vector>
 
+#include <cuda_runtime.h>
 #include <cblas.h>
 #include <cublas_v2.h>
-#include <cuda_runtime.h>
 
 #include "args.hpp"
 #include "error.hpp"
@@ -28,23 +29,19 @@ void constantInit(float *data, int size, float val){
     }
 }
 
+namespace gemm {
+  namespace detail {
 template <typename T>
 static T one() {
   return T{1};
-};
-
-template <>
-__half one<__half>() {
-  unsigned short x{1};
-  __half res;
-  memcpy(&res, &x, sizeof(res));
-  return res;
 };
 
 template <typename T>
 static T zero() {
   return T{0};
 };
+  }
+}
 
 // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
 template <typename T>
@@ -55,22 +52,26 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   }
 
   cublasHandle_t cublas_handle;
-  if (PRINT_IF_ERROR(cublasCreate(&cublas_handle))) {
-    LOG(error, "failed to create CUBLAS handle");
-    return -1;
-  }
+cublasCreate(&cublas_handle);
+  // if (PRINT_IF_ERROR(cublasCreate(&cublas_handle))) {
+  //   LOG(error, "failed to create CUBLAS handle");
+  //   return;
+  // }
 
   // n, c, h, w
-  const auto m = state.range(0);
-  const auto n = state.range(1);
-  const auto k = state.range(2)
+  const auto M = state.range(0);
+  const auto N = state.range(1);
+  const auto K = state.range(2);
+  const cublasOperation_t transA = state.range(3) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
+  const cublasOperation_t transB = state.range(4) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
+  auto alpha = state.range(5);
+  auto beta = state.range(6);
 
-  const T one  = one<T>();
-  const T zero = zero<T>();
-  T alpha{one};
-  T beta{zero};
-  cublasOperation_t tranA = CUBLAS_OP_N;
-  cublasOperation_t tranB = CUBLAS_OP_N;
+  const int lda              = (transA == CUBLAS_OP_N) ? K : M;
+  const int ldb              = (transB == CUBLAS_OP_N) ? N : K;
+
+  const T one  = gemm::detail::one<T>();
+  const T zero = gemm::detail::zero<T>();
 
   auto a = std::vector<T>(M * K);
   auto b = std::vector<T>(K * N);
@@ -131,7 +132,7 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   for (auto _ : state) {
     cudaEventRecord(start, NULL);
     
-    const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transa, transb, M, N, K, alpha, d_a, d_b, beta, d_c);
+    const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha), d_a, lda, d_b, ldb, reinterpret_cast<T*>(&beta), d_c, N);
 
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
@@ -155,10 +156,15 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
     state.ResumeTiming();
   }
 
-  state.counters.insert(
-      {{"M", M}, {"N", N}, {"K", K}, {"Flops", {2.0 * M * N * K, benchmark::Counter::kAvgThreadsRate}}});
+  if (PRINT_IF_ERROR(cublasDestroy(cublas_handle))) {
+    LOG(error, "failed to destroy CUBLAS handle");
+    return;
+  }
 
-  const double predicted_flops = in_n * in_c * in_h * in_w;
+  state.counters.insert(
+      {{"M", M}, {"N", N}, {"K", K}});
+
+  const double predicted_flops = 2.0 * M * N * K;
   state.counters.insert(
       {{"predicted_flops_count", predicted_flops},
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
