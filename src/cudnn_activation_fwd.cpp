@@ -145,10 +145,10 @@ static void iLAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
 }
 
 template <typename T, cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
+static void LAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
 
   try {
-    iLAYER_CUDNN_CONV_BWD_DATA_Impl<T, activation_mode>(state);
+    iLAYER_CUDNN_ACTIVATION_FWD_Impl<T, activation_mode>(state);
   } catch (const std::exception& e) {
     const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
     state.SkipWithError(err.c_str());
