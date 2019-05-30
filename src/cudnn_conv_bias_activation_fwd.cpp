@@ -318,7 +318,7 @@ template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActi
           >
 static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   try {
-    iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<T, convolution_algorithm, activation_mode,
+    iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<T, convolution_algorithm, activation_mode
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
                                                , math_type
 #endif
