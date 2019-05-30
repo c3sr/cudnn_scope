@@ -276,7 +276,7 @@ static void iLAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   }
 
   cudnnStatus_t cudnn_err;
-  int max_count = 10;
+  static const int max_count = 10;
   /* cudnn_err = cudnnGetConvolutionBackwardDataAlgorithmMaxCount(cudnn_handle, &max_count); */
   /* if (PRINT_IF_ERROR(cudnn_err)) { */
   /*   state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnGetConvolutionBackwardDataAlgorithmMaxCount"); */
