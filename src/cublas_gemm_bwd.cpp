@@ -45,7 +45,7 @@ static T zero() {
 
 // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
 template <typename T>
-static void LAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
+static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -182,6 +182,21 @@ static void LAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
 }
 
 
+template <typename T>
+static void LAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
+    try {
+        iLAYER_CUBLAS_GEMM_BWD_Impl<T>(state);
+    } catch (const std::exception &e) {
+            state.SkipWithError(e.what());
+              
+    } catch (const std::string &e) {
+            state.SkipWithError(e.c_str());
+              
+    } catch (...) {
+            state.SkipWithError("unknown exception");
+              
+    }
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 

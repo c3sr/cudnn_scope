@@ -45,7 +45,7 @@ static T zero() {
 
 // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
 template <typename T>
-static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
+static void iLAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -75,17 +75,6 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
       {"transA", transA == CUBLAS_OP_N ? 0 : 1},
       {"transB", transB == CUBLAS_OP_N ? 0 : 1},
       });
-  std::cout <<  ""
-        "    M  "  <<  M << 
-        "    N  "  <<  N << 
-        "    K  "  <<  K << 
-        "    alpha  " << alpha <<
-        "    beta  " <<  beta <<
-        "    lda  " <<  lda << 
-        "    ldb  " <<  ldb <<
-        "    transA   " << (transA == CUBLAS_OP_N ? 0 : 1)<<
-        "    transB   " << (transB == CUBLAS_OP_N ? 0 : 1) <<
-       "\n";
 
   const T one  = gemm::detail::one<T>();
   const T zero = gemm::detail::zero<T>();
@@ -181,6 +170,21 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * M * N * K);
 }
 
+template <typename T>
+static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
+    try {
+        iLAYER_CUBLAS_GEMM_FWD_Impl<T>(state);
+    } catch (const std::exception &e) {
+            state.SkipWithError(e.what());
+              
+    } catch (const std::string &e) {
+            state.SkipWithError(e.c_str());
+              
+    } catch (...) {
+            state.SkipWithError("unknown exception");
+              
+    }
+}
 
 
 #ifdef GENERATED_BENCHMARK_LAYER
