@@ -47,6 +47,8 @@ target_compile_options(cudnn_scope PRIVATE
     -Wno-unused-function
     -Wno-vla
 )
+
+target_compile_options(cudnn_scope PRIVATE -Wno-narrowing)
 if (ENABLE_CUDNN_DLPERF)
   add_definitions(-DGENERATED_BENCHMARK_LAYER=1)
 endif (ENABLE_CUDNN_DLPERF)
