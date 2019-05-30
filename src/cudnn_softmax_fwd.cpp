@@ -21,7 +21,7 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSoftmaxMode_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSoftmaxForward
 template <typename T, cudnnSoftmaxAlgorithm_t softmax_algorithm, cudnnSoftmaxMode_t softmax_mode>
-static void LAYER_CUDNN_SOFTMAX_FWD_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_SOFTMAX_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -123,6 +123,21 @@ static void LAYER_CUDNN_SOFTMAX_FWD_Impl(benchmark::State& state) {
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
 
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
+}
+
+template <typename T, cudnnSoftmaxAlgorithm_t softmax_algorithm, cudnnSoftmaxMode_t softmax_mode>
+static void LAYER_CUDNN_SOFTMAX_FWD_Impl(benchmark::State& state) {
+  try {
+    iLAYER_CUDNN_SOFTMAX_FWD_Impl<T, softmax_algorithm, softmax_mode>(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
 }
 
 #ifdef GENERATED_BENCHMARK_LAYER

@@ -31,7 +31,7 @@ template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActi
           cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
 #endif
           >
-static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -46,10 +46,10 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto batch_size      = state.range(0);
-  const auto channels        = state.range(1);
-  const auto height          = state.range(2);
-  const auto width           = state.range(3);
+  const auto batch_size    = state.range(0);
+  const auto channels      = state.range(1);
+  const auto height        = state.range(2);
+  const auto width         = state.range(3);
   const auto num_filters   = state.range(4);
   const auto filter_width  = state.range(5);
   const auto filter_height = state.range(6);
@@ -310,7 +310,29 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
-
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+          ,
+          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+#endif
+          >
+static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
+  try {
+    iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<T, convolution_algorithm, activation_mode,
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+                                               , math_type
+#endif
+                                               >(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
@@ -338,7 +360,8 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_HALF(benchmark::State& state) {
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
 template <cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode>
 static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_HALF_TENSOROP(benchmark::State& state) {
-  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<__half, convolution_algorithm, activation_mode, CUDNN_TENSOR_OP_MATH>(state);
+  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<__half, convolution_algorithm, activation_mode, CUDNN_TENSOR_OP_MATH>(
+      state);
 }
 #endif
 

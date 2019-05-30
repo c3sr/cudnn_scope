@@ -22,7 +22,7 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnGetPooling2dForwardOutputDim
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnSetPooling2dDescriptor
 template <typename T, cudnnPoolingMode_t pooling_mode>
-static void LAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -164,7 +164,20 @@ static void LAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
-
+template <typename T, cudnnPoolingMode_t pooling_mode>
+static void LAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
+  try {
+    iLAYER_CUDNN_POOLING_FWD_Impl<T, pooling_mode>(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 

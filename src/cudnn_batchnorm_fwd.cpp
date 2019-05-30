@@ -230,6 +230,21 @@ static void LAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
+template <typename T, cudnnBatchNormMode_t batchnorm_mode, bool is_training>
+static void LAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
+  try {
+    iLAYER_CUDNN_BATCHNORM_FWD_Impl<T, batchnorm_mode, is_training>(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
+
 template <typename T, cudnnBatchNormMode_t batchnorm_mode>
 void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl(benchmark::State& state) {
   LAYER_CUDNN_BATCHNORM_FWD_Impl<T, batchnorm_mode, false>(state);
@@ -238,8 +253,6 @@ template <typename T, cudnnBatchNormMode_t batchnorm_mode>
 void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl(benchmark::State& state) {
   LAYER_CUDNN_BATCHNORM_FWD_Impl<T, batchnorm_mode, true>(state);
 }
-
-
 
 #ifdef GENERATED_BENCHMARK_LAYER
 

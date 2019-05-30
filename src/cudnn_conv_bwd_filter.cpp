@@ -27,7 +27,7 @@ template <typename T, cudnnConvolutionBwdFilterAlgo_t convolution_algorithm
           cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
           >
-static void LAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -47,13 +47,13 @@ static void LAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   const auto channels        = state.range(1);
   const auto height          = state.range(2);
   const auto width           = state.range(3);
-  const auto num_filters   = state.range(4);
-  const auto filter_width  = state.range(5);
-  const auto filter_height = state.range(6);
-  const auto pad_width     = state.range(7);
-  const auto pad_height    = state.range(8);
-  const auto stride_width  = state.range(9);
-  const auto stride_height = state.range(10);
+  const auto num_filters     = state.range(4);
+  const auto filter_width    = state.range(5);
+  const auto filter_height   = state.range(6);
+  const auto pad_width       = state.range(7);
+  const auto pad_height      = state.range(8);
+  const auto stride_width    = state.range(9);
+  const auto stride_height   = state.range(10);
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
 
@@ -305,7 +305,30 @@ static void LAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
+template <typename T, cudnnConvolutionBwdFilterAlgo_t convolution_algorithm
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+          ,
+          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+          >
+static void LAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
 
+  try {
+    iLAYER_CUDNN_CONV_BWD_FILTER_Impl<T, convolution_algorithm,
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+                                      , math_type
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+                                      >(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 

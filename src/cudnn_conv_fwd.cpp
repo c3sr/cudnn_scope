@@ -27,7 +27,7 @@ template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
           cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
 #endif
           >
-void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
+void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -314,7 +314,30 @@ void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+          ,
+          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+#endif
+          >
+void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
+  try {
+    iLAYER_CUDNN_CONV_FWD_Impl<T, convolution_algorithm,
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+                               , math_type
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+                               >(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
@@ -362,7 +385,7 @@ static void LAYER_CUDNN_CONV_FWD_DOUBLE(benchmark::State& state) {
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->CONV_PROBLEMS()->UseManualTime();                   \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->CONV_PROBLEMS()->UseManualTime();           \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->CONV_PROBLEMS()->UseManualTime();                            \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_COUNT)->CONV_PROBLEMS()->UseManualTime();                          \
+  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_COUNT)->CONV_PROBLEMS()->UseManualTime();                           \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->CONV_PROBLEMS()->UseManualTime();                          \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->CONV_PROBLEMS()->UseManualTime();                             \
   BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->CONV_PROBLEMS()->UseManualTime();                      \
