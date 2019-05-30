@@ -11,9 +11,9 @@
 #include <stdlib.h>
 #include <vector>
 
-#include <cuda_runtime.h>
 #include <cblas.h>
 #include <cublas_v2.h>
+#include <cuda_runtime.h>
 
 #include "args.hpp"
 #include "error.hpp"
@@ -23,25 +23,25 @@
 
 // ONLY SUPPORT SGEMM FOR NOW
 
-void constantInit(float *data, int size, float val){
-    for (int i = 0; i < size; ++i){
-        data[i] = val;
-    }
+void constantInit(float* data, int size, float val) {
+  for (int i = 0; i < size; ++i) {
+    data[i] = val;
+  }
 }
 
 namespace gemm {
-  namespace detail {
-template <typename T>
-static T one() {
-  return T{1};
-};
+namespace detail {
+  template <typename T>
+  static T one() {
+    return T{1};
+  };
 
-template <typename T>
-static T zero() {
-  return T{0};
-};
-  }
-}
+  template <typename T>
+  static T zero() {
+    return T{0};
+  };
+} // namespace detail
+} // namespace gemm
 
 // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
 template <typename T>
@@ -52,40 +52,33 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   }
 
   // n, c, h, w
-  const auto M = state.range(0);
-  const auto N = state.range(1);
-  const auto K = state.range(2);
+  const auto M                   = state.range(0);
+  const auto N                   = state.range(1);
+  const auto K                   = state.range(2);
   const cublasOperation_t transA = state.range(3) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
   const cublasOperation_t transB = state.range(4) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
-  auto alpha = state.range(5);
-  auto beta = state.range(6);
+  auto alpha                     = state.range(5);
+  auto beta                      = state.range(6);
 
-  const int lda              = (transA == CUBLAS_OP_N) ? M : K;
-  const int ldb              = (transB == CUBLAS_OP_N) ? K : N;
+  const int lda = (transA == CUBLAS_OP_N) ? M : K;
+  const int ldb = (transB == CUBLAS_OP_N) ? K : N;
 
-  state.counters.insert(
-      {
+  state.counters.insert({
       {"M", M},
       {"N", N},
       {"K", K},
       {"alpha", alpha},
       {"beta", beta},
       {"lda", lda},
-      {"ldb", ldb}, 
+      {"ldb", ldb},
       {"transA", transA == CUBLAS_OP_N ? 0 : 1},
       {"transB", transB == CUBLAS_OP_N ? 0 : 1},
-      });
-  std::cout <<  ""
-        "    M  "  <<  M << 
-        "    N  "  <<  N << 
-        "    K  "  <<  K << 
-        "    alpha  " << alpha <<
-        "    beta  " <<  beta <<
-        "    lda  " <<  lda << 
-        "    ldb  " <<  ldb <<
-        "    transA   " << (transA == CUBLAS_OP_N ? 0 : 1)<<
-        "    transB   " << (transB == CUBLAS_OP_N ? 0 : 1) <<
-       "\n";
+  });
+  std::cout << ""
+               "    M  "
+            << M << "    N  " << N << "    K  " << K << "    alpha  " << alpha << "    beta  " << beta << "    lda  "
+            << lda << "    ldb  " << ldb << "    transA   " << (transA == CUBLAS_OP_N ? 0 : 1) << "    transB   "
+            << (transB == CUBLAS_OP_N ? 0 : 1) << "\n";
 
   const T one  = gemm::detail::one<T>();
   const T zero = gemm::detail::zero<T>();
@@ -145,23 +138,27 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   cudaEvent_t start, stop;
   PRINT_IF_ERROR(cudaEventCreate(&start));
   PRINT_IF_ERROR(cudaEventCreate(&stop));
-  
+
   for (auto _ : state) {
     cudaEventRecord(start, NULL);
-    
-    const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, 
-      reinterpret_cast<T*>(&alpha), d_a, lda, d_b, ldb, reinterpret_cast<T*>(&beta), d_c, M);
+
+    const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha),
+                                                  d_a, lda, d_b, ldb, reinterpret_cast<T*>(&beta), d_c, M);
 
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
 
     state.PauseTiming();
     if (PRINT_IF_ERROR(cublas_err)) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to launch kernel because of {}", IMPLEMENTATION_NAME, utils::detail::error_string(cublas_err)).c_str());
+      state.SkipWithError(fmt::format("CUBLAS/{} failed to launch kernel because of {}", IMPLEMENTATION_NAME,
+                                      utils::detail::error_string(cublas_err))
+                              .c_str());
       break;
     }
     if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to synchronize kernel because of {}", IMPLEMENTATION_NAME, utils::detail::error_string(cuda_err)).c_str());
+      state.SkipWithError(fmt::format("CUBLAS/{} failed to synchronize kernel because of {}", IMPLEMENTATION_NAME,
+                                      utils::detail::error_string(cuda_err))
+                              .c_str());
       break;
     }
 
@@ -181,21 +178,19 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * M * N * K);
 }
 
-
 template <typename T>
 static void LAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
-    try {
-        iLAYER_CUBLAS_GEMM_BWD_Impl<T>(state);
-    } catch (const std::exception &e) {
-            state.SkipWithError(e.what());
-              
-    } catch (const std::string &e) {
-            state.SkipWithError(e.c_str());
-              
-    } catch (...) {
-            state.SkipWithError("unknown exception");
-              
-    }
+  try {
+    iLAYER_CUBLAS_GEMM_BWD_Impl<T>(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
 }
 
 #ifdef GENERATED_BENCHMARK_LAYER

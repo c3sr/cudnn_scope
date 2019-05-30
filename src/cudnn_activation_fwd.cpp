@@ -21,7 +21,7 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnActivationMode_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnActivationForward
 template <typename T, cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -124,7 +124,7 @@ static void LAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
   const auto compute_flops = [&](cudnnActivationMode_t mode) {
     switch (mode) {
       case CUDNN_ACTIVATION_IDENTITY:
-          return static_cast<double>(0);
+        return static_cast<double>(0);
       case CUDNN_ACTIVATION_SIGMOID:
       case CUDNN_ACTIVATION_RELU:
       case CUDNN_ACTIVATION_TANH:
@@ -145,11 +145,25 @@ static void LAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
 }
 
 template <typename T, cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
+
+  try {
+    iLAYER_CUDNN_CONV_BWD_DATA_Impl<T, activation_mode>(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
+
+template <typename T, cudnnActivationMode_t activation_mode>
 static void LAYER_CUDNN_IDENTITY_FWD_Impl(benchmark::State& state) {
   LAYER_CUDNN_ACTIVATION_FWD_Impl<T, activation_mode>(state);
 }
-
-
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
@@ -189,7 +203,7 @@ static void LAYER_CUDNN_ACTIVATION_FWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_IDENTITY)->CONV_PROBLEMS()->UseManualTime();                                   \
+  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_IDENTITY)->CONV_PROBLEMS()->UseManualTime();                                  \
   BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_SIGMOID)->CONV_PROBLEMS()->UseManualTime();                                   \
   BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->CONV_PROBLEMS()->UseManualTime();                                      \
   BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_TANH)->CONV_PROBLEMS()->UseManualTime();                                      \

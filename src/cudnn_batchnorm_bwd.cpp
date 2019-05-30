@@ -26,7 +26,7 @@ static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormMode_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormalizationBackward
 template <typename T, cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_BWD_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_BATCHNORM_BWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -191,7 +191,20 @@ static void LAYER_CUDNN_BATCHNORM_BWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
-
+template <typename T, cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_BWD_Impl(benchmark::State& state) {
+  try {
+    iLAYER_CUDNN_BATCHNORM_BWD_Impl<T, batchnorm_mode>(state);
+  } catch (const std::exception& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+    state.SkipWithError(err.c_str());
+  } catch (const std::string& e) {
+    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+    state.SkipWithError(err.c_str());
+  } catch (...) {
+    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+  }
+}
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
@@ -230,7 +243,7 @@ static void LAYER_CUDNN_BATCHNORM_BWD_DOUBLE(benchmark::State& state) {
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
   BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL)->CONV_PROBLEMS()->UseManualTime();                                    \
-  BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL_PERSISTENT)->CONV_PROBLEMS()->UseManualTime();                                    \
+  BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL_PERSISTENT)->CONV_PROBLEMS()->UseManualTime();                         \
   BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->CONV_PROBLEMS()->UseManualTime();
 
 /* BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_BWD_INT8); */
