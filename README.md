@@ -14,7 +14,7 @@ See the `docs` folder for a description of the benchmarks.
 ## Build
 
 ```
-cmake -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release
+cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release
 ```
 
 ## Usage
