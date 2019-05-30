@@ -320,10 +320,10 @@ template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
           cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
 #endif
           >
-void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
+void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
   try {
-    iLAYER_CUDNN_CONV_FWD_Impl<T, convolution_algorithm,
+    iLAYER_CUDNN_CONV_FWD_Impl<T, convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
                                , math_type
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
