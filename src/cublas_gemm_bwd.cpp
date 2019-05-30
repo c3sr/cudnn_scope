@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <vector>
 
-#include <cblas.h>
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
 
