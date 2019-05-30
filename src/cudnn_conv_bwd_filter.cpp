@@ -314,7 +314,7 @@ template <typename T, cudnnConvolutionBwdFilterAlgo_t convolution_algorithm
 static void LAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
 
   try {
-    iLAYER_CUDNN_CONV_BWD_FILTER_Impl<T, convolution_algorithm,
+    iLAYER_CUDNN_CONV_BWD_FILTER_Impl<T, convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
                                       , math_type
 #endif // CUDNN_SUPPORTS_TENSOR_OPS

@@ -22,7 +22,7 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormalizationForwardTraining
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormalizationForwardInference
 template <typename T, cudnnBatchNormMode_t batchnorm_mode, bool is_training>
-static void LAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
+static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
