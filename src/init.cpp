@@ -44,7 +44,7 @@ static int cudnn_init() {
 static int cublas_init() {
   if (PRINT_IF_ERROR(cublasCreate(&cublas_handle))) {
     LOG(error, "cublas_init failed create CUBLAS handle");
-      return -1;
+    return -1;
   };
   return 0;
 }
