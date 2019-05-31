@@ -14,7 +14,28 @@ See the `docs` folder for a description of the benchmarks.
 ## Build
 
 ```
-cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release
+mkdir -p results
+
+cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=1
+make -j $(nproc)
+./scope --benchmark_out_format=json --benchmark_out=results/1.json
+
+cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=2
+make -j $(nproc)
+./scope --benchmark_out_format=json --benchmark_out=results/2.json
+
+cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=4
+make -j $(nproc)
+./scope --benchmark_out_format=json --benchmark_out=results/4.json
+
+cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=8
+make -j $(nproc)
+./scope --benchmark_out_format=json --benchmark_out=results/8.json
+
+cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=16
+make -j $(nproc)
+./scope --benchmark_out_format=json --benchmark_out=results/16.json
+
 ```
 
 ## Usage
@@ -30,7 +51,7 @@ GENERATED_BENCHMARK_LAYER
 
 ## Customize
 
-To update sugar files for compilation, run 
+To update sugar files for compilation, run
 ```
  python $SCOPE_PATH/tools/generate_sugar_files.py --top $SCOPE_PATH/scopes/cudnn_scope/src/
 ```
