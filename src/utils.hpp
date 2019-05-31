@@ -15,6 +15,11 @@
 #define CUDNN_SUPPORTS_TENSOR_OPS 1
 #endif // CUDNN_VERSION >= 7000
 
+static const int ConvBwdTypeUndefined = 0;
+static const int ConvBwdTypeData      = 1;
+static const int ConvBwdTypeFilter    = 2;
+static const int ConvBwdTypeBias      = 3;
+
 template <typename T>
 struct valueDataType {};
 
