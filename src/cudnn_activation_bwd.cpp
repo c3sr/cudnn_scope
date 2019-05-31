@@ -32,7 +32,7 @@ static void LAYER_CUDNN_ACTIVATION_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-    // n, c, h, w
+  // n, c, h, w
   const auto in_n = state.range(0);
   const auto in_c = state.range(1);
   const auto in_h = state.range(2) == -1 ? 1 : state.range(2);
@@ -150,7 +150,7 @@ static void LAYER_CUDNN_ACTIVATION_BWD_Impl(benchmark::State& state) {
   const auto compute_flops = [&](cudnnActivationMode_t mode) {
     switch (mode) {
       case CUDNN_ACTIVATION_IDENTITY:
-          return static_cast<double>(0);
+        return static_cast<double>(0);
       case CUDNN_ACTIVATION_SIGMOID:
       case CUDNN_ACTIVATION_RELU:
       case CUDNN_ACTIVATION_TANH:
@@ -180,7 +180,19 @@ static void LAYER_CUDNN_IDENTITY_BWD_Impl(benchmark::State& state) {
 
 #define ENABLE_LAYER_CUDNN_ACTIVATION_BWD 1
 #define ENABLE_LAYER_CUDNN_IDENTITY_BWD 1
+
+#if !defined(CUDNN_BATCH_SIZE) || (CUDNN_BATCH_SIZE == 1)
 #include "generated_benchmarks.hpp"
+#elif CUDNN_BATCH_SIZE == 2
+#include "generated_benchmarks_2.hpp"
+#elif CUDNN_BATCH_SIZE == 4
+#include "generated_benchmarks_4.hpp"
+#elif CUDNN_BATCH_SIZE == 8
+#include "generated_benchmarks_8.hpp"
+#elif CUDNN_BATCH_SIZE == 16
+#include "generated_benchmarks_16.hpp"
+#endif
+
 #undef ENABLE_LAYER_CUDNN_IDENTITY_BWD
 #undef ENABLE_LAYER_CUDNN_ACTIVATION_BWD
 

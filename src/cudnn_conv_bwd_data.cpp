@@ -314,9 +314,10 @@ static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   try {
     iLAYER_CUDNN_CONV_BWD_DATA_Impl<T, convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-                                , math_type
+                                    ,
+                                    math_type
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
-                                >(state);
+                                    >(state);
   } catch (const std::exception& e) {
     const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
     state.SkipWithError(err.c_str());
@@ -331,7 +332,17 @@ static void LAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_CONV_BWD_DATA 1
+#if !defined(CUDNN_BATCH_SIZE) || (CUDNN_BATCH_SIZE == 1)
 #include "generated_benchmarks.hpp"
+#elif CUDNN_BATCH_SIZE == 2
+#include "generated_benchmarks_2.hpp"
+#elif CUDNN_BATCH_SIZE == 4
+#include "generated_benchmarks_4.hpp"
+#elif CUDNN_BATCH_SIZE == 8
+#include "generated_benchmarks_8.hpp"
+#elif CUDNN_BATCH_SIZE == 16
+#include "generated_benchmarks_16.hpp"
+#endif
 #undef ENABLE_LAYER_CUDNN_CONV_BWD_DATAS
 
 #else // GENERATED_BENCHMARK_LAYER

@@ -13,7 +13,9 @@ sugar_files(cudnn_BENCHMARK_HEADERS
             args.hpp
             c_api.h
             error.hpp
+            generated_benchmarks.hpp
             generated_benchmarks_8.hpp
+            generated_benchmarks_16.hpp
             helper.hpp
             init.hpp
             utils.hpp)

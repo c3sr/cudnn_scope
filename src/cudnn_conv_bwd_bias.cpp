@@ -33,10 +33,10 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   const float alpha = 1, beta = 0;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto batch_size      = state.range(0);
-  const auto channels        = state.range(1);
-  const auto height          = state.range(2);
-  const auto width           = state.range(3);
+  const auto batch_size    = state.range(0);
+  const auto channels      = state.range(1);
+  const auto height        = state.range(2);
+  const auto width         = state.range(3);
   const auto num_filters   = state.range(4);
   const auto filter_width  = state.range(5);
   const auto filter_height = state.range(6);
@@ -145,11 +145,22 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
-
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_CONV_BWD_BIAS 1
+
+#if !defined(CUDNN_BATCH_SIZE) || (CUDNN_BATCH_SIZE == 1)
 #include "generated_benchmarks.hpp"
+#elif CUDNN_BATCH_SIZE == 2
+#include "generated_benchmarks_2.hpp"
+#elif CUDNN_BATCH_SIZE == 4
+#include "generated_benchmarks_4.hpp"
+#elif CUDNN_BATCH_SIZE == 8
+#include "generated_benchmarks_8.hpp"
+#elif CUDNN_BATCH_SIZE == 16
+#include "generated_benchmarks_16.hpp"
+#endif
+
 #undef ENABLE_LAYER_CUDNN_CONV_BWD_BIAS
 
 #else // GENERATED_BENCHMARK_LAYER

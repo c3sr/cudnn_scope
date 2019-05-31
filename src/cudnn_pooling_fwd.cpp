@@ -182,7 +182,19 @@ static void LAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_POOLING_FWD 1
+
+#if !defined(CUDNN_BATCH_SIZE) || (CUDNN_BATCH_SIZE == 1)
 #include "generated_benchmarks.hpp"
+#elif CUDNN_BATCH_SIZE == 2
+#include "generated_benchmarks_2.hpp"
+#elif CUDNN_BATCH_SIZE == 4
+#include "generated_benchmarks_4.hpp"
+#elif CUDNN_BATCH_SIZE == 8
+#include "generated_benchmarks_8.hpp"
+#elif CUDNN_BATCH_SIZE == 16
+#include "generated_benchmarks_16.hpp"
+#endif
+
 #undef ENABLE_LAYER_CUDNN_POOLING_FWD
 
 #else // GENERATED_BENCHMARK_LAYER
