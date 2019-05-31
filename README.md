@@ -11,27 +11,32 @@ Benchmark cuDNN for different DL layers.
 
 See the `docs` folder for a description of the benchmarks.
 
-## Build
+## Build / Run
 
 ```
 mkdir -p results
 
+rm -fr scope
 cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=1
 make -j $(nproc)
 ./scope --benchmark_out_format=json --benchmark_out=results/1.json
 
+rm -fr scope
 cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=2
 make -j $(nproc)
 ./scope --benchmark_out_format=json --benchmark_out=results/2.json
 
+rm -fr scope
 cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=4
 make -j $(nproc)
 ./scope --benchmark_out_format=json --benchmark_out=results/4.json
 
+rm -fr scope
 cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=8
 make -j $(nproc)
 ./scope --benchmark_out_format=json --benchmark_out=results/8.json
 
+rm -fr scope
 cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=16
 make -j $(nproc)
 ./scope --benchmark_out_format=json --benchmark_out=results/16.json
