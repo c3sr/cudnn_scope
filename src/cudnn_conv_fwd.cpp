@@ -58,6 +58,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   const auto stride_width    = state.range(10);
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
+  const auto group           = state.range(13);
 
   cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
@@ -253,9 +254,9 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
       case CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM:
       case CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM:
       case CUDNN_CONVOLUTION_FWD_ALGO_GEMM:
-        // flops = 2 * filter_width * filter_height * out_w * out_h * channels * out_c * batch_size;
-        return static_cast<double>(2) * static_cast<double>(K) * static_cast<double>(C) * static_cast<double>(R) *
-               static_cast<double>(S) * static_cast<double>(N) * static_cast<double>(P) * static_cast<double>(Q);
+        // flops = filter_width * filter_height * out_w * out_h * channels * out_c * batch_size;
+        return static_cast<double>(K) * static_cast<double>(C) * static_cast<double>(R) * static_cast<double>(S) *
+               static_cast<double>(N) * static_cast<double>(P) * static_cast<double>(Q);
       case CUDNN_CONVOLUTION_FWD_ALGO_FFT:
       case CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING:
         //(NCKHW + (NC +CK +NK)HW log(HW))
@@ -275,7 +276,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     }
   };
 
-  const double predicted_flops = compute_flops(convolution_algorithm);
+  const double predicted_flops = compute_flops(convolution_algorithm) / group;
   state.counters.insert(
       {{"predicted_flops_count", predicted_flops},
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
@@ -344,12 +345,12 @@ void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
 #define ENABLE_LAYER_CUDNN_CONV_FWD 1
 
-#if !defined(CUDNN_BATCH_SIZE) 
+#if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"
+#include "dlperf/generated_benchmarks_16.hpp"
 #include "dlperf/generated_benchmarks_2.hpp"
 #include "dlperf/generated_benchmarks_4.hpp"
 #include "dlperf/generated_benchmarks_8.hpp"
-#include "dlperf/generated_benchmarks_16.hpp"
 #elif CUDNN_BATCH_SIZE == 1
 #include "dlperf/generated_benchmarks_1.hpp"
 #elif CUDNN_BATCH_SIZE == 2
