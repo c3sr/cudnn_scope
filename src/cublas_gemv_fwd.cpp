@@ -50,18 +50,18 @@ static void iLAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  // n, c, h, w
   const auto M                   = state.range(0);
   const auto K                  = state.range(1);
-  const cublasOperation_t transA = state.range(2) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
+  cublasOperation_t transA = state.range(2) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
   auto alpha                     = state.range(3);
   auto beta                      = state.range(4);
+transA =  CUBLAS_OP_N;
 
   const int lda = (transA == CUBLAS_OP_N) ? M : K;
 
   state.counters.insert({
       {"M", M},
-      {"N", N},
+      {"K", K},
       {"alpha", alpha},
       {"beta", beta},
       {"lda", lda},
@@ -72,8 +72,8 @@ static void iLAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
   const T zero = gemm::detail::zero<T>();
 
   /* c = alpha * ab + beta * c */
-  auto a = std::vector<T>(M * N);
-  auto b = std::vector<T>(N);
+  auto a = std::vector<T>(M * K);
+  auto b = std::vector<T>(K);
   auto c = std::vector<T>(M);
 
   std::fill(a.begin(), a.end(), one);
@@ -106,19 +106,19 @@ static void iLAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
   }
   defer(cudaFree(d_c));
 
-  if (PRINT_IF_ERROR(cublasSetMatrix(M, N, sizeof(*a.data()), a.data(), M, d_a, M))) {
+  if (PRINT_IF_ERROR(cublasSetMatrix(M, K, sizeof(*a.data()), a.data(), M, d_a, M))) {
     LOG(critical, "CUBLAS/{} setting of A matrix failed", IMPLEMENTATION_NAME);
     state.SkipWithError(fmt::format("CUBLAS/{} setting of A matrix failed", IMPLEMENTATION_NAME).c_str());
     return;
   }
 
-  if (PRINT_IF_ERROR(cublasSetVector(N, sizeof(*b.data()), b.data(), 1, d_b, 1))) {
+  if (PRINT_IF_ERROR(cublasSetVector(K, sizeof(*b.data()), b.data(), 1, d_b, 1))) {
     LOG(critical, "CUBLAS/{} setting of B vector failed", IMPLEMENTATION_NAME);
     state.SkipWithError(fmt::format("CUBLAS/{} setting of B vector failed", IMPLEMENTATION_NAME).c_str());
     return;
   }
 
-  if (PRINT_IF_ERROR(cublasSetVector(N, sizeof(*c.data()), c.data(), 1, d_c, 1))) {
+  if (PRINT_IF_ERROR(cublasSetVector(M, sizeof(*c.data()), c.data(), 1, d_c, 1))) {
     LOG(critical, "CUBLAS/{} setting of C vector failed", IMPLEMENTATION_NAME);
     state.SkipWithError(fmt::format("CUBLAS/{} setting of C vector failed", IMPLEMENTATION_NAME).c_str());
     return;
@@ -134,7 +134,7 @@ static void iLAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
   for (auto _ : state) {
     cudaEventRecord(start, NULL);
 
-    const cublasStatus_t cublas_err = cublasSgemv(cublas_handle, transA, M, N, reinterpret_cast<T*>(&alpha),
+    const cublasStatus_t cublas_err = cublasSgemv(cublas_handle, transA, M, K, reinterpret_cast<T*>(&alpha),
                                                   d_a, lda, d_b, incx, reinterpret_cast<T*>(&beta), d_c, incy);
 
     cudaEventRecord(stop, NULL);
@@ -189,7 +189,7 @@ static void LAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
 
 #define ENABLE_LAYER_CUBLAS_GEMV_FWD 1
 
-#if !defined(CUDNN_BATCH_SIZE) 
+#if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"
 #include "dlperf/generated_benchmarks_2.hpp"
 #include "dlperf/generated_benchmarks_4.hpp"
