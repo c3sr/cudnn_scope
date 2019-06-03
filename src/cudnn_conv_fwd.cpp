@@ -58,7 +58,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   const auto stride_width    = state.range(10);
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
-  const auto group           = state.range(13);
+  const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
   cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {

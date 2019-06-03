@@ -26,13 +26,19 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     return;
   }
 
-  const auto in_n     = state.range(0);
-  const auto in_c     = state.range(1);
-  const auto in_h     = state.range(2);
-  const auto in_w     = state.range(3);
+  const auto in_n = state.range(0);
+  const auto in_c = state.range(1);
+  const auto in_h = state.range(2);
+  const auto in_w = state.range(3);
+#ifdef GENERATED_BENCHMARK_LAYER
+  const auto bias_dim = state.range(16);
+  const auto alpha    = state.range(17);
+  const auto beta     = state.range(18);
+#else  // GENERATED_BENCHMARK_LAYER
   const auto bias_dim = state.range(4);
-  auto alpha          = state.range(5);
-  auto beta           = state.range(6);
+  const auto alpha    = state.range(5);
+  const auto beta     = state.range(6);
+#endif // GENERATED_BENCHMARK_LAYER
 
   auto y_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,

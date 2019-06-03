@@ -20,6 +20,11 @@ static const int ConvBwdTypeData      = 1;
 static const int ConvBwdTypeFilter    = 2;
 static const int ConvBwdTypeBias      = 3;
 
+static const int ConvFwdTypeUndefined           = 0;
+static const int ConvFwdTypeConv                = 1;
+static const int ConvFwdTypeBias                = 2;
+static const int ConvFwdTypeConvFusedActivation = 2;
+
 template <typename T>
 struct valueDataType {};
 

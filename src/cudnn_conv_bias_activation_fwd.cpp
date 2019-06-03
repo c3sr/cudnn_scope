@@ -58,7 +58,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   const auto stride_width  = state.range(9);
   const auto stride_height = state.range(10);
 
-  const float alpha = 1, beta = 1;
+  const float alpha = 1, beta = 0;
   const double coef                      = 1;
   const cudnnConvolutionMode_t conv_mode = CUDNN_CONVOLUTION;
 
