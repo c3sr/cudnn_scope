@@ -26,13 +26,13 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     return;
   }
 
-  const auto in_n      = state.range(0);
-  const auto in_c        = state.range(1);
-  const auto in_h          = state.range(2);
-  const auto in_w           = state.range(3);
-  const auto bias_dim     = state.range(4);
-  auto alpha                     = state.range(5);
-  auto beta                      = state.range(6);
+  const auto in_n     = state.range(0);
+  const auto in_c     = state.range(1);
+  const auto in_h     = state.range(2);
+  const auto in_w     = state.range(3);
+  const auto bias_dim = state.range(4);
+  auto alpha          = state.range(5);
+  auto beta           = state.range(6);
 
   auto y_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,
@@ -44,8 +44,7 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   }
   cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
 
-  auto bias_tensor = Tensor<T>(state,
-                            {bias_dim});
+  auto bias_tensor = Tensor<T>(state, {bias_dim});
   if (!bias_tensor.is_valid) {
     return;
   }
@@ -78,8 +77,13 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   for (auto _ : state) {
     cudaEventRecord(start, NULL);
 
-    const cudnnStatus_t cudnn_err = cudnnAddTensor(
-        cudnn_handle, reinterpret_cast<T*>(&alpha), bias_descriptor, d_bias, reinterpret_cast<T*>(&beta), y_descriptor, d_y);
+    const cudnnStatus_t cudnn_err = cudnnAddTensor(cudnn_handle,
+                                                   reinterpret_cast<T*>(&alpha),
+                                                   bias_descriptor,
+                                                   d_bias,
+                                                   reinterpret_cast<T*>(&beta),
+                                                   y_descriptor,
+                                                   d_y);
 
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
@@ -103,46 +107,43 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     state.ResumeTiming();
   }
 
-  state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
-                         {"input_batch_size", in_n},
-                         {"input_channels", in_c},
-                         {"input_height", in_h},
-                         {"input_width", in_w},
-                         {"bias_dim", bias_dim},
+  state.counters.insert({
+    {"input_size", in_n * in_c * in_h * in_w}, {"input_batch_size", in_n}, {"input_channels", in_c},
+        {"input_height", in_h}, {"input_width", in_w}, {"bias_dim", bias_dim},
 
-  const double predicted_flops = in_n * in_c * in_h * in_w;
-  state.counters.insert(
-      {{"predicted_flops_count", predicted_flops},
-       {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
+        const double predicted_flops = in_n * in_c * in_h * in_w;
+    state.counters.insert(
+        {{"predicted_flops_count", predicted_flops},
+         {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
 
-  state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
+    state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
 template <typename T>
 static void LAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
-  try {
-    iLAYER_CUDNN_ADD_TENSOR_Impl<T>(state);
-  } catch (const std::exception& e) {
-    const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
-    state.SkipWithError(err.c_str());
-  } catch (const std::string& e) {
-    const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
-    state.SkipWithError(err.c_str());
-  } catch (...) {
-    state.SkipWithError("unknown exception in " BENCHMARK_NAME);
-  }
+    try {
+      iLAYER_CUDNN_ADD_TENSOR_Impl<T>(state);
+    } catch (const std::exception& e) {
+      const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
+      state.SkipWithError(err.c_str());
+    } catch (const std::string& e) {
+      const auto err = std::string("Exception in " BENCHMARK_NAME) + e;
+      state.SkipWithError(err.c_str());
+    } catch (...) {
+      state.SkipWithError("unknown exception in " BENCHMARK_NAME);
+    }
 }
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_ADD_TENSOR 1
 
-#if !defined(CUDNN_BATCH_SIZE) 
+#if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"
+#include "dlperf/generated_benchmarks_16.hpp"
 #include "dlperf/generated_benchmarks_2.hpp"
 #include "dlperf/generated_benchmarks_4.hpp"
 #include "dlperf/generated_benchmarks_8.hpp"
-#include "dlperf/generated_benchmarks_16.hpp"
 #elif CUDNN_BATCH_SIZE == 1
 #include "dlperf/generated_benchmarks_1.hpp"
 #elif CUDNN_BATCH_SIZE == 2
@@ -160,23 +161,23 @@ static void LAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
 #else // GENERATED_BENCHMARK_LAYER
 
 static void LAYER_CUDNN_ADD_TENSOR_INT8(benchmark::State& state) {
-  LAYER_CUDNN_ADD_TENSOR_Impl<int8_t>(state);
+    LAYER_CUDNN_ADD_TENSOR_Impl<int8_t>(state);
 }
 
 static void LAYER_CUDNN_ADD_TENSOR_INT32(benchmark::State& state) {
-  LAYER_CUDNN_ADD_TENSOR_Impl<int32_t>(state);
+    LAYER_CUDNN_ADD_TENSOR_Impl<int32_t>(state);
 }
 
 static void LAYER_CUDNN_ADD_TENSOR_HALF(benchmark::State& state) {
-  LAYER_CUDNN_ADD_TENSOR_Impl<__half>(state);
+    LAYER_CUDNN_ADD_TENSOR_Impl<__half>(state);
 }
 
 static void LAYER_CUDNN_ADD_TENSOR_FLOAT(benchmark::State& state) {
-  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+    LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
 }
 
 static void LAYER_CUDNN_ADD_TENSOR_DOUBLE(benchmark::State& state) {
-  LAYER_CUDNN_ADD_TENSOR_Impl<double>(state);
+    LAYER_CUDNN_ADD_TENSOR_Impl<double>(state);
 }
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
@@ -185,6 +186,6 @@ static void LAYER_CUDNN_ADD_TENSOR_DOUBLE(benchmark::State& state) {
 /* BENCHMARK(LAYER_CUDNN_ADD_TENSOR_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
 BENCHMARK(LAYER_CUDNN_ADD_TENSOR_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 BENCHMARK(LAYER_CUDNN_ADD_TENSOR_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-// BENCHMARK(LAYER_CUDNN_ADD_TENSOR_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+  // BENCHMARK(LAYER_CUDNN_ADD_TENSOR_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 
 #endif // GENERATED_BENCHMARK_LAYER

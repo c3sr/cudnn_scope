@@ -50,12 +50,12 @@ static void iLAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  const auto M                   = state.range(0);
-  const auto K                  = state.range(1);
+  const auto M             = state.range(0);
+  const auto K             = state.range(1);
   cublasOperation_t transA = state.range(2) == 0 ? CUBLAS_OP_N : CUBLAS_OP_T;
-  auto alpha                     = state.range(3);
-  auto beta                      = state.range(4);
-transA =  CUBLAS_OP_N;
+  auto alpha               = state.range(3);
+  auto beta                = state.range(4);
+  transA                   = CUBLAS_OP_N;
 
   const int lda = (transA == CUBLAS_OP_N) ? M : K;
 
@@ -134,8 +134,8 @@ transA =  CUBLAS_OP_N;
   for (auto _ : state) {
     cudaEventRecord(start, NULL);
 
-    const cublasStatus_t cublas_err = cublasSgemv(cublas_handle, transA, M, K, reinterpret_cast<T*>(&alpha),
-                                                  d_a, lda, d_b, incx, reinterpret_cast<T*>(&beta), d_c, incy);
+    const cublasStatus_t cublas_err = cublasSgemv(cublas_handle, transA, M, K, reinterpret_cast<T*>(&alpha), d_a, lda,
+                                                  d_b, incx, reinterpret_cast<T*>(&beta), d_c, incy);
 
     cudaEventRecord(stop, NULL);
     const auto cuda_err = cudaEventSynchronize(stop);
@@ -191,10 +191,10 @@ static void LAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
 
 #if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"
+#include "dlperf/generated_benchmarks_16.hpp"
 #include "dlperf/generated_benchmarks_2.hpp"
 #include "dlperf/generated_benchmarks_4.hpp"
 #include "dlperf/generated_benchmarks_8.hpp"
-#include "dlperf/generated_benchmarks_16.hpp"
 #elif CUDNN_BATCH_SIZE == 1
 #include "dlperf/generated_benchmarks_1.hpp"
 #elif CUDNN_BATCH_SIZE == 2

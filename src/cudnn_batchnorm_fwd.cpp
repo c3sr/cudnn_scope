@@ -259,12 +259,12 @@ void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl(benchmark::State& state) {
 #define ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE 1
 #define ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING 1
 
-#if !defined(CUDNN_BATCH_SIZE) 
+#if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"
+#include "dlperf/generated_benchmarks_16.hpp"
 #include "dlperf/generated_benchmarks_2.hpp"
 #include "dlperf/generated_benchmarks_4.hpp"
 #include "dlperf/generated_benchmarks_8.hpp"
-#include "dlperf/generated_benchmarks_16.hpp"
 #elif CUDNN_BATCH_SIZE == 1
 #include "dlperf/generated_benchmarks_1.hpp"
 #elif CUDNN_BATCH_SIZE == 2
