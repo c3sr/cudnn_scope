@@ -36,5 +36,7 @@ sugar_files(cudnn_BENCHMARK_SOURCES
             cudnn_softmax_fwd.cpp
             cublas_gemm_fwd.cpp
             cublas_gemm_bwd.cpp
+            cublas_gemv_fwd.cpp
+            cublas_gemv_bwd.cpp
             element_wise.cpp
             init.cpp)
