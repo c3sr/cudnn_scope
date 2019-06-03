@@ -78,8 +78,10 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  cudnnSetConvolutionMathType(convolution_descriptor, math_type);
+  PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, math_type))
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
+
+  PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/batch_size,
