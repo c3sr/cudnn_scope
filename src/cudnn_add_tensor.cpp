@@ -18,6 +18,11 @@
 #include "init.hpp"
 #include "utils.hpp"
 
+// calculates convolution output dimension
+static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
+  return (input_dim - filter_dim + 2 * padd) / stride + 1;
+}
+
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnAddTensor
 template <typename T>
 static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
@@ -30,21 +35,28 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto in_c = state.range(1);
   const auto in_h = state.range(2);
   const auto in_w = state.range(3);
+  const auto num_filters   = state.range(4);
+  const auto filter_width  = state.range(5);
+  const auto filter_height = state.range(6);
+  const auto pad_width     = state.range(7);
+  const auto pad_height    = state.range(8);
+  const auto stride_width  = state.range(9);
+  const auto stride_height = state.range(10);
 #ifdef GENERATED_BENCHMARK_LAYER
   const auto bias_dim = state.range(16);
-  const auto alpha    = state.range(17);
-  const auto beta     = state.range(18);
+  const T alpha    = state.range(17);
+  const T beta     = state.range(18);
 #else  // GENERATED_BENCHMARK_LAYER
   const auto bias_dim = state.range(4);
-  const auto alpha    = state.range(5);
-  const auto beta     = state.range(6);
+  const T alpha    = state.range(5);
+  const T beta     = state.range(6);
 #endif // GENERATED_BENCHMARK_LAYER
 
   auto y_tensor = Tensor<T>(state,
-                            {/*batch_size=*/in_n,
-                             /*channels=*/in_c,
-                             /*image_height=*/in_h,
-                             /*image_width=*/in_w});
+                            {/*batch_size=*/1,
+                             /*channels=*/1,
+                             /*image_height=*/bias_dim,
+                             /*image_width=*/1});
   if (!y_tensor.is_valid) {
     return;
   }
@@ -54,7 +66,7 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   if (!bias_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t a_descriptor = a_tensor.get();
+  cudnnTensorDescriptor_t bias_descriptor = bias_tensor.get();
 
   const auto input_bytes = in_n * in_w * in_h * in_c * sizeof(T);
   auto input             = std::vector<T>(input_bytes / sizeof(T));
@@ -70,7 +82,7 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   auto bias             = std::vector<T>(bias_bytes / sizeof(T));
   std::fill(bias.begin(), bias.end(), detail::one<T>());
 
-  DeviceMemory<T> bias_memory(state, bias.data(), bias_bytes;
+  DeviceMemory<T> bias_memory(state, bias.data(), bias_bytes);
   if (!bias_memory.is_valid) {
     return;
   }
@@ -84,10 +96,10 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     cudaEventRecord(start, NULL);
 
     const cudnnStatus_t cudnn_err = cudnnAddTensor(cudnn_handle,
-                                                   reinterpret_cast<T*>(&alpha),
+                                                   &alpha,
                                                    bias_descriptor,
                                                    d_bias,
-                                                   reinterpret_cast<T*>(&beta),
+                                                   &beta,
                                                    y_descriptor,
                                                    d_y);
 
@@ -96,11 +108,11 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
 
     state.PauseTiming();
     if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnAddTensor");
+      state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to perform cudnnAddTensor because of {}", utils::detail::error_string(cudnn_err)).c_str());
       break;
     }
     if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
+      state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to perform cudnnAddTensor because of {}", utils::detail::error_string(cuda_err)).c_str());
       break;
     }
 
@@ -115,7 +127,7 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
 
   state.counters.insert({
     {"input_size", in_n * in_c * in_h * in_w}, {"input_batch_size", in_n}, {"input_channels", in_c},
-        {"input_height", in_h}, {"input_width", in_w}, {"bias_dim", bias_dim},
+        {"input_height", in_h}, {"input_width", in_w}, {"bias_dim", bias_dim}});
 
         const double predicted_flops = in_n * in_c * in_h * in_w;
     state.counters.insert(
@@ -143,6 +155,7 @@ static void LAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_ADD_TENSOR 1
+
 
 #if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"

@@ -337,7 +337,7 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
-#define ENABLE_LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD 1
+#define ENABLE_LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD  1
 
 #if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_benchmarks_1.hpp"
