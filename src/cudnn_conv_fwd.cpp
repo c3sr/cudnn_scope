@@ -21,6 +21,7 @@
 // http://www.goldsborough.me/cuda/ml/cudnn/c++/2017/10/01/14-37-23-convolutions_with_cudnn/
 // http://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionFwdAlgo_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionForward
+// https://github.com/apache/incubator-mxnet/blob/master/src/operator/nn/cudnn/cudnn_convolution-inl.h
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
           ,
@@ -80,8 +81,10 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  cudnnSetConvolutionMathType(convolution_descriptor, math_type);
+  PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, math_type))
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
+
+  PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/batch_size,
