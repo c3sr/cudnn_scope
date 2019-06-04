@@ -39,13 +39,9 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto stride_height   = state.range(10);
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
-#ifdef GENERATED_BENCHMARK_LAYER
-  const auto bias_dim = state.range(16);
-  const T alpha       = state.range(17);
-  const T beta        = state.range(18);
-#else // GENERATED_BENCHMARK_LAYER
-#error "pass the right thing"
-#endif // GENERATED_BENCHMARK_LAYER
+
+  const T alpha = 1;
+  const T beta  = 0;
 
   const auto in_n  = batch_size;
   const auto in_w  = channels;
@@ -56,7 +52,8 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto out_h = detail::calc_conv_out_dim(height, filter_height, pad_height, stride_height, dilation_height);
   const auto out_c = num_filters;
 
-  auto input_tensor = Tensor<T>(state,
+  const auto bias_dim = out_c;
+  auto input_tensor   = Tensor<T>(state,
                                 {/*batch_size=*/1,
                                  /*channels=*/bias_dim,
                                  /*image_height=*/1,
