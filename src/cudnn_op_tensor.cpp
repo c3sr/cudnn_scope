@@ -19,22 +19,21 @@
 #include "utils.hpp"
 
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnAddTensor
-template <typename T>
+template <typename T, cudnnOpTensorOp_t op_type>
 static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
   }
 
-  // C = OP(alpha1 * A, alpha2 * B) + beta * C
-  const auto in_n    = state.range(0);
-  const auto in_c    = state.range(1);
-  const auto in_h    = state.range(2);
-  const auto in_w    = state.range(3);
-  const T alpha1     = state.range(4);
-  const T alpha2     = state.range(5);
-  const T beta       = state.range(6);
-  const auto op_type = state.range(7);
+  // C = OP(alpha * A, alpha * B) + beta * C
+  const auto in_n = state.range(0);
+  const auto in_c = state.range(1);
+  const auto in_h = state.range(2);
+  const auto in_w = state.range(3);
+
+  const T alpha = 1.0;
+  const T beta  = 0.0;
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
@@ -105,7 +104,7 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
     cudaEventRecord(start, NULL);
 
     const cudnnStatus_t cudnn_err =
-        cudnnOpTensor(cudnn_handle, op_descriptor, &alpha1, input_a_descriptor, d_a_input, &alpha2, input_b_descriptor,
+        cudnnOpTensor(cudnn_handle, op_descriptor, &alpha, input_a_descriptor, d_a_input, &alpha, input_b_descriptor,
                       d_b_input, &beta, output_descriptor, d_output);
 
     cudaEventRecord(stop, NULL);
@@ -139,18 +138,18 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
                          {"input_c", in_c},
                          {"input_h", in_h},
                          {"input_w", in_w},
-                         {"alpha1", alpha1},
-                         {"alpha2", alpha2},
+                         {"alpha", alpha},
+                         {"alpha", alpha},
                          {"beta", beta},
-                         {"op_type", op_type}});
+                         {"op_type", (int) op_type}});
 
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
-template <typename T>
-static void LAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
+template <typename T, cudnnOpTensorOp_t op_type>
+static void LAYER_CUDNN_OP_TENSOR_FWD_Impl(benchmark::State& state) {
   try {
-    iLAYER_CUDNN_OP_TENSOR_Impl<T>(state);
+    iLAYER_CUDNN_OP_TENSOR_Impl<T, op_type>(state);
   } catch (const std::exception& e) {
     const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
     state.SkipWithError(err.c_str());
@@ -160,6 +159,11 @@ static void LAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   } catch (...) {
     state.SkipWithError("unknown exception in " BENCHMARK_NAME);
   }
+}
+
+template <typename T, cudnnOpTensorOp_t op_type>
+static void LAYER_CUDNN_OP_TENSOR_BWD_Impl(benchmark::State& state) {
+  LAYER_CUDNN_OP_TENSOR_FWD_Impl<T, op_type>(state);
 }
 
 #ifdef GENERATED_BENCHMARK_LAYER
