@@ -56,7 +56,7 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   const auto stride_height   = state.range(10);
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
-  const auto group           = state.range(13) == 0 : 1 ? state.range(13);
+  const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
   cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
@@ -78,10 +78,16 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, math_type))
+  if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, math_type))) {
+    state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionMathType");
+    return;
+  }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));
+  if (PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group))) {
+    state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionGroupCount");
+    return;
+  }
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/batch_size,
