@@ -18,11 +18,6 @@
 #include "init.hpp"
 #include "utils.hpp"
 
-// calculates convolution output dimension
-static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
-  return (input_dim - filter_dim + 2 * padd) / stride + 1;
-}
-
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionBiasActivationForward
 // https://github.com/tensorflow/tensorflow/blob/575db18083d5437fd7a87ccf3414303498911bb1/tensorflow/stream_executor/cuda/cuda_dnn.cc#L2547
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode

@@ -18,11 +18,6 @@
 #include "init.hpp"
 #include "utils.hpp"
 
-// calculates convolution output dimension
-static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
-  return (input_dim - filter_dim + 2 * padd) / stride + 1;
-}
-
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnAddTensor
 template <typename T>
 static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
@@ -57,8 +52,8 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto in_h  = height;
   const auto in_c  = width;
   const auto out_n = batch_size;
-  const auto out_w = calc_conv_out_dim(width, filter_width, pad_width, stride_width);
-  const auto out_h = calc_conv_out_dim(height, filter_height, pad_height, stride_height);
+  const auto out_w = detail::calc_conv_out_dim(width, filter_width, pad_width, stride_width, dilation_width);
+  const auto out_h = detail::calc_conv_out_dim(height, filter_height, pad_height, stride_height, dilation_height);
   const auto out_c = num_filters;
 
   auto input_tensor = Tensor<T>(state,

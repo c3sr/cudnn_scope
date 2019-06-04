@@ -156,4 +156,11 @@ __half zero<__half>() {
   memset(&res, 0, sizeof(res));
   return res;
 };
+
+// calculates convolution output dimension
+// yh = int64(math.Floor(float64(xh+c.Pads[0]+c.Pads[1]-(c.Dilations[0]*(wh-1)+1))/float64(c.Strides[0])) + 1)
+// yw = int64(math.Floor(float64(xw+c.Pads[2]+c.Pads[3]-(c.Dilations[1]*(ww-1)+1))/float64(c.Strides[1])) + 1)
+static inline int detail::calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride, int dilation) {
+  return (input_dim + 2 * padd - (dilation * (filter_dim - 1) + 1)) / stride + 1;
+}
 } // namespace detail
