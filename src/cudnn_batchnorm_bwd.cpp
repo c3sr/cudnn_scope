@@ -18,11 +18,6 @@
 #include "init.hpp"
 #include "utils.hpp"
 
-// calculates convolution output dimension
-static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
-  return (input_dim - filter_dim + 2 * padd) / stride + 1;
-}
-
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormMode_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnBatchNormalizationBackward
 template <typename T, cudnnBatchNormMode_t batchnorm_mode>

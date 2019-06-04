@@ -18,11 +18,6 @@
 #include "init.hpp"
 #include "utils.hpp"
 
-// calculates convolution output dimension
-static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int stride) {
-  return (input_dim - filter_dim + 2 * padd) / stride + 1;
-}
-
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionBackwardBias
 template <typename T>
 static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
@@ -33,28 +28,26 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   const float alpha = 1, beta = 0;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto batch_size    = state.range(0);
-  const auto channels      = state.range(1);
-  const auto height        = state.range(2);
-  const auto width         = state.range(3);
-  const auto num_filters   = state.range(4);
-  const auto filter_width  = state.range(5);
-  const auto filter_height = state.range(6);
-  const auto pad_width     = state.range(7);
-  const auto pad_height    = state.range(8);
-  const auto stride_width  = state.range(9);
-  const auto stride_height = state.range(10);
+  const auto batch_size      = state.range(0);
+  const auto channels        = state.range(1);
+  const auto height          = state.range(2);
+  const auto width           = state.range(3);
+  const auto num_filters     = state.range(4);
+  const auto filter_width    = state.range(5);
+  const auto filter_height   = state.range(6);
+  const auto pad_width       = state.range(7);
+  const auto pad_height      = state.range(8);
+  const auto stride_width    = state.range(9);
+  const auto stride_height   = state.range(10);
+  const auto dilation_height = state.range(11);
+  const auto dilation_width  = state.range(12);
 
   const auto out_n = batch_size;
-  const auto out_w = calc_conv_out_dim(width, filter_width, pad_width, stride_width);
-  const auto out_h = calc_conv_out_dim(height, filter_height, pad_height, stride_height);
+  const auto out_w = detail::calc_conv_out_dim(width, filter_width, pad_width, stride_width, dilation_width);
+  const auto out_h = detail::calc_conv_out_dim(height, filter_height, pad_height, stride_height, dilation_height);
   const auto out_c = num_filters;
 
-  auto db_tensor = Tensor<T>(state,
-                             {/*batch_size=*/1,
-                              /*channels=*/out_c,
-                              /*image_height=*/1,
-                              /*image_width=*/1});
+  auto db_tensor = Tensor<T>(state, {out_c});
   if (!db_tensor.is_valid) {
     return;
   }
