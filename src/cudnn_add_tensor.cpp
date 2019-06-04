@@ -152,12 +152,20 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
                          {"output_height", out_h},
                          {"output_width", out_w},
                          {"bias_dim", bias_dim}});
+#if 0
+  std::cout << ""
+            << "input_bias_dim " << bias_dim <<
+"\n";
+  std::cout << ""
+            << "output_batch_size " << out_n <<
+      " output_channels " << out_c << " output_height " << out_h << " output_width " << out_w << "\n";
 
   const double predicted_flops = in_n * in_c * in_h * in_w;
   state.counters.insert(
       {{"predicted_flops_count", predicted_flops},
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
 
+#endif
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
@@ -175,6 +183,7 @@ static void LAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     state.SkipWithError("unknown exception in " BENCHMARK_NAME);
   }
 }
+
 
 #ifdef GENERATED_BENCHMARK_LAYER
 

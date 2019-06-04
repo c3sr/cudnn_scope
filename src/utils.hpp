@@ -9,6 +9,7 @@
 
 #include <cuda_fp16.h>
 
+#include "prettyprint.hpp"
 #include "utils/utils.hpp"
 
 #if CUDNN_VERSION >= 7000
@@ -24,6 +25,7 @@ static const int ConvFwdTypeUndefined           = 0;
 static const int ConvFwdTypeConv                = 1;
 static const int ConvFwdTypeBias                = 2;
 static const int ConvFwdTypeConvFusedActivation = 2;
+
 
 template <typename T>
 struct valueDataType {};
