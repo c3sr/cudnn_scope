@@ -166,6 +166,22 @@ static void LAYER_CUDNN_OP_TENSOR_BWD_Impl(benchmark::State& state) {
   LAYER_CUDNN_OP_TENSOR_FWD_Impl<T, op_type>(state);
 }
 
+#define _DECLARE_OP(DIRECTION, OP_NAME, OP_TYPE) template <typename T>
+static void LAYER_CUDNN_OP_TENSOR_##OP_NAME##_##DIRECTION##_Impl(benchmark::State& state) {
+  LAYER_CUDNN_OP_TENSOR_BWD_Impl<T, OP_TYPE>(state);
+}
+
+#define DECLARE_OP(OP_NAME, OP_TYPE)                                                                                   \
+  _DECLARE_OP(FWD, OP_NAME, OP_TYPE)                                                                                   \
+  _DECLARE_OP(BWD, OP_NAME, OP_TYPE)
+
+DECLARE_OP(ADD, CUDNN_OP_TENSOR_ADD)
+DECLARE_OP(MUL, CUDNN_OP_TENSOR_MUL)
+DECLARE_OP(MIN, CUDNN_OP_TENSOR_MIN)
+DECLARE_OP(MAX, CUDNN_OP_TENSOR_MAX)
+DECLARE_OP(SQRT, CUDNN_OP_TENSOR_SQRT)
+DECLARE_OP(NOT, CUDNN_OP_TENSOR_NOT)
+
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_OP_TENSOR 1
