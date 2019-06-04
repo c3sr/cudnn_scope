@@ -41,17 +41,20 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
-  const auto batch_size    = state.range(0);
-  const auto channels      = state.range(1);
-  const auto height        = state.range(2);
-  const auto width         = state.range(3);
-  const auto num_filters   = state.range(4);
-  const auto filter_width  = state.range(5);
-  const auto filter_height = state.range(6);
-  const auto pad_width     = state.range(7);
-  const auto pad_height    = state.range(8);
-  const auto stride_width  = state.range(9);
-  const auto stride_height = state.range(10);
+  const auto batch_size      = state.range(0);
+  const auto channels        = state.range(1);
+  const auto height          = state.range(2);
+  const auto width           = state.range(3);
+  const auto num_filters     = state.range(4);
+  const auto filter_width    = state.range(5);
+  const auto filter_height   = state.range(6);
+  const auto pad_width       = state.range(7);
+  const auto pad_height      = state.range(8);
+  const auto stride_width    = state.range(9);
+  const auto stride_height   = state.range(10);
+  const auto dilation_height = state.range(11);
+  const auto dilation_width  = state.range(12);
+  const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
   const float alpha = 1, beta = 0;
   const double coef                      = 1;
@@ -67,8 +70,8 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
                                                      /*pad_width=*/pad_width,
                                                      /*vertical_stride=*/stride_height,
                                                      /*horizontal_stride=*/stride_width,
-                                                     /*dilation_height=*/1,
-                                                     /*dilation_width=*/1,
+                                                     /*dilation_height=*/dilation_height,
+                                                     /*dilation_width=*/dilation_width,
                                                      /*mode=*/conv_mode,
                                                      /*computeType=*/accumDataType<T>::type))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolution2dDescriptor");
@@ -116,9 +119,12 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   cudnnFilterDescriptor_t w_descriptor = w_filter.get();
 
   int out_n, out_c, out_h, out_w;
-  if (PRINT_IF_ERROR(cudnnGetConvolution2dForwardOutputDim(convolution_descriptor, x_descriptor, w_descriptor, &out_n,
-                                                           &out_c, &out_h, &out_w))) {
-    state.SkipWithError(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim");
+  const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(
+      convolution_descriptor, x_descriptor, w_descriptor, &out_n, &out_c, &out_h, &out_w);
+  if (PRINT_IF_ERROR(cudnn_get_conv_output_err)) {
+    state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim because of {}",
+                                    utils::detail::error_string(cudnn_get_conv_output_err))
+                            .c_str());
     return;
   }
 
@@ -237,11 +243,17 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
 
     state.PauseTiming();
     if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnConvolutionBiasActivationForward");
+      state.SkipWithError(fmt::format(BENCHMARK_NAME
+                                      " failed to perform cudnnConvolutionBiasActivationForward because of {}",
+                                      utils::detail::error_string(cudnn_err))
+                              .c_str());
       break;
     }
     if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
+      state.SkipWithError(fmt::format(BENCHMARK_NAME
+                                      " failed to perform cudnnConvolutionBiasActivationForward because of {}",
+                                      utils::detail::error_string(cuda_err))
+                              .c_str());
       break;
     }
 
@@ -266,6 +278,9 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
                          {"pad_width", pad_width},
                          {"stride_height", stride_height},
                          {"stride_width", stride_width},
+                         {"group", group},
+                         {"dilation_height", dilation_height},
+                         {"dilation_width", dilation_width},
                          {"output_size", out_n * out_c * out_h * out_w},
                          {"output_batch_size", out_n},
                          {"output_channels", out_c},
@@ -279,7 +294,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
                          {"activation_mode", (int) activation_mode}});
 
   cudnnStatus_t cudnn_err;
-  static const int max_count = 10;
+  static const int max_count = 20;
   /* cudnn_err = cudnnGetConvolutionForwardAlgorithmMaxCount(cudnn_handle, &max_count); */
   /* if (PRINT_IF_ERROR(cudnn_err)) { */
   /*   state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnGetConvolutionForwardAlgorithmMaxCount"); */

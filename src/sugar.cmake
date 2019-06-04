@@ -25,10 +25,10 @@ sugar_files(cudnn_BENCHMARK_SOURCES
             # cublas_gemv_fwd.cpp
             # cudnn_activation_bwd.cpp
             # cudnn_activation_fwd.cpp
-            cudnn_add_tensor.cpp
+            # cudnn_add_tensor.cpp
             # cudnn_batchnorm_bwd.cpp
             # cudnn_batchnorm_fwd.cpp
-            # cudnn_conv_bias_activation_fwd.cpp
+            cudnn_conv_bias_activation_fwd.cpp
             # cudnn_conv_bwd_bias.cpp
             # cudnn_conv_bwd_data.cpp
             # cudnn_conv_bwd_filter.cpp

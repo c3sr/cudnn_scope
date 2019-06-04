@@ -179,7 +179,6 @@ static void LAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   }
 }
 
-
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUDNN_ADD_TENSOR 1

@@ -56,7 +56,7 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   const auto stride_height   = state.range(10);
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
-  const auto group           = state.range(13);
+  const auto group           = state.range(13) == 0 : 1 ? state.range(13);
 
   cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
@@ -227,6 +227,9 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
                          {"pad_width", pad_width},
                          {"stride_height", stride_height},
                          {"stride_width", stride_width},
+                         {"dilation_height", dilation_height},
+                         {"dilation_width", dilation_width},
+                         {"group", group},
                          {"output_size", out_n * out_c * out_h * out_w},
                          {"output_batch_size", out_n},
                          {"output_channels", out_c},

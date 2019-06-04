@@ -127,6 +127,8 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
                          {"pad_width", pad_width},
                          {"stride_height", stride_height},
                          {"stride_width", stride_width},
+                         {"dilation_height", dilation_height},
+                         {"dilation_width", dilation_width},
                          {"output_size", out_n * out_c * out_h * out_w},
                          {"output_height", out_h},
                          {"output_width", out_w},
