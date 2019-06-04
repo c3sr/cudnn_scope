@@ -170,14 +170,3 @@ struct Layer {
   virtual size_t predicted_advised_flops() const = 0;
 };
 
-// class Flatten : public Layer {
-
-// class Dropout : public Layer {
-
-// class Pooling : public Layer {
-
-// class LRN : public Layer {
-
-// class Activation : public Layer {
-
-// class Softmax : public Layer {
