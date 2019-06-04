@@ -98,6 +98,8 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   cudnnSetConvolutionMathType(convolution_descriptor, math_type);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
+  PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));
+
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/batch_size,
                              /*channels=*/channels,

@@ -50,11 +50,7 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   const auto out_h = calc_conv_out_dim(height, filter_height, pad_height, stride_height);
   const auto out_c = num_filters;
 
-  auto db_tensor = Tensor<T>(state,
-                             {/*batch_size=*/1,
-                              /*channels=*/out_c,
-                              /*image_height=*/1,
-                              /*image_width=*/1});
+  auto db_tensor = Tensor<T>(state, {out_c});
   if (!db_tensor.is_valid) {
     return;
   }
