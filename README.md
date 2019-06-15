@@ -14,7 +14,11 @@ See the `docs` folder for a description of the benchmarks.
 ## Build / Run
 
 ```
+rm -fr results
+
 mkdir -p results
+
+nvidia-smi -x -q -a > results/nvidia_smi.xml
 
 rm -fr scope
 cmake .. -DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=0 -DENABLE_EXAMPLE=0 -DCMAKE_BUILD_TYPE=Release -DCUDNN_BATCH_SIZE=1
