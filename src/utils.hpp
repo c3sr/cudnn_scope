@@ -26,7 +26,6 @@ static const int ConvFwdTypeConv                = 1;
 static const int ConvFwdTypeBias                = 2;
 static const int ConvFwdTypeConvFusedActivation = 2;
 
-
 template <typename T>
 struct valueDataType {};
 
@@ -166,3 +165,23 @@ static inline int calc_conv_out_dim(int input_dim, int filter_dim, int padd, int
   return (input_dim + 2 * padd - (dilation * (filter_dim - 1) + 1)) / stride + 1;
 }
 } // namespace detail
+
+static uint64_t fnv1a_64(const char* data, int len) {
+  static const uint64_t kOffset = UINT64_C(14695981039346656037);
+  static const uint64_t kPrime  = UINT64_C(1099511628211);
+
+  const uint8_t* octets = reinterpret_cast<const uint8_t*>(data);
+
+  uint64_t hash = kOffset;
+
+  for (int i = 0; i < len; ++i) {
+    hash = hash ^ octets[i];
+    hash = hash * kPrime;
+  }
+
+  return hash;
+}
+
+static uint64_t fnv1a_64(const std::string& str) {
+  return fnv1a_64(str.data(), str.length());
+}

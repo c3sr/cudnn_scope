@@ -4,7 +4,7 @@ if(NOT ENABLE_CUDNN)
 endif()
 
 option(ENABLE_CUDNN_DLPERF "Enable CUDNN|Scope Generated benchmarks" OFF)
-option(ENABLE_CUDNN_DLPERF_CUPTI "Enable CUDNN|Scope with CUPTI support" OFF)
+option(ENABLE_CUDNN_CUPTI "Enable CUDNN|Scope with CUPTI support" OFF)
 option(CUDNN_BATCH_SIZE "Batch size to use for generated DLPerf data" OFF)
 
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
@@ -14,9 +14,9 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 include(ScopeStatus)
 
+find_package(CUPTI REQUIRED)
 find_package(CuDNN REQUIRED)
 find_package(CUDA)
-find_package(CUPTI)
 
 # Look for sugar.cmake files in the plugin src directory
 sugar_include("src")
@@ -48,17 +48,17 @@ target_compile_options(cudnn_scope
                                -Wno-unused-function
                                -Wno-vla)
 
-if (ENABLE_CUDNN_DLPERF_CUPTI) 
-  target_compile_options(cudnn_scope PRIVATE -DENABLE_CUDNN_DLPERF_CUPTI=1)
+if (ENABLE_CUDNN_CUPTI) 
+  target_compile_options(cudnn_scope PRIVATE -DENABLE_CUDNN_CUPTI=1)
   target_include_directories(cudnn_scope
                              PRIVATE
                              ${CUPTI_INCLUDE_DIRS}
   )
   target_link_libraries(cudnn_scope
                         PUBLIC
-                        ${CUDA_cupti_LIBRARY}
+                        ${CUPTI_LIBRARY}
   )
-endif (ENABLE_CUDNN_DLPERF_CUPTI)
+endif (ENABLE_CUDNN_CUPTI)
 if(ENABLE_CUDNN_DLPERF)
   target_compile_options(cudnn_scope PRIVATE -DGENERATED_BENCHMARK_LAYER=1)
 endif(ENABLE_CUDNN_DLPERF)
@@ -67,7 +67,7 @@ if(CUDNN_BATCH_SIZE)
 endif(CUDNN_BATCH_SIZE)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
-                      PUBLIC ${CUDNN_LIBRARY} ${CUDA_LIBRARIES}
+                      PUBLIC ${CUDNN_LIBRARY} cuda ${CUDA_LIBRARIES}
                              ${CUDA_CUBLAS_LIBRARIES})
 
 scope_status(

@@ -20,6 +20,8 @@
 #include "init.hpp"
 #include "utils.hpp"
 
+#include "cupti_profiler.hpp"
+
 // ONLY SUPPORT SGEMM FOR NOW
 
 static void constantInit(float* data, int size, float val) {
@@ -73,11 +75,13 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
       {"transA", transA == CUBLAS_OP_N ? 0 : 1},
       {"transB", transB == CUBLAS_OP_N ? 0 : 1},
   });
+#if 0
   std::cout << ""
                "    M  "
             << M << "    N  " << N << "    K  " << K << "    alpha  " << alpha << "    beta  " << beta << "    lda  "
             << lda << "    ldb  " << ldb << "    transA   " << (transA == CUBLAS_OP_N ? 0 : 1) << "    transB   "
             << (transB == CUBLAS_OP_N ? 0 : 1) << "\n";
+#endif
 
   const T one  = gemm::detail::one<T>();
   const T zero = gemm::detail::zero<T>();
@@ -138,7 +142,18 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   PRINT_IF_ERROR(cudaEventCreate(&start));
   PRINT_IF_ERROR(cudaEventCreate(&stop));
 
+  std::vector<std::string> event_names{"active_warps", "gst_inst_32bit", "active_cycles"};
+  std::vector<std::string> metric_names{"flop_count_dp", "flop_count_sp", "inst_executed"};
+
+  cupti_profiler::profiler profiler(event_names, metric_names);
+
+  int state_counter = 0;
+  profiler.start();
+
   for (auto _ : state) {
+    if (state_counter++ > 1) {
+      break;
+    }
     cudaEventRecord(start, NULL);
 
     const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha),
@@ -169,6 +184,13 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
     state.SetIterationTime(msecTotal / 1000);
     state.ResumeTiming();
   }
+
+  profiler.stop();
+
+  printf("Event Trace\n");
+  profiler.print_event_values(std::cout);
+  printf("Metric Trace\n");
+  profiler.print_metric_values(std::cout);
 
   const double predicted_flops = 2.0 * M * N * K;
   state.counters.insert(

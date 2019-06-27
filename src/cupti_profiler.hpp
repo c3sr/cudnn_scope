@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -24,20 +25,20 @@
       const auto err = fmt::format("{}:{}: error: function {} failed with error {}.\n", __FILE__, __LINE__,            \
                                    #apiFuncCall, cudaGetErrorString(_status));                                         \
       std::cerr << err;                                                                                                \
-      throw std::error(err);                                                                                           \
+      throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
   } while (0)
 
-#define CUPTI_CALL(call)                                                                                               \
+#define CUPTI_CALL(apiFuncCall)                                                                                        \
   do {                                                                                                                 \
-    CUptiResult _status = call;                                                                                        \
+    CUptiResult _status = apiFuncCall;                                                                                 \
     if (_status != CUPTI_SUCCESS) {                                                                                    \
       const char *errstr;                                                                                              \
       cuptiGetResultString(_status, &errstr);                                                                          \
       const auto err =                                                                                                 \
           fmt::format("{}:{}: error: function {} failed with error {}.\n", __FILE__, __LINE__, #apiFuncCall, errstr);  \
       std::cerr << err;                                                                                                \
-      throw std::error(err);                                                                                           \
+      throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
   } while (0)
 
@@ -139,7 +140,7 @@ namespace detail {
 
         CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
 
-        for (int i = 0; i < pass_data[0].event_groups->numEventGroups; i++) {
+        for (uint32_t i = 0; i < pass_data[0].event_groups->numEventGroups; i++) {
           _LOG("  Enabling group %d", i);
           uint32_t all = 1;
           CUPTI_CALL(cuptiEventGroupSetAttribute(pass_data[0].event_groups->eventGroups[i],
@@ -161,7 +162,7 @@ namespace detail {
 
         CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
 
-        for (int i = 0; i < pass_data[current_pass].event_groups->numEventGroups; i++) {
+        for (uint32_t i = 0; i < pass_data[current_pass].event_groups->numEventGroups; i++) {
           _LOG("  Enabling group %d", i);
           uint32_t all = 1;
           CUPTI_CALL(cuptiEventGroupSetAttribute(pass_data[current_pass].event_groups->eventGroups[i],
@@ -179,7 +180,7 @@ namespace detail {
 
       auto &pass_data = current_kernel.m_pass_data[current_pass];
 
-      for (int i = 0; i < pass_data.event_groups->numEventGroups; i++) {
+      for (uint32_t i = 0; i < pass_data.event_groups->numEventGroups; i++) {
         CUpti_EventGroup group = pass_data.event_groups->eventGroups[i];
         CUpti_EventDomainID group_domain;
         uint32_t numEvents, numInstances, numTotalInstances;
@@ -235,7 +236,7 @@ namespace detail {
             eventName[127] = '\0';
             _DBG("\t%s = %llu (", eventName, (unsigned long long) sum);
             if (numInstances > 1) {
-              for (int k = 0; k < numInstances; k++) {
+              for (uint32_t k = 0; k < numInstances; k++) {
                 if (k != 0)
                   _DBG(", ");
                 _DBG("%llu", (unsigned long long) values[k]);
@@ -251,7 +252,7 @@ namespace detail {
         free(eventIds);
       }
 
-      for (int i = 0; i < pass_data.event_groups->numEventGroups; i++) {
+      for (uint32_t i = 0; i < pass_data.event_groups->numEventGroups; i++) {
         _LOG("  Disabling group %d", i);
         CUPTI_CALL(cuptiEventGroupDisable(pass_data.event_groups->eventGroups[i]));
       }
@@ -265,6 +266,9 @@ namespace detail {
     size_t value_kind_sz = sizeof(value_kind);
     CUPTI_CALL(cuptiMetricGetAttribute(id, CUPTI_METRIC_ATTR_VALUE_KIND, &value_kind_sz, &value_kind));
     switch (value_kind) {
+      case CUPTI_METRIC_VALUE_KIND_FORCE_INT:
+        s << value.metricValueInt64;
+        break;
       case CUPTI_METRIC_VALUE_KIND_DOUBLE:
         s << value.metricValueDouble;
         break;
@@ -444,8 +448,8 @@ struct profiler {
       delete[] event_values;
 
       std::map<CUpti_EventID, uint64_t> event_map;
-      for (int i = m_metric_passes; i < (m_metric_passes + m_event_passes); ++i) {
-        for (int j = 0; j < data[i].num_events; ++j) {
+      for (uint32_t i = m_metric_passes; i < (m_metric_passes + m_event_passes); ++i) {
+        for (uint32_t j = 0; j < data[i].num_events; ++j) {
           event_map[data[i].event_ids[j]] = data[i].event_values[j];
         }
       }
@@ -629,7 +633,7 @@ std::vector<std::string> available_metrics(CUdevice device) {
 
   CUPTI_CALL(cuptiDeviceEnumMetrics(device, &size, metricIdArray));
 
-  for (int i = 0; i < numMetric; i++) {
+  for (uint32_t i = 0; i < numMetric; i++) {
     size = __CUPTI_PROFILER_NAME_SHORT;
     CUPTI_CALL(cuptiMetricGetAttribute(metricIdArray[i], CUPTI_METRIC_ATTR_NAME, &size, (void *) &metricName));
     size = sizeof(CUpti_MetricValueKind);
@@ -665,7 +669,7 @@ std::vector<std::string> available_events(CUdevice device) {
   }
   CUPTI_CALL(cuptiDeviceEnumEventDomains(device, &size, domainIdArray));
 
-  for (int i = 0; i < numDomains; i++) {
+  for (uint32_t i = 0; i < numDomains; i++) {
     CUPTI_CALL(cuptiEventDomainGetNumEvents(domainIdArray[i], &numEvents));
     totalEvents += numEvents;
   }
@@ -674,7 +678,7 @@ std::vector<std::string> available_events(CUdevice device) {
   eventIdArray     = (CUpti_EventID *) malloc(eventIdArraySize);
 
   totalEvents = 0;
-  for (int i = 0; i < numDomains; i++) {
+  for (uint32_t i = 0; i < numDomains; i++) {
     // Query num of events available in the domain
     CUPTI_CALL(cuptiEventDomainGetNumEvents(domainIdArray[i], &numEvents));
     size = numEvents * sizeof(CUpti_EventID);
@@ -682,7 +686,7 @@ std::vector<std::string> available_events(CUdevice device) {
     totalEvents += numEvents;
   }
 
-  for (int i = 0; i < totalEvents; i++) {
+  for (uint32_t i = 0; i < totalEvents; i++) {
     size = __CUPTI_PROFILER_NAME_SHORT;
     CUPTI_CALL(cuptiEventGetAttribute(eventIdArray[i], CUPTI_EVENT_ATTR_NAME, &size, eventName));
     event_names.push_back(eventName);
