@@ -15,6 +15,7 @@ sugar_files(cudnn_BENCHMARK_HEADERS
             error.hpp
             helper.hpp
             init.hpp
+            cupti_profiler.hpp
             utils.hpp)
 
 sugar_files(cudnn_BENCHMARK_SOURCES
