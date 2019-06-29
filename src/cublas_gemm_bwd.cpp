@@ -142,8 +142,14 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   PRINT_IF_ERROR(cudaEventCreate(&start));
   PRINT_IF_ERROR(cudaEventCreate(&stop));
 
-  std::vector<std::string> event_names{"active_warps", "gst_inst_32bit", "active_cycles"};
-  std::vector<std::string> metric_names{"flop_count_dp", "flop_count_sp", "inst_executed"};
+  std::vector<std::string> event_names{
+      "inst_executed",
+  };
+  std::vector<std::string> metric_names{
+      "flop_count_sp",
+      "dram_read_bytes",
+      "dram_write_bytes",
+  };
 
   cupti_profiler::profiler profiler(event_names, metric_names);
 
@@ -151,7 +157,7 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   profiler.start();
 
   for (auto _ : state) {
-    if (state_counter++ > 1) {
+    if (state_counter++ >= 1) {
       break;
     }
     cudaEventRecord(start, NULL);

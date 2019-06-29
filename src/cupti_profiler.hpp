@@ -9,12 +9,16 @@
 
 #include <cupti.h>
 
+#include "init.hpp"
+
 #define DRIVER_API_CALL(apiFuncCall)                                                                                   \
   do {                                                                                                                 \
     CUresult _status = apiFuncCall;                                                                                    \
     if (_status != CUDA_SUCCESS) {                                                                                     \
-      fprintf(stderr, "%s:%d: error: function %s failed with error %d.\n", __FILE__, __LINE__, #apiFuncCall, _status); \
-      exit(-1);                                                                                                        \
+      const auto err = fmt::format("{}:{}: error: driver function {} failed with error {}.\n", __FILE__, __LINE__,     \
+                                   #apiFuncCall, _status);                                                             \
+      std::cerr << err;                                                                                                \
+      throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
   } while (0)
 
@@ -22,7 +26,7 @@
   do {                                                                                                                 \
     cudaError_t _status = apiFuncCall;                                                                                 \
     if (_status != cudaSuccess) {                                                                                      \
-      const auto err = fmt::format("{}:{}: error: function {} failed with error {}.\n", __FILE__, __LINE__,            \
+      const auto err = fmt::format("{}:{}: error: runtime function {} failed with error {}.\n", __FILE__, __LINE__,    \
                                    #apiFuncCall, cudaGetErrorString(_status));                                         \
       std::cerr << err;                                                                                                \
       throw std::runtime_error(err);                                                                                   \
@@ -35,8 +39,8 @@
     if (_status != CUPTI_SUCCESS) {                                                                                    \
       const char *errstr;                                                                                              \
       cuptiGetResultString(_status, &errstr);                                                                          \
-      const auto err =                                                                                                 \
-          fmt::format("{}:{}: error: function {} failed with error {}.\n", __FILE__, __LINE__, #apiFuncCall, errstr);  \
+      const auto err = fmt::format("{}:{}: error: cupti function {} failed with error {}.\n", __FILE__, __LINE__,      \
+                                   #apiFuncCall, errstr);                                                              \
       std::cerr << err;                                                                                                \
       throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
@@ -207,7 +211,7 @@ namespace detail {
         valuesSize = sizeof(uint64_t) * numInstances;
         values     = (uint64_t *) malloc(valuesSize);
 
-        for (int j = 0; j < numEvents; j++) {
+        for (uint32_t j = 0; j < numEvents; j++) {
           CUPTI_CALL(cuptiEventGroupReadEvent(group, CUPTI_EVENT_READ_FLAG_NONE, eventIds[j], &valuesSize, values));
           /*if (metric_data->eventIdx >= metric_data->numEvents) {
             fprintf(stderr, "[error]: Too many events collected, metric expects only %d\n",
@@ -217,7 +221,7 @@ namespace detail {
 
           // sum collect event values from all instances
           sum = 0;
-          for (int k = 0; k < numInstances; k++) {
+          for (uint32_t k = 0; k < numInstances; k++) {
             sum += values[k];
           }
 
@@ -317,8 +321,6 @@ struct profiler {
     m_event_ids.resize(m_num_events);
 
     // Init device, context and setup callback
-    DRIVER_API_CALL(cuDeviceGet(&m_device, device_num));
-    DRIVER_API_CALL(cuCtxCreate(&m_context, 0, m_device));
     CUPTI_CALL(cuptiSubscribe(&m_subscriber, (CUpti_CallbackFunc) detail::get_value_callback, &m_kernel_data));
     CUPTI_CALL(
         cuptiEnableCallback(1, m_subscriber, CUPTI_CB_DOMAIN_RUNTIME_API, CUPTI_RUNTIME_TRACE_CBID_cudaLaunch_v3020));
@@ -370,7 +372,7 @@ struct profiler {
       _LOG("[metric] Looking at set (pass) %d", i);
       uint32_t num_events    = 0;
       size_t num_events_size = sizeof(num_events);
-      for (int j = 0; j < m_metric_pass_data->sets[i].numEventGroups; ++j) {
+      for (uint32_t j = 0; j < m_metric_pass_data->sets[i].numEventGroups; ++j) {
         CUPTI_CALL(cuptiEventGroupGetAttribute(m_metric_pass_data->sets[i].eventGroups[j],
                                                CUPTI_EVENT_GROUP_ATTR_NUM_EVENTS, &num_events_size, &num_events));
         _LOG("  Event Group %d, #Events = %d", j, num_events);
@@ -385,7 +387,7 @@ struct profiler {
       _LOG("[event] Looking at set (pass) %d", i);
       uint32_t num_events    = 0;
       size_t num_events_size = sizeof(num_events);
-      for (int j = 0; j < m_event_pass_data->sets[i].numEventGroups; ++j) {
+      for (uint32_t j = 0; j < m_event_pass_data->sets[i].numEventGroups; ++j) {
         CUPTI_CALL(cuptiEventGroupGetAttribute(m_event_pass_data->sets[i].eventGroups[j],
                                                CUPTI_EVENT_GROUP_ATTR_NUM_EVENTS, &num_events_size, &num_events));
         _LOG("  Event Group %d, #Events = %d", j, num_events);
@@ -438,6 +440,8 @@ struct profiler {
             cuptiMetricGetValue(m_device, m_metric_ids[i], total_events * sizeof(CUpti_EventID), event_ids,
                                 total_events * sizeof(uint64_t), event_values, 0, &metric_value);
         if (_status != CUPTI_SUCCESS) {
+          print_events_and_metrics(std::cout);
+          std::cout << std::endl;
           fprintf(stderr, "Metric value retrieval failed for metric %s\n", m_metric_names[i].c_str());
           exit(-1);
         }
@@ -448,7 +452,7 @@ struct profiler {
       delete[] event_values;
 
       std::map<CUpti_EventID, uint64_t> event_map;
-      for (uint32_t i = m_metric_passes; i < (m_metric_passes + m_event_passes); ++i) {
+      for (uint32_t i = m_metric_passes; i < (uint32_t)(m_metric_passes + m_event_passes); ++i) {
         for (uint32_t j = 0; j < data[i].num_events; ++j) {
           event_map[data[i].event_ids[j]] = data[i].event_values[j];
         }
@@ -590,15 +594,13 @@ struct profiler {
   }
 
 private:
-  int m_device_num;
+  uint32_t m_device_num;
   int m_num_metrics, m_num_events;
-  const strvec_t &m_event_names;
-  const strvec_t &m_metric_names;
+  const strvec_t &m_event_names{};
+  const strvec_t &m_metric_names{};
   std::vector<CUpti_MetricID> m_metric_ids;
   std::vector<CUpti_EventID> m_event_ids;
 
-  CUcontext m_context;
-  CUdevice m_device;
   CUpti_SubscriberHandle m_subscriber;
 
   CUpti_EventGroupSets *m_metric_pass_data;
