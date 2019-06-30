@@ -194,6 +194,7 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
 
   for (const auto kernel_name : profiler.get_kernel_names()) {
     const auto demangled_name = demangle(kernel_name);
+    state.counters.insert({kernel_name, fnv1a_64(kernel_name)});
     state.counters.insert({demangled_name, fnv1a_64(kernel_name)});
     for (const auto metric_value : profiler.get_metric_values(kernel_name)) {
       state.counters.insert({demangled_name + "/metric:" + metric_value.first, metric_value.second});
