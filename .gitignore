@@ -692,3 +692,4 @@ networks
 build*
 
 .vscode
+tmp
