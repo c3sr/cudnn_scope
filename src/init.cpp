@@ -3,6 +3,9 @@
 #include "scope/utils/utils.hpp"
 #include "scope/utils/version.hpp"
 
+#include "spdlog/sinks/ansicolor_sink.h"
+#include "spdlog/spdlog.h"
+
 #include <cudnn.h>
 
 #include "config.hpp"
@@ -101,8 +104,13 @@ static int cublas_init() {
   return 0;
 }
 
+static void color_logger() {
+  // bench::init::logger::console = spdlog::stdout_color_mt("cudnn_scope");
+}
+
 SCOPE_REGISTER_BEFORE_INIT(cudnn_before_init);
 SCOPE_REGISTER_BEFORE_INIT(register_cupti_flags);
 SCOPE_REGISTER_INIT(cudnn_init);
 SCOPE_REGISTER_INIT(cublas_init);
 SCOPE_REGISTER_AFTER_INIT(cupti_options, "cupti");
+SCOPE_REGISTER_AFTER_INIT(color_logger, "logger");

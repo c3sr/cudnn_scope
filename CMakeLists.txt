@@ -14,9 +14,13 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 include(ScopeStatus)
 
+
+hunter_add_package(spdlog)
+
 find_package(CUPTI REQUIRED)
 find_package(CuDNN REQUIRED)
-find_package(CUDA)
+find_package(spdlog CONFIG REQUIRED)
+find_package(CUDA REQUIRED)
 
 # Look for sugar.cmake files in the plugin src directory
 sugar_include("src")
@@ -67,9 +71,11 @@ if(CUDNN_BATCH_SIZE)
 endif(CUDNN_BATCH_SIZE)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
-                      PUBLIC ${CUDNN_LIBRARY} cuda ${CUDA_LIBRARIES}
-                             ${CUDA_CUBLAS_LIBRARIES})
-
+                      PUBLIC ${CUDNN_LIBRARY} 
+                             cuda
+                             ${CUDA_LIBRARIES}
+                             ${CUDA_CUBLAS_LIBRARIES}
+                             spdlog::spdlog)
 scope_status(
   "${PROJECT_SOURCE_DIR}/src/config.hpp.in -> ${PROJECT_BINARY_DIR}/src/config.hpp"
   )

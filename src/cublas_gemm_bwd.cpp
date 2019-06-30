@@ -146,17 +146,19 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
       // "inst_executed",
   };
   std::vector<std::string> metric_names{
-      "flop_count_sp",
-      "dram_read_bytes",
-      "dram_write_bytes",
+      "flop_count_sp",     "flop_count_dp",     "flop_count_sp_add",
+      "flop_count_sp_fma", "flop_count_sp_mul", "flop_count_sp_special",
+      "dram_read_bytes",   "dram_write_bytes",  "flop_count_hp",
+      "inst_fp_32",        "inst_fp_64",
   };
 
   cupti_profiler::profiler profiler(event_names, metric_names);
 
-  int state_counter = 0;
+  int num_iterations = 0;
   profiler.start();
 
   for (auto _ : state) {
+    num_iterations++;
     cudaEventRecord(start, NULL);
 
     const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha),
@@ -192,7 +194,7 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
 
   for (const auto kernel_name : profiler.get_kernel_names()) {
     const auto demangled_name = demangle(kernel_name);
-    state.counters.insert({demangled_name, 1});
+    state.counters.insert({demangled_name, fnv1a_64(kernel_name)});
     for (const auto metric_value : profiler.get_metric_values(kernel_name)) {
       state.counters.insert({demangled_name + "/metric:" + metric_value.first, metric_value.second});
     }
@@ -203,7 +205,8 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
 
   const double predicted_flops = 2.0 * M * N * K;
   state.counters.insert(
-      {{"predicted_flops_count", predicted_flops},
+      {{"num_iterations", num_iterations},
+       {"predicted_flops_count", predicted_flops},
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
   state.SetItemsProcessed(int64_t(state.iterations()) * M * N * K);
 }
@@ -274,7 +277,7 @@ static void LAYER_CUBLAS_GEMM_BWD_FLOAT(benchmark::State& state) {
 /* BENCHMARK(LAYER_CUBLAS_GEMM_BWD_INT8)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
 /* BENCHMARK(LAYER_CUBLAS_GEMM_BWD_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
 // BENCHMARK(LAYER_CUBLAS_GEMM_BWD_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-BENCHMARK(LAYER_CUBLAS_GEMM_BWD_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+BENCHMARK(LAYER_CUBLAS_GEMM_BWD_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->Iterations(4)->UseManualTime();
 // BENCHMARK(LAYER_CUBLAS_GEMM_BWD_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 
 #endif // GENERATED_BENCHMARK_LAYER

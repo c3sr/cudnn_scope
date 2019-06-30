@@ -127,10 +127,6 @@ namespace detail {
 
         auto &pass_data = k_data.m_pass_data;
 
-        if (current_kernel.m_total_passes == 1) {
-          CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
-        }
-
         for (uint32_t i = 0; i < pass_data[0].event_groups->numEventGroups; i++) {
           _LOG("  Enabling group %d", i);
           uint32_t all = 1;
@@ -141,6 +137,14 @@ namespace detail {
 
           (*kernel_data)[current_kernel_name] = k_data;
         }
+
+        if (current_kernel.m_total_passes > 1) {
+          return;
+        }
+
+        _LOG("cuptiSetEventCollectionMode CUPTI_EVENT_COLLECTION_MODE_KERNEL");
+        CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
+
       } else {
         auto &current_kernel  = (*kernel_data)[current_kernel_name];
         auto const &pass_data = current_kernel.m_pass_data;
@@ -151,10 +155,6 @@ namespace detail {
 
         _LOG("Current pass for %s: %d", current_kernel_name, current_pass);
 
-        if (current_kernel.m_total_passes == 1) {
-          CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
-        }
-
         for (uint32_t i = 0; i < pass_data[current_pass].event_groups->numEventGroups; i++) {
           _LOG("  Enabling group %d", i);
           uint32_t all = 1;
@@ -163,6 +163,13 @@ namespace detail {
                                                  &all));
           CUPTI_CALL(cuptiEventGroupEnable(pass_data[current_pass].event_groups->eventGroups[i]));
         }
+
+        if (current_kernel.m_total_passes > 1) {
+          return;
+        }
+
+        _LOG("cuptiSetEventCollectionMode CUPTI_EVENT_COLLECTION_MODE_KERNEL");
+        CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
       }
     } else if (cbInfo->callbackSite == CUPTI_API_EXIT) {
       auto &current_kernel = (*kernel_data)[current_kernel_name];
@@ -310,8 +317,11 @@ struct profiler {
 
       std::copy(metric_ids, metric_ids + m_num_metrics, m_metric_ids.begin());
 
-      if (m_metric_passes > 0) {
+      _LOG("# metric_passes = %d", m_metric_passes);
+
+      if (m_metric_passes > 1) {
         CUPTI_CALL(cuptiEnableKernelReplayMode(m_context));
+        _LOG("replaying kernel...");
       }
     }
     if (m_num_events > 0) {
@@ -381,8 +391,10 @@ struct profiler {
 
   void stop() {
 
-    if (m_metric_passes > 0) {
+    _LOG("# metric_passes = %d", m_metric_passes);
+    if (m_metric_passes > 1) {
       CUPTI_CALL(cuptiDisableKernelReplayMode(m_context));
+      _LOG("disable replay kernel...");
     }
 
     for (auto &k : m_kernel_data) {
@@ -410,16 +422,19 @@ struct profiler {
         running_sum += data[i].num_events;
       }
 
-      // std::cout << "m_metric_names = " << m_metric_names << std::endl;
-      // std::cout << "m_metric_passes = " << m_metric_passes << std::endl;
+      std::cout << "m_metric_names = " << m_metric_names << std::endl;
+      std::cout << "m_num_metrics = " << m_num_metrics << std::endl;
       for (int i = 0; i < m_num_metrics; ++i) {
         CUptiResult _status =
             cuptiMetricGetValue(m_device, m_metric_ids[i], total_events * sizeof(CUpti_EventID), event_ids,
                                 total_events * sizeof(uint64_t), event_values, 0, &metric_value);
         if (_status != CUPTI_SUCCESS) {
-          const auto err = fmt::format("Metric value retrieval failed for metric {}.\n", m_metric_names[i]);
-          std::cerr << err;
-          throw std::runtime_error(err);
+          // const char *errstr;
+          // cuptiGetResultString(_status, &errstr);
+          // const auto err =
+          //     fmt::format("Metric value retrieval failed for metric {} because of {}.\n", m_metric_names[i], errstr);
+          // std::cerr << err;
+          continue;
         }
         k.second.m_metric_values.insert(
             {m_metric_names[i], detail::metric_value_to_double(m_metric_ids[i], metric_value)});
@@ -520,9 +535,7 @@ static std::vector<std::string> available_metrics(CUdevice device) {
     CUPTI_CALL(cuptiMetricGetAttribute(metricIdArray[i], CUPTI_METRIC_ATTR_VALUE_KIND, &size, (void *) &metricKind));
     if ((metricKind == CUPTI_METRIC_VALUE_KIND_THROUGHPUT) ||
         (metricKind == CUPTI_METRIC_VALUE_KIND_UTILIZATION_LEVEL)) {
-      printf("Metric %s cannot be profiled as metric requires GPU"
-             "time duration for kernel run.\n",
-             metricName);
+      continue;
     } else {
       metric_names.push_back(metricName);
     }
