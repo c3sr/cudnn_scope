@@ -9,12 +9,22 @@
 #include "error.hpp"
 #include "init/init.hpp"
 
+#include "cupti_profiler.hpp"
+
 CUcontext m_context;
 CUdevice m_device;
 cudnnHandle_t cudnn_handle;
 cublasHandle_t cublas_handle;
 
+DEFINE_FLAG_bool(list_metrics, false, "list cupti metrics");
+DEFINE_FLAG_bool(list_events, false, "list cupti events");
+
 int cuda_device_id = 0;
+
+static void register_cupti_flags() {
+  RegisterOpt(clara::Opt(FLAG(list_metrics), "list_metrics")["-m"]["--list_metrics"]("list cupti metrics"));
+  RegisterOpt(clara::Opt(FLAG(list_events), "list_events")["-e"]["--list_events"]("list cupti events"));
+}
 
 static int cuda_init() {
   if (PRINT_IF_ERROR(cuDeviceGet(&m_device, cuda_device_id))) {
@@ -27,6 +37,28 @@ static int cuda_init() {
     return -1;
   }
   return 0;
+}
+
+static void cupti_options() {
+  using namespace cupti_profiler;
+
+  const bool list_metrics = FLAG(list_metrics);
+  if (list_metrics) {
+    const auto metrics = available_metrics(cuda_device_id);
+    for (const auto& metric : metrics) {
+      std::cout << metric << "\n";
+    }
+    exit(0);
+  }
+
+  const bool list_events = FLAG(list_events);
+  if (list_events) {
+    const auto metrics = available_events(cuda_device_id);
+    for (const auto& metric : metrics) {
+      std::cout << metric << "\n";
+    }
+    exit(0);
+  }
 }
 
 static void cudnn_before_init() {
@@ -70,5 +102,7 @@ static int cublas_init() {
 }
 
 SCOPE_REGISTER_BEFORE_INIT(cudnn_before_init);
+SCOPE_REGISTER_BEFORE_INIT(register_cupti_flags);
 SCOPE_REGISTER_INIT(cudnn_init);
 SCOPE_REGISTER_INIT(cublas_init);
+SCOPE_REGISTER_AFTER_INIT(cupti_options, "cupti");

@@ -3,12 +3,10 @@
 // from https://github.com/baidu-research/DeepBench/blob/master/code/kernels/conv_problems.h
 
 #define CONV_ARG_NAMES()                                                                                               \
-  ArgNames({"W", "H", "C", "N", "K", "filter_w(s)", "filter_h(r)", "pad_w", "pad_h", "wstride", "hstride"})
+  Threads(1)->ArgNames({"W", "H", "C", "N", "K", "filter_w(s)", "filter_h(r)", "pad_w", "pad_h", "wstride", "hstride"})
 
 #define INFERENCE_DEVICE_CONV_PROBLEMS()                                                                               \
-    CONV_ARG_NAMES()-> \
-  Args({112, 112, 64, 1, 64, 1, 1, 0, 0, 1, 1})                                                                        \
-      ->Args({56, 56, 64, 1, 256, 1, 1, 0, 0, 1, 1})                                                                  
+  CONV_ARG_NAMES()->Args({112, 112, 64, 1, 64, 1, 1, 0, 0, 1, 1})->Args({56, 56, 64, 1, 256, 1, 1, 0, 0, 1, 1})
 #if 0
       ->Args({56, 56, 256, 1, 64, 1, 1, 0, 0, 1, 1})                                                                   \
       ->Args({56, 56, 256, 1, 128, 1, 1, 0, 0, 2, 2})                                                                  \
@@ -23,14 +21,19 @@
       ->Args({7, 7, 512, 1, 512, 3, 3, 1, 1, 1, 1})                                                                    \
       ->Args({7, 7, 512, 1, 2048, 1, 1, 0, 0, 1, 1})                                                                   \
       ->Args({14, 14, 1024, 1, 2048, 1, 1, 0, 0, 2, 2})                                                                \
-      ->Args({7, 7, 2048, 1, 512, 1, 1, 0, 0, 1, 1})                                                                   
+      ->Args({7, 7, 2048, 1, 512, 1, 1, 0, 0, 1, 1})
 #endif
 
+#if 0
 #define INFERENCE_SERVER_CONV_PROBLEMS()                                                                               \
-          CONV_ARG_NAMES()-> \
-  Args({700, 161, 1, 1, 32, 20, 5, 0, 0, 2, 2})                                                                        \
+  CONV_ARG_NAMES()                                                                                                     \
+      ->Args({700, 161, 1, 1, 32, 20, 5, 0, 0, 2, 2})                                                                  \
       ->Args({700, 161, 1, 2, 32, 20, 5, 0, 0, 2, 2})                                                                  \
-      ->Args({700, 161, 1, 4, 32, 20, 5, 0, 0, 2, 2})                                                                  
+      ->Args({700, 161, 1, 4, 32, 20, 5, 0, 0, 2, 2})
+#endif
+
+#define INFERENCE_SERVER_CONV_PROBLEMS() CONV_ARG_NAMES()->Args({700, 161, 1, 1, 32, 20, 5, 0, 0, 2, 2})
+
 #if 0
       ->Args({341, 79, 32, 1, 32, 10, 5, 0, 0, 2, 2})                                                                  \
       ->Args({341, 79, 32, 2, 32, 10, 5, 0, 0, 2, 2})                                                                  \
@@ -135,6 +138,5 @@
       ->Args({7, 7, 512, 2, 512, 3, 3, 1, 1, 1, 1})                                                                    \
       ->Args({7, 7, 512, 2, 2048, 1, 1, 0, 0, 1, 1})                                                                   \
       ->Args({14, 14, 1024, 2, 2048, 1, 1, 0, 0, 2, 2})                                                                \
-      ->Args({7, 7, 2048, 2, 512, 1, 1, 0, 0, 1, 1})                                                                   
+      ->Args({7, 7, 2048, 2, 512, 1, 1, 0, 0, 1, 1})
 #endif
-

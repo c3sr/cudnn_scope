@@ -9,6 +9,8 @@
 
 #include <cuda_fp16.h>
 
+#include <cxxabi.h>
+
 #include "prettyprint.hpp"
 #include "utils/utils.hpp"
 
@@ -184,4 +186,16 @@ static uint64_t fnv1a_64(const char* data, int len) {
 
 static uint64_t fnv1a_64(const std::string& str) {
   return fnv1a_64(str.data(), str.length());
+}
+static inline std::string demangle(const char* name) {
+  int status          = 0;
+  const auto realname = abi::__cxa_demangle(name, 0, 0, &status);
+  if (status) {
+    return name;
+  }
+  return realname;
+}
+
+static inline std::string demangle(const std::string& name) {
+  return demangle(name.c_str());
 }

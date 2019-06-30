@@ -143,7 +143,7 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   PRINT_IF_ERROR(cudaEventCreate(&stop));
 
   std::vector<std::string> event_names{
-      "inst_executed",
+      // "inst_executed",
   };
   std::vector<std::string> metric_names{
       "flop_count_sp",
@@ -157,9 +157,6 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
   profiler.start();
 
   for (auto _ : state) {
-    if (state_counter++ >= 1) {
-      break;
-    }
     cudaEventRecord(start, NULL);
 
     const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha),
@@ -193,10 +190,16 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
 
   profiler.stop();
 
-  printf("Event Trace\n");
-  profiler.print_event_values(std::cout);
-  printf("Metric Trace\n");
-  profiler.print_metric_values(std::cout);
+  for (const auto kernel_name : profiler.get_kernel_names()) {
+    const auto demangled_name = demangle(kernel_name);
+    state.counters.insert({demangled_name, 1});
+    for (const auto metric_value : profiler.get_metric_values(kernel_name)) {
+      state.counters.insert({demangled_name + "/metric:" + metric_value.first, metric_value.second});
+    }
+    for (const auto event_value : profiler.get_event_values(kernel_name)) {
+      state.counters.insert({demangled_name + "/event:" + event_value.first, event_value.second});
+    }
+  }
 
   const double predicted_flops = 2.0 * M * N * K;
   state.counters.insert(

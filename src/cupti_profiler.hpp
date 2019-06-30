@@ -9,7 +9,9 @@
 
 #include <cupti.h>
 
+#include "fmt/printf.h"
 #include "init.hpp"
+#include "prettyprint.hpp"
 
 #define DRIVER_API_CALL(apiFuncCall)                                                                                   \
   do {                                                                                                                 \
@@ -17,7 +19,7 @@
     if (_status != CUDA_SUCCESS) {                                                                                     \
       const auto err = fmt::format("{}:{}: error: driver function {} failed with error {}.\n", __FILE__, __LINE__,     \
                                    #apiFuncCall, _status);                                                             \
-      std::cerr << err;                                                                                                \
+      LOG(critical, err);                                                                                              \
       throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
   } while (0)
@@ -28,7 +30,7 @@
     if (_status != cudaSuccess) {                                                                                      \
       const auto err = fmt::format("{}:{}: error: runtime function {} failed with error {}.\n", __FILE__, __LINE__,    \
                                    #apiFuncCall, cudaGetErrorString(_status));                                         \
-      std::cerr << err;                                                                                                \
+      LOG(critical, err);                                                                                              \
       throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
   } while (0)
@@ -41,32 +43,13 @@
       cuptiGetResultString(_status, &errstr);                                                                          \
       const auto err = fmt::format("{}:{}: error: cupti function {} failed with error {}.\n", __FILE__, __LINE__,      \
                                    #apiFuncCall, errstr);                                                              \
-      std::cerr << err;                                                                                                \
+      LOG(critical, err);                                                                                              \
       throw std::runtime_error(err);                                                                                   \
     }                                                                                                                  \
   } while (0)
 
-#ifdef DEBUG
-template <typename... Args>
-void _LOG(const char *msg, Args &&... args) {
-  fprintf(stderr, "[Log]: ");
-  fprintf(stderr, msg, args...);
-  fprintf(stderr, "\n");
-}
-void _LOG(const char *msg) {
-  fprintf(stderr, "[Log]: %s\n", msg);
-}
-template <typename... Args>
-void _DBG(const char *msg, Args &&... args) {
-  fprintf(stderr, msg, args...);
-}
-void _DBG(const char *msg) {
-  fprintf(stderr, "%s", msg);
-}
-#else
-#define _LOG(...)
-#define _DBG(...)
-#endif
+#define _LOG(...) LOG(debug, fmt::sprintf("[Log]: " __VA_ARGS__))
+#define _DBG(...) LOG(debug, fmt::sprintf("[Log]: " __VA_ARGS__))
 
 namespace cupti_profiler {
 static const char *dummy_kernel_name = "^^ DUMMY ^^";
@@ -86,8 +69,8 @@ namespace detail {
   };
 
   struct kernel_data_t {
-    typedef std::vector<uint64_t> event_val_t;
-    typedef std::vector<CUpti_MetricValue> metric_val_t;
+    typedef std::unordered_map<std::string, uint64_t> event_val_t;
+    typedef std::unordered_map<std::string, double> metric_val_t;
 
     kernel_data_t() : m_current_pass(0) {
     }
@@ -105,17 +88,18 @@ namespace detail {
     metric_val_t m_metric_values;
   };
 
-  void CUPTIAPI get_value_callback(void *userdata,
-                                   CUpti_CallbackDomain domain,
-                                   CUpti_CallbackId cbid,
-                                   const CUpti_CallbackData *cbInfo) {
+  static void CUPTIAPI get_value_callback(void *userdata,
+                                          CUpti_CallbackDomain UNUSED domain,
+                                          CUpti_CallbackId cbid,
+                                          const CUpti_CallbackData *cbInfo) {
 
     // This callback is enabled only for launch so we shouldn't see
     // anything else.
     if ((cbid != CUPTI_RUNTIME_TRACE_CBID_cudaLaunch_v3020) &&
         (cbid != CUPTI_RUNTIME_TRACE_CBID_cudaLaunchKernel_v7000)) {
-      fprintf(stderr, "%s:%d: Unexpected cbid %d\n", __FILE__, __LINE__, cbid);
-      exit(-1);
+      const auto err = fmt::format("{}:{} Unexpected cbid {}.\n", __FILE__, __LINE__, cbid);
+      std::cerr << err;
+      throw std::runtime_error(err);
     }
 
     const char *current_kernel_name = cbInfo->symbolName;
@@ -133,6 +117,7 @@ namespace detail {
     if (cbInfo->callbackSite == CUPTI_API_ENTER) {
       // If this is kernel name hasn't been seen before
       if (kernel_data->count(current_kernel_name) == 0) {
+        auto &current_kernel = (*kernel_data)[current_kernel_name];
         _LOG("New kernel encountered: %s", current_kernel_name);
 
         detail::kernel_data_t dummy  = (*kernel_data)[dummy_kernel_name];
@@ -142,7 +127,9 @@ namespace detail {
 
         auto &pass_data = k_data.m_pass_data;
 
-        CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
+        if (current_kernel.m_total_passes == 1) {
+          CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
+        }
 
         for (uint32_t i = 0; i < pass_data[0].event_groups->numEventGroups; i++) {
           _LOG("  Enabling group %d", i);
@@ -164,7 +151,9 @@ namespace detail {
 
         _LOG("Current pass for %s: %d", current_kernel_name, current_pass);
 
-        CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
+        if (current_kernel.m_total_passes == 1) {
+          CUPTI_CALL(cuptiSetEventCollectionMode(cbInfo->context, CUPTI_EVENT_COLLECTION_MODE_KERNEL));
+        }
 
         for (uint32_t i = 0; i < pass_data[current_pass].event_groups->numEventGroups; i++) {
           _LOG("  Enabling group %d", i);
@@ -231,26 +220,6 @@ namespace detail {
 
           pass_data.event_ids.push_back(eventIds[j]);
           pass_data.event_values.push_back(normalized);
-
-          // print collected value
-          {
-            char eventName[128];
-            size_t eventNameSize = sizeof(eventName) - 1;
-            CUPTI_CALL(cuptiEventGetAttribute(eventIds[j], CUPTI_EVENT_ATTR_NAME, &eventNameSize, eventName));
-            eventName[127] = '\0';
-            _DBG("\t%s = %llu (", eventName, (unsigned long long) sum);
-            if (numInstances > 1) {
-              for (uint32_t k = 0; k < numInstances; k++) {
-                if (k != 0)
-                  _DBG(", ");
-                _DBG("%llu", (unsigned long long) values[k]);
-              }
-            }
-
-            _DBG(")\n");
-            _LOG("\t%s (normalized) (%llu * %u) / %u = %llu", eventName, (unsigned long long) sum, numTotalInstances,
-                 numInstances, (unsigned long long) normalized);
-          }
         }
         free(values);
         free(eventIds);
@@ -264,36 +233,29 @@ namespace detail {
     }
   }
 
-  template <typename stream_t>
-  void print_metric(CUpti_MetricID &id, CUpti_MetricValue &value, stream_t &s) {
+  static double metric_value_to_double(CUpti_MetricID &id, CUpti_MetricValue &value) {
     CUpti_MetricValueKind value_kind;
     size_t value_kind_sz = sizeof(value_kind);
     CUPTI_CALL(cuptiMetricGetAttribute(id, CUPTI_METRIC_ATTR_VALUE_KIND, &value_kind_sz, &value_kind));
     switch (value_kind) {
       case CUPTI_METRIC_VALUE_KIND_FORCE_INT:
-        s << value.metricValueInt64;
-        break;
+        return (double) value.metricValueInt64;
       case CUPTI_METRIC_VALUE_KIND_DOUBLE:
-        s << value.metricValueDouble;
-        break;
+        return value.metricValueDouble;
       case CUPTI_METRIC_VALUE_KIND_UINT64:
-        s << value.metricValueUint64;
-        break;
+        return (double) value.metricValueUint64;
       case CUPTI_METRIC_VALUE_KIND_INT64:
-        s << value.metricValueInt64;
-        break;
+        return (double) value.metricValueInt64;
       case CUPTI_METRIC_VALUE_KIND_PERCENT:
-        s << value.metricValuePercent;
-        break;
+        return (double) value.metricValuePercent;
       case CUPTI_METRIC_VALUE_KIND_THROUGHPUT:
-        s << value.metricValueThroughput;
-        break;
+        return (double) value.metricValueThroughput;
       case CUPTI_METRIC_VALUE_KIND_UTILIZATION_LEVEL:
-        s << value.metricValueUtilizationLevel;
-        break;
+        return (double) value.metricValueUtilizationLevel;
       default:
-        std::cerr << "[error]: unknown value kind\n";
-        exit(-1);
+        const auto err = fmt::format("[error]: unknown value kind.\n");
+        std::cerr << err;
+        throw std::runtime_error(err);
     }
   }
 
@@ -313,8 +275,9 @@ struct profiler {
     CUPTI_CALL(cuptiActivityEnable(CUPTI_ACTIVITY_KIND_KERNEL));
     DRIVER_API_CALL(cuDeviceGetCount(&device_count));
     if (device_count == 0) {
-      fprintf(stderr, "There is no device supporting CUDA.\n");
-      exit(1);
+      const auto err = fmt::format("There is no device supporting CUDA.\n");
+      std::cerr << err;
+      throw std::runtime_error(err);
     }
 
     m_metric_ids.resize(m_num_metrics);
@@ -328,11 +291,13 @@ struct profiler {
                                    CUPTI_RUNTIME_TRACE_CBID_cudaLaunchKernel_v7000));
 
     CUpti_MetricID *metric_ids = (CUpti_MetricID *) calloc(sizeof(CUpti_MetricID), m_num_metrics);
+    defer(free(metric_ids));
     for (int i = 0; i < m_num_metrics; ++i) {
       CUPTI_CALL(cuptiMetricGetIdFromName(m_device, m_metric_names[i].c_str(), &metric_ids[i]));
     }
 
     CUpti_EventID *event_ids = (CUpti_EventID *) calloc(sizeof(CUpti_EventID), m_num_events);
+    defer(free(event_ids));
     for (int i = 0; i < m_num_events; ++i) {
       CUPTI_CALL(cuptiEventGetIdFromName(m_device, m_event_names[i].c_str(), &event_ids[i]));
     }
@@ -344,6 +309,10 @@ struct profiler {
       m_metric_passes = m_metric_pass_data->numSets;
 
       std::copy(metric_ids, metric_ids + m_num_metrics, m_metric_ids.begin());
+
+      if (m_metric_passes > 0) {
+        CUPTI_CALL(cuptiEnableKernelReplayMode(m_context));
+      }
     }
     if (m_num_events > 0) {
       CUPTI_CALL(
@@ -398,8 +367,6 @@ struct profiler {
     }
 
     m_kernel_data[dummy_kernel_name] = dummy_data;
-    free(metric_ids);
-    free(event_ids);
   }
 
   ~profiler() {
@@ -413,6 +380,11 @@ struct profiler {
   }
 
   void stop() {
+
+    if (m_metric_passes > 0) {
+      CUPTI_CALL(cuptiDisableKernelReplayMode(m_context));
+    }
+
     for (auto &k : m_kernel_data) {
       auto &data = k.second.m_pass_data;
 
@@ -428,6 +400,9 @@ struct profiler {
       CUpti_EventID *event_ids = new CUpti_EventID[total_events];
       uint64_t *event_values   = new uint64_t[total_events];
 
+      defer(delete[] event_ids);
+      defer(delete[] event_values);
+
       int running_sum = 0;
       for (int i = 0; i < m_metric_passes; ++i) {
         std::copy(data[i].event_ids.begin(), data[i].event_ids.end(), event_ids + running_sum);
@@ -435,21 +410,20 @@ struct profiler {
         running_sum += data[i].num_events;
       }
 
+      // std::cout << "m_metric_names = " << m_metric_names << std::endl;
+      // std::cout << "m_metric_passes = " << m_metric_passes << std::endl;
       for (int i = 0; i < m_num_metrics; ++i) {
         CUptiResult _status =
             cuptiMetricGetValue(m_device, m_metric_ids[i], total_events * sizeof(CUpti_EventID), event_ids,
                                 total_events * sizeof(uint64_t), event_values, 0, &metric_value);
         if (_status != CUPTI_SUCCESS) {
-          print_events_and_metrics(std::cout);
-          std::cout << std::endl;
-          fprintf(stderr, "Metric value retrieval failed for metric %s\n", m_metric_names[i].c_str());
-          exit(-1);
+          const auto err = fmt::format("Metric value retrieval failed for metric {}.\n", m_metric_names[i]);
+          std::cerr << err;
+          throw std::runtime_error(err);
         }
-        k.second.m_metric_values.push_back(metric_value);
+        k.second.m_metric_values.insert(
+            {m_metric_names[i], detail::metric_value_to_double(m_metric_ids[i], metric_value)});
       }
-
-      delete[] event_ids;
-      delete[] event_values;
 
       std::map<CUpti_EventID, uint64_t> event_map;
       for (uint32_t i = m_metric_passes; i < (uint32_t)(m_metric_passes + m_event_passes); ++i) {
@@ -459,7 +433,7 @@ struct profiler {
       }
 
       for (int i = 0; i < m_num_events; ++i) {
-        k.second.m_event_values.push_back(event_map[m_event_ids[i]]);
+        k.second.m_event_values.insert({"xxx", event_map[m_event_ids[i]]});
       }
     }
 
@@ -469,103 +443,6 @@ struct profiler {
     CUPTI_CALL(cuptiEnableCallback(0, m_subscriber, CUPTI_CB_DOMAIN_RUNTIME_API,
                                    CUPTI_RUNTIME_TRACE_CBID_cudaLaunchKernel_v7000));
     CUPTI_CALL(cuptiUnsubscribe(m_subscriber));
-  }
-
-  template <typename stream>
-  void print_event_values(stream &s, bool print_names = true, const char *kernel_separator = "; ") {
-    using ull_t = unsigned long long;
-
-    for (auto const &k : m_kernel_data) {
-      if (k.first == dummy_kernel_name)
-        continue;
-
-      // printf("%s: ",
-      //       m_kernel_data[k.first].m_name.c_str());
-
-      /*for(int i = 0; i < m_num_events; ++i) {
-        printf("Event [%s] = %llu\n",
-            m_event_names[i].c_str(),
-            (ull_t)m_kernel_data[k.first].m_event_values[i]);
-      }
-      printf("\n");*/
-
-      if (m_num_events <= 0)
-        return;
-
-      for (int i = 0; i < m_num_events; ++i) {
-        if (print_names)
-          s << "(" << m_event_names[i] << "," << (ull_t) m_kernel_data[k.first].m_event_values[i] << ") ";
-        else
-          s << (ull_t) m_kernel_data[k.first].m_event_values[i] << " ";
-      }
-      s << kernel_separator;
-    }
-    printf("\n");
-  }
-
-  template <typename stream>
-  void print_metric_values(stream &s, bool print_names = true, const char *kernel_separator = "; ") {
-    if (m_num_metrics <= 0)
-      return;
-
-    for (auto const &k : m_kernel_data) {
-      if (k.first == dummy_kernel_name)
-        continue;
-
-      // printf("%s: ",
-      //       m_kernel_data[k.first].m_name.c_str());
-
-      for (int i = 0; i < m_num_metrics; ++i) {
-        if (print_names)
-          s << "(" << m_metric_names[i] << ",";
-
-        detail::print_metric(m_metric_ids[i], m_kernel_data[k.first].m_metric_values[i], s);
-
-        if (print_names)
-          s << ") ";
-        else
-          s << " ";
-      }
-      s << kernel_separator;
-    }
-    printf("\n");
-  }
-
-  template <typename stream>
-  void print_events_and_metrics(stream &s, bool print_names = true, const char *kernel_separator = "; ") {
-    if (m_num_events <= 0 && m_num_metrics <= 0)
-      return;
-
-    using ull_t = unsigned long long;
-    for (auto const &k : m_kernel_data) {
-      if (k.first == dummy_kernel_name)
-        continue;
-
-      // printf("New kernel: %s \n",
-      //       m_kernel_data[k.first].m_name.c_str());
-
-      for (int i = 0; i < m_num_events; ++i) {
-        if (print_names)
-          s << "(" << m_event_names[i] << "," << (ull_t) m_kernel_data[k.first].m_event_values[i] << ") ";
-        else
-          s << (ull_t) m_kernel_data[k.first].m_event_values[i] << " ";
-      }
-
-      for (int i = 0; i < m_num_metrics; ++i) {
-        if (print_names)
-          s << "(" << m_metric_names[i] << ",";
-
-        detail::print_metric(m_metric_ids[i], m_kernel_data[k.first].m_metric_values[i], s);
-
-        if (print_names)
-          s << ") ";
-        else
-          s << " ";
-      }
-
-      s << kernel_separator;
-    }
-    printf("\n");
   }
 
   std::vector<std::string> get_kernel_names() {
@@ -579,14 +456,14 @@ struct profiler {
     return m_kernel_names;
   }
 
-  event_val_t get_event_values(const char *kernel_name) {
+  event_val_t get_event_values(const std::string &kernel_name) {
     if (m_num_events > 0)
       return m_kernel_data[kernel_name].m_event_values;
     else
       return event_val_t{};
   }
 
-  metric_val_t get_metric_values(const char *kernel_name) {
+  metric_val_t get_metric_values(const std::string &kernel_name) {
     if (m_num_metrics > 0)
       return m_kernel_data[kernel_name].m_metric_values;
     else
@@ -594,10 +471,10 @@ struct profiler {
   }
 
 private:
-  uint32_t m_device_num;
-  int m_num_metrics, m_num_events;
   const strvec_t &m_event_names{};
   const strvec_t &m_metric_names{};
+  uint32_t m_device_num;
+  int m_num_metrics, m_num_events;
   std::vector<CUpti_MetricID> m_metric_ids;
   std::vector<CUpti_EventID> m_event_ids;
 
@@ -617,7 +494,7 @@ private:
 #define __CUPTI_PROFILER_NAME_SHORT 128
 #endif
 
-std::vector<std::string> available_metrics(CUdevice device) {
+static std::vector<std::string> available_metrics(CUdevice device) {
   std::vector<std::string> metric_names;
   uint32_t numMetric;
   size_t size;
@@ -629,8 +506,9 @@ std::vector<std::string> available_metrics(CUdevice device) {
   size          = sizeof(CUpti_MetricID) * numMetric;
   metricIdArray = (CUpti_MetricID *) malloc(size);
   if (NULL == metricIdArray) {
-    printf("Memory could not be allocated for metric array");
-    exit(-1);
+    const auto err = fmt::format("Memory could not be allocated for metric array.\n");
+    std::cerr << err;
+    throw std::runtime_error(err);
   }
 
   CUPTI_CALL(cuptiDeviceEnumMetrics(device, &size, metricIdArray));
@@ -653,7 +531,7 @@ std::vector<std::string> available_metrics(CUdevice device) {
   return std::move(metric_names);
 }
 
-std::vector<std::string> available_events(CUdevice device) {
+static std::vector<std::string> available_events(CUdevice device) {
   std::vector<std::string> event_names;
   uint32_t numDomains = 0, numEvents = 0, totalEvents = 0;
   size_t size;
@@ -666,8 +544,9 @@ std::vector<std::string> available_events(CUdevice device) {
   size          = sizeof(CUpti_EventDomainID) * numDomains;
   domainIdArray = (CUpti_EventDomainID *) malloc(size);
   if (NULL == domainIdArray) {
-    printf("Memory could not be allocated for domain array");
-    exit(-1);
+    const auto err = fmt::format("Memory could not be allocated for domain array.\n");
+    std::cerr << err;
+    throw std::runtime_error(err);
   }
   CUPTI_CALL(cuptiDeviceEnumEventDomains(device, &size, domainIdArray));
 

@@ -469,14 +469,6 @@ class other_error : public exception
     #endif
 #endif
 
-// C++ language standard detection
-#if (defined(__cplusplus) && __cplusplus >= 201703L) || (defined(_HAS_CXX17) && _HAS_CXX17 == 1) // fix for issue #464
-    #define JSON_HAS_CPP_17
-    #define JSON_HAS_CPP_14
-#elif (defined(__cplusplus) && __cplusplus >= 201402L) || (defined(_HAS_CXX14) && _HAS_CXX14 == 1)
-    #define JSON_HAS_CPP_14
-#endif
-
 // disable float-equal warnings on GCC/clang
 #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
     #pragma GCC diagnostic push
@@ -501,11 +493,7 @@ class other_error : public exception
 // allow for portable nodiscard warnings
 #if defined(__has_cpp_attribute)
     #if __has_cpp_attribute(nodiscard)
-        #if defined(__clang__) && !defined(JSON_HAS_CPP_17) // issue #1535
-            #define JSON_NODISCARD
-        #else
-            #define JSON_NODISCARD [[nodiscard]]
-        #endif
+        #define JSON_NODISCARD [[nodiscard]]
     #elif __has_cpp_attribute(gnu::warn_unused_result)
         #define JSON_NODISCARD [[gnu::warn_unused_result]]
     #else
@@ -556,6 +544,14 @@ class other_error : public exception
 #else
     #define JSON_LIKELY(x)      x
     #define JSON_UNLIKELY(x)    x
+#endif
+
+// C++ language standard detection
+#if (defined(__cplusplus) && __cplusplus >= 201703L) || (defined(_HAS_CXX17) && _HAS_CXX17 == 1) // fix for issue #464
+    #define JSON_HAS_CPP_17
+    #define JSON_HAS_CPP_14
+#elif (defined(__cplusplus) && __cplusplus >= 201402L) || (defined(_HAS_CXX14) && _HAS_CXX14 == 1)
+    #define JSON_HAS_CPP_14
 #endif
 
 /*!
@@ -1059,19 +1055,10 @@ struct is_constructible_object_type_impl <
     using object_t = typename BasicJsonType::object_t;
 
     static constexpr bool value =
-        (std::is_default_constructible<ConstructibleObjectType>::value and
-         (std::is_move_assignable<ConstructibleObjectType>::value or
-          std::is_copy_assignable<ConstructibleObjectType>::value) and
-         (std::is_constructible<typename ConstructibleObjectType::key_type,
-          typename object_t::key_type>::value and
-          std::is_same <
-          typename object_t::mapped_type,
-          typename ConstructibleObjectType::mapped_type >::value)) or
-        (has_from_json<BasicJsonType,
-         typename ConstructibleObjectType::mapped_type>::value or
-         has_non_default_from_json <
-         BasicJsonType,
-         typename ConstructibleObjectType::mapped_type >::value);
+        (std::is_constructible<typename ConstructibleObjectType::key_type, typename object_t::key_type>::value and
+         std::is_same<typename object_t::mapped_type, typename ConstructibleObjectType::mapped_type>::value) or
+        (has_from_json<BasicJsonType, typename ConstructibleObjectType::mapped_type>::value or
+         has_non_default_from_json<BasicJsonType, typename ConstructibleObjectType::mapped_type >::value);
 };
 
 template <typename BasicJsonType, typename ConstructibleObjectType>
@@ -1154,24 +1141,20 @@ struct is_constructible_array_type_impl <
     BasicJsonType, ConstructibleArrayType,
     enable_if_t<not std::is_same<ConstructibleArrayType,
     typename BasicJsonType::value_type>::value and
-    std::is_default_constructible<ConstructibleArrayType>::value and
-(std::is_move_assignable<ConstructibleArrayType>::value or
- std::is_copy_assignable<ConstructibleArrayType>::value) and
-is_detected<value_type_t, ConstructibleArrayType>::value and
-is_detected<iterator_t, ConstructibleArrayType>::value and
-is_complete_type<
-detected_t<value_type_t, ConstructibleArrayType>>::value >>
+    is_detected<value_type_t, ConstructibleArrayType>::value and
+    is_detected<iterator_t, ConstructibleArrayType>::value and
+    is_complete_type<
+    detected_t<value_type_t, ConstructibleArrayType>>::value >>
 {
     static constexpr bool value =
         // This is needed because json_reverse_iterator has a ::iterator type,
-        // furthermore, std::back_insert_iterator (and other iterators) have a
-        // base class `iterator`... Therefore it is detected as a
-        // ConstructibleArrayType. The real fix would be to have an Iterable
-        // concept.
-        not is_iterator_traits<iterator_traits<ConstructibleArrayType>>::value and
+        // furthermore, std::back_insert_iterator (and other iterators) have a base class `iterator`...
+        // Therefore it is detected as a ConstructibleArrayType.
+        // The real fix would be to have an Iterable concept.
+        not is_iterator_traits <
+        iterator_traits<ConstructibleArrayType >>::value and
 
-        (std::is_same<typename ConstructibleArrayType::value_type,
-         typename BasicJsonType::array_t::value_type>::value or
+        (std::is_same<typename ConstructibleArrayType::value_type, typename BasicJsonType::array_t::value_type>::value or
          has_from_json<BasicJsonType,
          typename ConstructibleArrayType::value_type>::value or
          has_non_default_from_json <
@@ -1424,7 +1407,6 @@ void from_json(const BasicJsonType& j, std::forward_list<T, Allocator>& l)
     {
         JSON_THROW(type_error::create(302, "type must be array, but is " + std::string(j.type_name())));
     }
-    l.clear();
     std::transform(j.rbegin(), j.rend(),
                    std::front_inserter(l), [](const BasicJsonType & i)
     {
@@ -1443,16 +1425,6 @@ void from_json(const BasicJsonType& j, std::valarray<T>& l)
     }
     l.resize(j.size());
     std::copy(j.m_value.array->begin(), j.m_value.array->end(), std::begin(l));
-}
-
-template <typename BasicJsonType, typename T, std::size_t N>
-auto from_json(const BasicJsonType& j, T (&arr)[N])
--> decltype(j.template get<T>(), void())
-{
-    for (std::size_t i = 0; i < N; ++i)
-    {
-        arr[i] = j.at(i).template get<T>();
-    }
 }
 
 template<typename BasicJsonType>
@@ -1481,16 +1453,14 @@ auto from_json_array_impl(const BasicJsonType& j, ConstructibleArrayType& arr, p
 {
     using std::end;
 
-    ConstructibleArrayType ret;
-    ret.reserve(j.size());
+    arr.reserve(j.size());
     std::transform(j.begin(), j.end(),
-                   std::inserter(ret, end(ret)), [](const BasicJsonType & i)
+                   std::inserter(arr, end(arr)), [](const BasicJsonType & i)
     {
         // get<BasicJsonType>() returns *this, this won't call a from_json
         // method when value_type is BasicJsonType
         return i.template get<typename ConstructibleArrayType::value_type>();
     });
-    arr = std::move(ret);
 }
 
 template <typename BasicJsonType, typename ConstructibleArrayType>
@@ -1499,16 +1469,14 @@ void from_json_array_impl(const BasicJsonType& j, ConstructibleArrayType& arr,
 {
     using std::end;
 
-    ConstructibleArrayType ret;
     std::transform(
-        j.begin(), j.end(), std::inserter(ret, end(ret)),
+        j.begin(), j.end(), std::inserter(arr, end(arr)),
         [](const BasicJsonType & i)
     {
         // get<BasicJsonType>() returns *this, this won't call a from_json
         // method when value_type is BasicJsonType
         return i.template get<typename ConstructibleArrayType::value_type>();
     });
-    arr = std::move(ret);
 }
 
 template <typename BasicJsonType, typename ConstructibleArrayType,
@@ -1542,17 +1510,15 @@ void from_json(const BasicJsonType& j, ConstructibleObjectType& obj)
         JSON_THROW(type_error::create(302, "type must be object, but is " + std::string(j.type_name())));
     }
 
-    ConstructibleObjectType ret;
     auto inner_object = j.template get_ptr<const typename BasicJsonType::object_t*>();
     using value_type = typename ConstructibleObjectType::value_type;
     std::transform(
         inner_object->begin(), inner_object->end(),
-        std::inserter(ret, ret.begin()),
+        std::inserter(obj, obj.begin()),
         [](typename BasicJsonType::object_t::value_type const & p)
     {
         return value_type(p.first, p.second.template get<typename ConstructibleObjectType::mapped_type>());
     });
-    obj = std::move(ret);
 }
 
 // overload for arithmetic types, not chosen for basic_json template arguments
@@ -1624,7 +1590,6 @@ void from_json(const BasicJsonType& j, std::map<Key, Value, Compare, Allocator>&
     {
         JSON_THROW(type_error::create(302, "type must be array, but is " + std::string(j.type_name())));
     }
-    m.clear();
     for (const auto& p : j)
     {
         if (JSON_UNLIKELY(not p.is_array()))
@@ -1644,7 +1609,6 @@ void from_json(const BasicJsonType& j, std::unordered_map<Key, Value, Hash, KeyE
     {
         JSON_THROW(type_error::create(302, "type must be array, but is " + std::string(j.type_name())));
     }
-    m.clear();
     for (const auto& p : j)
     {
         if (JSON_UNLIKELY(not p.is_array()))
@@ -15482,19 +15446,6 @@ class basic_json
                 JSONSerializer<ValueType>::from_json(std::declval<const basic_json_t&>(), v)))
     {
         JSONSerializer<ValueType>::from_json(*this, v);
-        return v;
-    }
-
-    template <
-        typename T, std::size_t N,
-        typename Array = T (&)[N],
-        detail::enable_if_t <
-            detail::has_from_json<basic_json_t, Array>::value, int > = 0 >
-    Array get_to(T (&v)[N]) const
-    noexcept(noexcept(JSONSerializer<Array>::from_json(
-                          std::declval<const basic_json_t&>(), v)))
-    {
-        JSONSerializer<Array>::from_json(*this, v);
         return v;
     }
 
