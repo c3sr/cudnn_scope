@@ -1,4 +1,5 @@
 #define BENCHMARK_NAME "CUDNN/ACTIVATION_BWD"
+#define IMPLEMENTATION_NAME BENCHMARK_NAME
 
 #include <benchmark/benchmark.h>
 
@@ -88,47 +89,21 @@ static void LAYER_CUDNN_ACTIVATION_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err = cudnnActivationBackward(cudnn_handle,
-                                                            activation_descriptor,
-                                                            &alpha,
-                                                            x_descriptor,
-                                                            d_y,
-                                                            x_descriptor,
-                                                            d_dy,
-                                                            x_descriptor,
-                                                            d_x,
-                                                            &beta,
-                                                            x_descriptor,
-                                                            d_dx);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnActivationBackward");
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnActivationBackward(cudnn_handle,
+                                        activation_descriptor,
+                                        &alpha,
+                                        x_descriptor,
+                                        d_y,
+                                        x_descriptor,
+                                        d_dy,
+                                        x_descriptor,
+                                        d_x,
+                                        &beta,
+                                        x_descriptor,
+                                        d_dx);
+  });
 
   state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
                          {"input_batch_size", in_n},
@@ -226,17 +201,17 @@ static void LAYER_CUDNN_ACTIVATION_BWD_DOUBLE(benchmark::State& state) {
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
-#define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_SIGMOID)->CONV_PROBLEMS()->UseManualTime();                                   \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->CONV_PROBLEMS()->UseManualTime();                                      \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_TANH)->CONV_PROBLEMS()->UseManualTime();                                      \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->CONV_PROBLEMS()->UseManualTime();                              \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_ELU)->CONV_PROBLEMS()->UseManualTime()
+#define BENCHMARK_LAYER(b)                                                                                             \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_SIGMOID)->CONV_PROBLEMS()->UseManualTime();                             \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->CONV_PROBLEMS()->UseManualTime();                                \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_TANH)->CONV_PROBLEMS()->UseManualTime();                                \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->CONV_PROBLEMS()->UseManualTime();                        \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_ELU)->CONV_PROBLEMS()->UseManualTime()
 
-/* BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_INT8); */
-/* BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_INT32); */
-BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_HALF);
-BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_FLOAT);
-// BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_BWD_DOUBLE);
+/* BENCHMARK_LAYER(LAYER_CUDNN_ACTIVATION_BWD_INT8); */
+/* BENCHMARK_LAYER(LAYER_CUDNN_ACTIVATION_BWD_INT32); */
+BENCHMARK_LAYER(LAYER_CUDNN_ACTIVATION_BWD_HALF);
+BENCHMARK_LAYER(LAYER_CUDNN_ACTIVATION_BWD_FLOAT);
+// BENCHMARK_LAYER(LAYER_CUDNN_ACTIVATION_BWD_DOUBLE);
 
 #endif // GENERATED_BENCHMARK_LAYER

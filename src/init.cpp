@@ -18,13 +18,23 @@ CUcontext m_context;
 CUdevice m_device;
 cudnnHandle_t cudnn_handle;
 cublasHandle_t cublas_handle;
+int32_t num_warmup;
+std::vector<std::string> metrics;
+std::vector<std::string> events;
 
+DEFINE_FLAG_int32(num_warmup, 4, "number of times to run warmup code");
 DEFINE_FLAG_bool(list_metrics, false, "list cupti metrics");
 DEFINE_FLAG_bool(list_events, false, "list cupti events");
+
+FLAGS_NS(std::vector<std::string> metrics({"flop_count_sp", "flop_count_dp", "flop_count_sp_add"}));
+FLAGS_NS(std::vector<std::string> events({}));
 
 int cuda_device_id = 0;
 
 static void register_cupti_flags() {
+  RegisterOpt(clara::Opt(FLAG(num_warmup), "num_warmup")["-w"]["--num_warmup"]("number of times to run warmup code"));
+  RegisterOpt(clara::Opt(FLAG(metrics), "metrics")["--metrics"]("metrics to capture"));
+  RegisterOpt(clara::Opt(FLAG(metrics), "events")["--events"]("events to capture"));
   RegisterOpt(clara::Opt(FLAG(list_metrics), "list_metrics")["-m"]["--list_metrics"]("list cupti metrics"));
   RegisterOpt(clara::Opt(FLAG(list_events), "list_events")["-e"]["--list_events"]("list cupti events"));
 }
@@ -45,20 +55,16 @@ static int cuda_init() {
 static void cupti_options() {
   using namespace cupti_profiler;
 
-  const bool list_metrics = FLAG(list_metrics);
-  if (list_metrics) {
-    const auto metrics = available_metrics(cuda_device_id);
-    for (const auto& metric : metrics) {
+  if (FLAG(list_metrics)) {
+    for (const auto& metric : available_metrics(cuda_device_id)) {
       std::cout << metric << "\n";
     }
     exit(0);
   }
 
-  const bool list_events = FLAG(list_events);
-  if (list_events) {
-    const auto metrics = available_events(cuda_device_id);
-    for (const auto& metric : metrics) {
-      std::cout << metric << "\n";
+  if (FLAG(list_events)) {
+    for (const auto& event : available_events(cuda_device_id)) {
+      std::cout << event << "\n";
     }
     exit(0);
   }
@@ -93,6 +99,12 @@ static int cudnn_init() {
     LOG(error, "cudnn_init failed create CUDNN handle");
     return -1;
   }
+
+  num_warmup = FLAG(num_warmup);
+
+  metrics = FLAG(metrics);
+  events  = FLAG(events);
+
   return 0;
 }
 

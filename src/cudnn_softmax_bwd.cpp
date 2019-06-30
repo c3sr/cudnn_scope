@@ -209,9 +209,9 @@ static void LAYER_CUDNN_SOFTMAX_BWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN0(b, SOFTMAX_MODE)                                                                              \
-  BENCHMARK_TEMPLATE(b, CUDNN_SOFTMAX_FAST, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                           \
-  BENCHMARK_TEMPLATE(b, CUDNN_SOFTMAX_ACCURATE, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                       \
-  BENCHMARK_TEMPLATE(b, CUDNN_SOFTMAX_LOG, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime()
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_FAST, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                           \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_ACCURATE, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                       \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_LOG, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime()
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
   BENCHMARK_CUDNN0(b, CUDNN_SOFTMAX_MODE_INSTANCE);                                                                    \

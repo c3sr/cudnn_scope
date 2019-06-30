@@ -422,8 +422,8 @@ struct profiler {
         running_sum += data[i].num_events;
       }
 
-      std::cout << "m_metric_names = " << m_metric_names << std::endl;
-      std::cout << "m_num_metrics = " << m_num_metrics << std::endl;
+      // std::cout << "m_metric_names = " << m_metric_names << std::endl;
+      // std::cout << "m_num_metrics = " << m_num_metrics << std::endl;
       for (int i = 0; i < m_num_metrics; ++i) {
         CUptiResult _status =
             cuptiMetricGetValue(m_device, m_metric_ids[i], total_events * sizeof(CUpti_EventID), event_ids,

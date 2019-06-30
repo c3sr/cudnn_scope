@@ -22,10 +22,10 @@ sugar_files(cudnn_BENCHMARK_SOURCES
             # cudnn_conv_bias_activation_fwd.cpp
             ctc_loss.cpp
             cublas_gemm_bwd.cpp
-            # cublas_gemm_fwd.cpp
+            cublas_gemm_fwd.cpp
             # cublas_gemv_bwd.cpp
             # cublas_gemv_fwd.cpp
-            # cudnn_activation_bwd.cpp
+            cudnn_activation_bwd.cpp
             # cudnn_activation_fwd.cpp
             # cudnn_add_tensor.cpp
             # cudnn_batchnorm_bwd.cpp

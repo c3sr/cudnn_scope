@@ -310,9 +310,9 @@ static void LAYER_CUDNN_BATCHNORM_FWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL, true)->CONV_PROBLEMS()->UseManualTime();                              \
-  BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, true)->CONV_PROBLEMS()->UseManualTime();                       \
-  BENCHMARK_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, false)->CONV_PROBLEMS()->UseManualTime()
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL, true)->CONV_PROBLEMS()->UseManualTime();                              \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, true)->CONV_PROBLEMS()->UseManualTime();                       \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, false)->CONV_PROBLEMS()->UseManualTime()
 
 /* BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_FWD_INT8); */
 /* BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_FWD_INT32); */

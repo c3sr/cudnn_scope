@@ -129,41 +129,11 @@ static void iLAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cublasStatus_t cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha),
-                                                  d_a, lda, d_b, ldb, reinterpret_cast<T*>(&beta), d_c, M);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cublas_err)) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to launch kernel because of {}", IMPLEMENTATION_NAME,
-                                      utils::detail::error_string(cublas_err))
-                              .c_str());
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to synchronize kernel because of {}", IMPLEMENTATION_NAME,
-                                      utils::detail::error_string(cuda_err))
-                              .c_str());
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to get elapsed time", IMPLEMENTATION_NAME).c_str());
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cublasStatus_t cublas_err;
+  BENCHMARK_BLOCK(cublas_err, {
+    cublas_err = cublasSgemm(cublas_handle, transA, transB, M, N, K, reinterpret_cast<T*>(&alpha), d_a, lda, d_b, ldb,
+                             reinterpret_cast<T*>(&beta), d_c, M);
+  });
 
   const double predicted_flops = 2.0 * M * N * K;
   state.counters.insert(
@@ -235,10 +205,10 @@ static void LAYER_CUBLAS_GEMM_FWD_FLOAT(benchmark::State& state) {
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
-/* BENCHMARK(LAYER_CUBLAS_GEMM_FWD_INT8)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
-/* BENCHMARK(LAYER_CUBLAS_GEMM_FWD_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
-// BENCHMARK(LAYER_CUBLAS_GEMM_FWD_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-BENCHMARK(LAYER_CUBLAS_GEMM_FWD_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
-// BENCHMARK(LAYER_CUBLAS_GEMM_FWD_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+/* BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_INT8)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
+/* BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
+// BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+// BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 
 #endif // GENERATED_BENCHMARK_LAYER

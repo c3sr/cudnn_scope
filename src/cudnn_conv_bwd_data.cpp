@@ -405,14 +405,14 @@ static void LAYER_CUDNN_CONV_BWD_DATA_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS ALL_INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_0)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();         \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_1)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();         \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_FFT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();       \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_FFT_TILING)                                                    \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_0)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();         \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_1)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();         \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_FFT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();       \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_FFT_TILING)                                                    \
       ->INFERENCE_SERVER_CONV_PROBLEMS()                                                                               \
       ->UseManualTime();                                                                                               \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_WINOGRAD)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();  \
-  BENCHMARK_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_WINOGRAD_NONFUSED)                                             \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_WINOGRAD)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();  \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_DATA_ALGO_WINOGRAD_NONFUSED)                                             \
       ->INFERENCE_SERVER_CONV_PROBLEMS()                                                                               \
       ->UseManualTime()
 

@@ -221,12 +221,12 @@ static void LAYER_CUDNN_ACTIVATION_FWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_IDENTITY)->CONV_PROBLEMS()->UseManualTime();                                  \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_SIGMOID)->CONV_PROBLEMS()->UseManualTime();                                   \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->CONV_PROBLEMS()->UseManualTime();                                      \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_TANH)->CONV_PROBLEMS()->UseManualTime();                                      \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->CONV_PROBLEMS()->UseManualTime();                              \
-  BENCHMARK_TEMPLATE(b, CUDNN_ACTIVATION_ELU)->CONV_PROBLEMS()->UseManualTime()
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_IDENTITY)->CONV_PROBLEMS()->UseManualTime();                                  \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_SIGMOID)->CONV_PROBLEMS()->UseManualTime();                                   \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->CONV_PROBLEMS()->UseManualTime();                                      \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_TANH)->CONV_PROBLEMS()->UseManualTime();                                      \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->CONV_PROBLEMS()->UseManualTime();                              \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_ELU)->CONV_PROBLEMS()->UseManualTime()
 
 /* BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_FWD_INT8); */
 /* BENCHMARK_CUDNN(LAYER_CUDNN_ACTIVATION_FWD_INT32); */
