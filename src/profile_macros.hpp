@@ -13,12 +13,7 @@
 #ifdef ENABLE_CUDNN_CUPTI
 #define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->Iterations(CUDNN_CUPTI_NUM_ITERS)
 #define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->Iterations(CUDNN_CUPTI_NUM_ITERS)
-#else // ENABLE_CUDNN_CUPTI
-#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)
-#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)
-#endif // ENABLE_CUDNN_CUPTI
-
-#ifdef ENABLE_CUDNN_CUPTI
+#define CUPTI_STATE_COUNTER_INFO {"cupti_enabled", ENABLE_CUDNN_CUPTI}, {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},
 #define CUPTI_PROFILE_START cupti_profiler::profiler profiler(events, metrics)
 #define CUPTI_PROFILE_STOP(current_iter)                                                                               \
   do {                                                                                                                 \
@@ -41,6 +36,9 @@
     }                                                                                                                  \
   } while (0)
 #else // ENABLE_CUDNN_CUPTI
+#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)
+#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)
+#define CUPTI_STATE_COUNTER_INFO
 #define CUPTI_PROFILE_START
 #define CUPTI_PROFILE_STOP(current_iter)
 #endif // ENABLE_CUDNN_CUPTI
@@ -98,8 +96,6 @@
         {std::string("compute_capability:") + compute_capability, fnv1a_64(compute_capability)},                       \
         {std::string("gpu_name:") + gpu_name, fnv1a_64(gpu_name)},                                                     \
         {std::string("host_name:") + host_name, fnv1a_64(host_name)},                                                  \
-        {"num_iterations", state.iterations()},                                                                        \
-        {"cupti_enabled", ENABLE_CUDNN_CUPTI},                                                                         \
-        {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},                                                                    \
+        {"num_iterations", state.iterations()} CUPTI_STATE_COUNTER_INFO,                                               \
     });                                                                                                                \
   } while (0)

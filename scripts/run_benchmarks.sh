@@ -1,41 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 
 SCOPE_TOP_DIR=../..
+HOST_NAME=$(hostname)
+GPU_NAME=$(nvidia-smi --query-gpu="name" --format=csv | sed -n 2p | tr -s ' ' | tr ' ' '_')
+RESULTS_DIR=$(pwd)/results/${GPU_NAME}
 
-pushd ${SCOPE_TOP_DIR}/build
+pushd ${SCOPE_TOP_DIR}
 
-rm -fr results
 
-mkdir -p results
+CMAKE_OPTIONS="-DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=OFF -DENABLE_EXAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDNN_CUPTI=OFF"
 
-CMAKE_OPTIONS=-DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=OFF -DENABLE_EXAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDNN_CUPTI=OFF
+rm -fr ${RESULTS_DIR}
+mkdir -p ${RESULTS_DIR}
+nvidia-smi -x -q -a > ${RESULTS_DIR}/nvidia_smi.xml
 
-nvidia-smi -x -q -a > results/nvidia_smi.xml
-
-rm -fr scope
-cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=1
-make -j $(nproc)
-./scope --benchmark_out_format=json --benchmark_out=results/1.json
-
-rm -fr scope
-cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=2
-make -j $(nproc)
-./scope --benchmark_out_format=json --benchmark_out=results/2.json
-
-rm -fr scope
-cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=4
-make -j $(nproc)
-./scope --benchmark_out_format=json --benchmark_out=results/4.json
-
-rm -fr scope
-cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=8
-make -j $(nproc)
-./scope --benchmark_out_format=json --benchmark_out=results/8.json
-
-rm -fr scope
-cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=16
-make -j $(nproc)
-./scope --benchmark_out_format=json --benchmark_out=results/16.json
-
+for BATCH_SIZE in 1 2 4 8 16
+do
+  rm -fr build && mkdir build
+  pushd build
+  cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=${BATCH_SIZE}
+  make -j $(nproc)
+  ./scope --benchmark_out_format=json --benchmark_out=${RESULTS_DIR}/${BATCH_SIZE}.json
+  popd
+done
 
 popd
