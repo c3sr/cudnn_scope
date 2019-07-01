@@ -33,7 +33,7 @@ sugar_files(cudnn_BENCHMARK_SOURCES
             # cudnn_conv_bwd_bias.cpp
             # cudnn_conv_bwd_data.cpp
             # cudnn_conv_bwd_filter.cpp
-            # cudnn_conv_fwd.cpp
+            cudnn_conv_fwd.cpp
             # cudnn_dropout_bwd.cpp
             # cudnn_dropout_fwd.cpp
             # cudnn_op_tensor.cpp
