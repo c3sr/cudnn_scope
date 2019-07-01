@@ -8,7 +8,8 @@ RESULTS_DIR=$(pwd)/results/profile/${GPU_NAME}
 pushd ${SCOPE_TOP_DIR}
 
 
-CUPTI_METRICS="flop_count_sp,flop_count_dp,flop_count_sp_add,dram_read_bytes,dram_write_bytes,flop_count_sp_add,flop_count_sp_fma,flop_count_sp_mul,flop_count_sp_special,inst_executed,inst_issued,inst_fp_32,inst_fp_64,inst_integer,inst_bit_convert,inst_control,ipc"
+# CUPTI_METRICS="flop_count_sp,flop_count_dp,flop_count_sp_add,dram_read_bytes,dram_write_bytes,flop_count_sp_add,flop_count_sp_fma,flop_count_sp_mul,flop_count_sp_special,inst_executed,inst_issued,inst_fp_32,inst_fp_64,inst_integer,inst_bit_convert,inst_control,ipc"
+CUPTI_METRICS="flop_count_sp,flop_count_dp,dram_read_bytes,dram_write_bytes"
 CMAKE_OPTIONS="-DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=OFF -DENABLE_EXAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDNN_CUPTI=ON -DCUDNN_CUPTI_NUM_ITERS=10"
 
 rm -fr ${RESULTS_DIR}
