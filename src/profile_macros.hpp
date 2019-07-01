@@ -26,14 +26,17 @@
     const auto current_iter_s = std::string("/current_iter:") + std::to_string(current_iter);                          \
     for (const auto kernel_name : profiler.get_kernel_names()) {                                                       \
       const auto demangled_name = demangle(kernel_name);                                                               \
-      state.counters.insert({kernel_name, fnv1a_64(kernel_name)});                                                     \
-      state.counters.insert({demangled_name, fnv1a_64(kernel_name)});                                                  \
+      state.counters.insert({std::string("kernel:") + kernel_name, fnv1a_64(kernel_name)});                            \
+      state.counters.insert({std::string("demangled_kernel:") + demangled_name, fnv1a_64(kernel_name)});               \
       for (const auto metric_value : profiler.get_metric_values(kernel_name)) {                                        \
         state.counters.insert(                                                                                         \
-            {demangled_name + current_iter_s + "/metric:" + metric_value.first, metric_value.second});                 \
+            {std::string("kernel_metric:") + demangled_name + current_iter_s + "/metric:" + metric_value.first,        \
+             metric_value.second});                                                                                    \
       }                                                                                                                \
       for (const auto event_value : profiler.get_event_values(kernel_name)) {                                          \
-        state.counters.insert({demangled_name + current_iter_s + "/event:" + event_value.first, event_value.second});  \
+        state.counters.insert(                                                                                         \
+            {std::string("kernel_event:") + demangled_name + current_iter_s + "/event:" + event_value.first,           \
+             event_value.second});                                                                                     \
       }                                                                                                                \
     }                                                                                                                  \
   } while (0)
@@ -84,8 +87,19 @@
       state.ResumeTiming();                                                                                            \
     }                                                                                                                  \
     state.counters.insert({                                                                                            \
+        {std::string("benchmark_func:") + std::string(__PRETTY_FUNCTION__), fnv1a_64(__PRETTY_FUNCTION__)},            \
+        {std::string("benchmark_file:") + std::string(__FILE__), fnv1a_64(__FILE__)},                                  \
+        {std::string("demangled_benchmark_func:") + demangle(__FUNCTION__), fnv1a_64(__FUNCTION__)},                   \
+        {std::string("cuda_driver_version:") + cuda_driver_version, fnv1a_64(cuda_driver_version)},                    \
+        {std::string("cuda_runtime_version:") + cuda_runtime_version, fnv1a_64(cuda_runtime_version)},                 \
+        {std::string("cublas_version:") + cublas_version, fnv1a_64(cublas_version)},                                   \
+        {std::string("cupti_version:") + cupti_version, fnv1a_64(cupti_version)},                                      \
+        {std::string("cudnn_version:") + cudnn_version, fnv1a_64(cudnn_version)},                                      \
+        {std::string("compute_capability:") + compute_capability, fnv1a_64(compute_capability)},                       \
+        {std::string("gpu_name:") + gpu_name, fnv1a_64(gpu_name)},                                                     \
+        {std::string("host_name:") + host_name, fnv1a_64(host_name)},                                                  \
         {"num_iterations", state.iterations()},                                                                        \
-        {"cupti_enabled", ENABLE_CUDNN_CUPTI ? 0 : 1},                                                                 \
+        {"cupti_enabled", ENABLE_CUDNN_CUPTI},                                                                         \
         {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},                                                                    \
     });                                                                                                                \
   } while (0)

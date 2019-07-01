@@ -1,7 +1,8 @@
 #pragma once
 
-#include <cudnn.h>
 #include <cublas_v2.h>
+#include <cudnn.h>
+#include <cupti.h>
 
 #include "utils/error.hpp"
 
@@ -38,7 +39,7 @@ namespace detail {
       case CUDNN_STATUS_RUNTIME_PREREQUISITE_MISSING:
         return "CUDNN_STATUS_RUNTIME_PREREQUISITE_MISSING";
       case CUDNN_STATUS_RUNTIME_FP_OVERFLOW:
-        return "CUDNN_STATUS_RUNTIME_FP_OVERFLOW";      
+        return "CUDNN_STATUS_RUNTIME_FP_OVERFLOW";
       default:
         return "Unknown error.";
     }
@@ -60,16 +61,23 @@ namespace detail {
       case CUBLAS_STATUS_MAPPING_ERROR:
         return "CUBLAS_STATUS_MAPPING_ERROR";
       case CUBLAS_STATUS_EXECUTION_FAILED:
-        return "CUBLAS_STATUS_EXECUTION_FAILED"; 
+        return "CUBLAS_STATUS_EXECUTION_FAILED";
       case CUBLAS_STATUS_INTERNAL_ERROR:
-        return "CUBLAS_STATUS_INTERNAL_ERROR"; 
+        return "CUBLAS_STATUS_INTERNAL_ERROR";
       case CUBLAS_STATUS_NOT_SUPPORTED:
-        return "CUBLAS_STATUS_NOT_SUPPORTED";   
+        return "CUBLAS_STATUS_NOT_SUPPORTED";
       case CUBLAS_STATUS_LICENSE_ERROR:
-        return "CUBLAS_STATUS_LICENSE_ERROR";      
+        return "CUBLAS_STATUS_LICENSE_ERROR";
       default:
         return "Unknown error.";
     }
+  }
+
+  template <>
+  ALWAYS_INLINE const char *error_string<CUptiResult>(const CUptiResult &status) {
+    const char *res;
+    cuptiGetResultString(status, &res);
+    return res;
   }
 
   template <>
@@ -80,6 +88,11 @@ namespace detail {
   template <>
   ALWAYS_INLINE bool is_success<cublasStatus_t>(const cublasStatus_t &err) {
     return err == CUBLAS_STATUS_SUCCESS;
+  }
+
+  template <>
+  ALWAYS_INLINE bool is_success<CUptiResult>(const CUptiResult &err) {
+    return err == CUPTI_SUCCESS;
   }
 
 } // namespace detail
