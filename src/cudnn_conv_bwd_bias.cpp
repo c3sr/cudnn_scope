@@ -83,37 +83,10 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   }
   const auto d_db = db_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err =
-        cudnnConvolutionBackwardBias(cudnn_handle, &alpha, dy_descriptor, d_dy, &beta, db_descriptor, d_db);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnConvolutionBackwardBias");
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnConvolutionBackwardBias(cudnn_handle, &alpha, dy_descriptor, d_dy, &beta, db_descriptor, d_db);
+  });
 
   state.counters.insert({{"input_size", batch_size * channels * height * width},
                          {"input_height", height},

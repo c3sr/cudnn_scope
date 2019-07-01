@@ -130,37 +130,11 @@ static void iLAYER_CUBLAS_GEMV_BWD_Impl(benchmark::State& state) {
   const int incx = 1;
   const int incy = 1;
 
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cublasStatus_t cublas_err = cublasSgemv(cublas_handle, transA, M, K, reinterpret_cast<T*>(&alpha), d_a, lda,
-                                                  d_b, incx, reinterpret_cast<T*>(&beta), d_c, incy);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cublas_err)) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to launch kernel because of {}", IMPLEMENTATION_NAME,
-                                      utils::detail::error_string(cublas_err))
-                              .c_str());
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to synchronize kernel because of {}", IMPLEMENTATION_NAME,
-                                      utils::detail::error_string(cuda_err))
-                              .c_str());
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(fmt::format("CUBLAS/{} failed to get elapsed time", IMPLEMENTATION_NAME).c_str());
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cublasStatus_t cublas_err;
+  BENCHMARK_BLOCK(cublas_err, {
+    cublas_err = cublasSgemv(cublas_handle, transA, M, K, reinterpret_cast<T*>(&alpha), d_a, lda, d_b, incx,
+                             reinterpret_cast<T*>(&beta), d_c, incy);
+  });
 
   const double predicted_flops = M * K;
   state.counters.insert(

@@ -120,47 +120,21 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   }
   const auto d_dy = dy_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err = cudnnPoolingBackward(cudnn_handle,
-                                                         pooling_descriptor,
-                                                         &alpha,
-                                                         y_descriptor,
-                                                         d_y,
-                                                         y_descriptor,
-                                                         d_dy,
-                                                         x_descriptor,
-                                                         d_x,
-                                                         &beta,
-                                                         x_descriptor,
-                                                         d_dx);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnPoolingBackward");
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnPoolingBackward(cudnn_handle,
+                                     pooling_descriptor,
+                                     &alpha,
+                                     y_descriptor,
+                                     d_y,
+                                     y_descriptor,
+                                     d_dy,
+                                     x_descriptor,
+                                     d_x,
+                                     &beta,
+                                     x_descriptor,
+                                     d_dx);
+  });
 
   state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
                          {"input_batch_size", in_n},
@@ -256,16 +230,16 @@ static void LAYER_CUDNN_POOLING_BWD_DOUBLE(benchmark::State& state) {
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
-#define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX)->CONV_PROBLEMS()->UseManualTime();                                          \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_AVERAGE_COUNT_INCLUDE_PADDING)->CONV_PROBLEMS()->UseManualTime();                \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_AVERAGE_COUNT_EXCLUDE_PADDING)->CONV_PROBLEMS()->UseManualTime();                \
+#define BENCHMARK_LAYER(b)                                                                                             \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX)->CONV_PROBLEMS()->UseManualTime();                                    \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_AVERAGE_COUNT_INCLUDE_PADDING)->CONV_PROBLEMS()->UseManualTime();          \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_AVERAGE_COUNT_EXCLUDE_PADDING)->CONV_PROBLEMS()->UseManualTime();          \
   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX_DETERMINISTIC)->CONV_PROBLEMS()->UseManualTime();
 
-/* BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_INT8); */
-/* BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_INT32); */
-BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_HALF);
-BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_FLOAT);
-// BENCHMARK_CUDNN(LAYER_CUDNN_POOLING_BWD_DOUBLE);
+/* BENCHMARK_LAYER(LAYER_CUDNN_POOLING_BWD_INT8); */
+/* BENCHMARK_LAYER(LAYER_CUDNN_POOLING_BWD_INT32); */
+BENCHMARK_LAYER(LAYER_CUDNN_POOLING_BWD_HALF);
+BENCHMARK_LAYER(LAYER_CUDNN_POOLING_BWD_FLOAT);
+// BENCHMARK_LAYER(LAYER_CUDNN_POOLING_BWD_DOUBLE);
 
 #endif // GENERATED_BENCHMARK_LAYER

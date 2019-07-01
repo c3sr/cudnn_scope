@@ -40,8 +40,8 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
 
-  const T alpha = 1;
-  const T beta  = 0;
+  const T alpha = detail::one<T>();
+  const T beta  = detail::zero<T>();
 
   const auto in_n  = batch_size;
   const auto in_w  = channels;
@@ -90,41 +90,10 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   }
   const auto d_output = output_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err =
-        cudnnAddTensor(cudnn_handle, &alpha, input_descriptor, d_input, &beta, output_descriptor, d_output);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to perform cudnnAddTensor because of {}",
-                                      utils::detail::error_string(cudnn_err))
-                              .c_str());
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to perform cudnnAddTensor because of {}",
-                                      utils::detail::error_string(cuda_err))
-                              .c_str());
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnAddTensor(cudnn_handle, &alpha, input_descriptor, d_input, &beta, output_descriptor, d_output);
+  });
 
   state.counters.insert({{"input_size", batch_size * channels * height * width},
                          {"input_batch_size", batch_size},

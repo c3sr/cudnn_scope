@@ -62,37 +62,11 @@ static void iLAYER_CUDNN_SOFTMAX_FWD_Impl(benchmark::State& state) {
   }
   const auto d_y = y_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
   cudnnStatus_t cudnn_err;
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-    cudnn_err = cudnnSoftmaxForward(
-        cudnn_handle, softmax_algorithm, softmax_mode, &alpha, x_descriptor, d_x, &beta, x_descriptor, d_y);
-    cudaEventRecord(stop, NULL);
-    state.PauseTiming();
-
-    const auto cuda_err = cudaEventSynchronize(stop);
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnSoftmaxForward");
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnSoftmaxForward(cudnn_handle, softmax_algorithm, softmax_mode, &alpha, x_descriptor, d_x, &beta,
+                                    x_descriptor, d_y);
+  });
 
   state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
                          {"input_batch_size", in_n},
@@ -194,18 +168,18 @@ static void LAYER_CUDNN_SOFTMAX_FWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN0(b, SOFTMAX_MODE)                                                                              \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_FAST, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                           \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_ACCURATE, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                       \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_FAST, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                     \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_ACCURATE, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime();                 \
   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_SOFTMAX_LOG, SOFTMAX_MODE)->CONV_PROBLEMS()->UseManualTime()
 
-#define BENCHMARK_CUDNN(b)                                                                                             \
+#define BENCHMARK_LAYER(b)                                                                                             \
   BENCHMARK_CUDNN0(b, CUDNN_SOFTMAX_MODE_INSTANCE);                                                                    \
   BENCHMARK_CUDNN0(b, CUDNN_SOFTMAX_MODE_CHANNEL)
 
-/* BENCHMARK_CUDNN(LAYER_CUDNN_SOFTMAX_FWD_INT8); */
-/* BENCHMARK_CUDNN(LAYER_CUDNN_SOFTMAX_FWD_INT32); */
-BENCHMARK_CUDNN(LAYER_CUDNN_SOFTMAX_FWD_HALF);
-BENCHMARK_CUDNN(LAYER_CUDNN_SOFTMAX_FWD_FLOAT);
-// BENCHMARK_CUDNN(LAYER_CUDNN_SOFTMAX_FWD_DOUBLE);
+/* BENCHMARK_LAYER(LAYER_CUDNN_SOFTMAX_FWD_INT8); */
+/* BENCHMARK_LAYER(LAYER_CUDNN_SOFTMAX_FWD_INT32); */
+BENCHMARK_LAYER(LAYER_CUDNN_SOFTMAX_FWD_HALF);
+BENCHMARK_LAYER(LAYER_CUDNN_SOFTMAX_FWD_FLOAT);
+// BENCHMARK_LAYER(LAYER_CUDNN_SOFTMAX_FWD_DOUBLE);
 
 #endif // GENERATED_BENCHMARK_LAYER

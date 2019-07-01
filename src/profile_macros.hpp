@@ -2,6 +2,10 @@
 
 #include "cupti_profiler.hpp"
 
+#ifndef IMPLEMENTATION_NAME
+#define IMPLEMENTATION_NAME BENCHMARK_NAME
+#endif // IMPLEMENTATION_NAME
+
 #ifndef CUDNN_CUPTI_NUM_ITERS
 #define CUDNN_CUPTI_NUM_ITERS 4
 #endif // CUDNN_CUPTI_NUM_ITERS

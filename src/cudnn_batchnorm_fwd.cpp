@@ -134,14 +134,9 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   }
   const auto d_estimated_var = estimated_var_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
   cudnnStatus_t cudnn_err;
 
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
+  BENCHMARK_BLOCK(cudnn_err, {
     if (is_training) {
       cudnn_err = cudnnBatchNormalizationForwardTraining(cudnn_handle,
                                                          batchnorm_mode,
@@ -176,28 +171,7 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
                                                           d_estimated_var,
                                                           epsilon);
     }
-
-    cudaEventRecord(stop, NULL);
-    state.PauseTiming();
-
-    const auto cuda_err = cudaEventSynchronize(stop);
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnBatchNormalizationForward");
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  });
 
   state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
                          {"input_batch_size", in_n},
@@ -209,6 +183,7 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
                          {"output_channels", out_c},
                          {"output_height", out_h},
                          {"output_width", out_w},
+                         {"is_training", is_training},
                          {"batchnorm_mode", (int) batchnorm_mode}});
 
   const auto compute_flops = [&](cudnnBatchNormMode_t mode) {
@@ -310,8 +285,8 @@ static void LAYER_CUDNN_BATCHNORM_FWD_DOUBLE(benchmark::State& state) {
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL, true)->CONV_PROBLEMS()->UseManualTime();                              \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, true)->CONV_PROBLEMS()->UseManualTime();                       \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_SPATIAL, true)->CONV_PROBLEMS()->UseManualTime();                        \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, true)->CONV_PROBLEMS()->UseManualTime();                 \
   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION, false)->CONV_PROBLEMS()->UseManualTime()
 
 /* BENCHMARK_CUDNN(LAYER_CUDNN_BATCHNORM_FWD_INT8); */

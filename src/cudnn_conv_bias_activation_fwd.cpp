@@ -226,46 +226,13 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   }
   const auto d_bias = bias_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err = cudnnConvolutionBiasActivationForward(
-        cudnn_handle, &alpha, x_descriptor, d_x, w_descriptor, d_w, convolution_descriptor, convolution_algorithm,
-        d_workspace, workspace_bytes, &beta, y_descriptor, d_z, bias_descriptor, d_bias, activation_descriptor,
-        y_descriptor, d_y);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(fmt::format(BENCHMARK_NAME
-                                      " failed to perform cudnnConvolutionBiasActivationForward because of {}",
-                                      utils::detail::error_string(cudnn_err))
-                              .c_str());
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(fmt::format(BENCHMARK_NAME
-                                      " failed to perform cudnnConvolutionBiasActivationForward because of {}",
-                                      utils::detail::error_string(cuda_err))
-                              .c_str());
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
-
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnConvolutionBiasActivationForward(cudnn_handle, &alpha, x_descriptor, d_x, w_descriptor, d_w,
+                                                      convolution_descriptor, convolution_algorithm, d_workspace,
+                                                      workspace_bytes, &beta, y_descriptor, d_z, bias_descriptor,
+                                                      d_bias, activation_descriptor, y_descriptor, d_y);
+  });
   state.counters.insert({{"input_size", batch_size * channels * height * width},
                          {"input_batch_size", batch_size},
                          {"input_channels", channels},
@@ -293,7 +260,6 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
                          {"math_type", (int) math_type},
                          {"activation_mode", (int) activation_mode}});
 
-  cudnnStatus_t cudnn_err;
   static const int max_count = 20;
   /* cudnn_err = cudnnGetConvolutionForwardAlgorithmMaxCount(cudnn_handle, &max_count); */
   /* if (PRINT_IF_ERROR(cudnn_err)) { */
@@ -409,26 +375,32 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_DOUBLE(benchmark::State& state)
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 #define BENCHMARK_CUDNN0(b, ACTIVATION_MODE)                                                                           \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();  \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM, ACTIVATION_MODE)                             \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM, ACTIVATION_MODE)                               \
       ->CONV_PROBLEMS()                                                                                                \
       ->UseManualTime();                                                                                               \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();           \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();         \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();            \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();     \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();       \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime()
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM, ACTIVATION_MODE)                       \
+      ->CONV_PROBLEMS()                                                                                                \
+      ->UseManualTime();                                                                                               \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();     \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();   \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime();      \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING, ACTIVATION_MODE)                                  \
+      ->CONV_PROBLEMS()                                                                                                \
+      ->UseManualTime();                                                                                               \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD, ACTIVATION_MODE)->CONV_PROBLEMS()->UseManualTime(); \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED, ACTIVATION_MODE)                           \
+      ->CONV_PROBLEMS()                                                                                                \
+      ->UseManualTime()
 
-#define BENCHMARK_CUDNN(b) BENCHMARK_CUDNN0(b, CUDNN_ACTIVATION_RELU)
+#define BENCHMARK_LAYER(b) BENCHMARK_CUDNN0(b, CUDNN_ACTIVATION_RELU)
 
-/* BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_INT8); */
-/* BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_INT32); */
-BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_HALF);
+/* BENCHMARK_LAYER(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_INT8); */
+/* BENCHMARK_LAYER(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_INT32); */
+BENCHMARK_LAYER(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_HALF);
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_HALF_TENSOROP);
+BENCHMARK_LAYER(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_HALF_TENSOROP);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
-BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_FLOAT);
-// BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_DOUBLE);
+BENCHMARK_LAYER(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_FLOAT);
+// BENCHMARK_LAYER(LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_DOUBLE);
 
 #endif // GENERATED_BENCHMARK_LAYER

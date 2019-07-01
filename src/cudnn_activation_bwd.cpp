@@ -1,5 +1,4 @@
 #define BENCHMARK_NAME "CUDNN/ACTIVATION_BWD"
-#define IMPLEMENTATION_NAME BENCHMARK_NAME
 
 #include <benchmark/benchmark.h>
 

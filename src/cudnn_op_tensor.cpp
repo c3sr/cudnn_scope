@@ -96,42 +96,11 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   }
   const auto d_output = output_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err =
-        cudnnOpTensor(cudnn_handle, op_descriptor, &alpha, input_a_descriptor, d_a_input, &alpha, input_b_descriptor,
-                      d_b_input, &beta, output_descriptor, d_output);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to perform cudnnAddTensor because of {}",
-                                      utils::detail::error_string(cudnn_err))
-                              .c_str());
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to perform cudnnAddTensor because of {}",
-                                      utils::detail::error_string(cuda_err))
-                              .c_str());
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnOpTensor(cudnn_handle, op_descriptor, &alpha, input_a_descriptor, d_a_input, &alpha,
+                              input_b_descriptor, d_b_input, &beta, output_descriptor, d_output);
+  });
 
   state.counters.insert({{"input_size", in_n * in_c * in_h * in_w},
                          {"input_n", in_n},
@@ -222,30 +191,30 @@ DECLARE_OP(NOT, CUDNN_OP_TENSOR_NOT)
 #else // GENERATED_BENCHMARK_LAYER
 
 static void LAYER_CUDNN_OP_TENSOR_INT8(benchmark::State& state) {
-  LAYER_CUDNN_OP_TENSOR_Impl<int8_t>(state);
+  LAYER_CUDNN_OP_TENSOR_FWD_Impl<int8_t, CUDNN_OP_TENSOR_ADD>(state);
 }
 
 static void LAYER_CUDNN_OP_TENSOR_INT32(benchmark::State& state) {
-  LAYER_CUDNN_OP_TENSOR_Impl<int32_t>(state);
+  LAYER_CUDNN_OP_TENSOR_FWD_Impl<int32_t, CUDNN_OP_TENSOR_ADD>(state);
 }
 
-static void LAYER_CUDNN_OP_TENSOR_HALF(benchmark::State& state) {
-  LAYER_CUDNN_OP_TENSOR_Impl<__half>(state);
-}
+// static void LAYER_CUDNN_OP_TENSOR_HALF(benchmark::State& state) {
+//   LAYER_CUDNN_OP_TENSOR_FWD_Impl<__half, CUDNN_OP_TENSOR_ADD>(state);
+// }
 
 static void LAYER_CUDNN_OP_TENSOR_FLOAT(benchmark::State& state) {
-  LAYER_CUDNN_OP_TENSOR_Impl<float>(state);
+  LAYER_CUDNN_OP_TENSOR_FWD_Impl<float, CUDNN_OP_TENSOR_ADD>(state);
 }
 
 static void LAYER_CUDNN_OP_TENSOR_DOUBLE(benchmark::State& state) {
-  LAYER_CUDNN_OP_TENSOR_Impl<double>(state);
+  LAYER_CUDNN_OP_TENSOR_FWD_Impl<double, CUDNN_OP_TENSOR_ADD>(state);
 }
 
 #define CONV_PROBLEMS INFERENCE_SERVER_CONV_PROBLEMS
 
 /* BENCHMARK_CUDNN(LAYER_CUDNN_OP_TENSOR_INT8)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
 /* BENCHMARK_CUDNN(LAYER_CUDNN_OP_TENSOR_INT32)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); */
-BENCHMARK_CUDNN(LAYER_CUDNN_OP_TENSOR_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
+// BENCHMARK_CUDNN(LAYER_CUDNN_OP_TENSOR_HALF)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 BENCHMARK_CUDNN(LAYER_CUDNN_OP_TENSOR_FLOAT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 // BENCHMARK_CUDNN(LAYER_CUDNN_OP_TENSOR_DOUBLE)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();
 

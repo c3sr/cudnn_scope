@@ -188,38 +188,12 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   }
   const auto d_dw = dw_memory.get();
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
-  for (auto _ : state) {
-    cudaEventRecord(start, NULL);
-
-    const cudnnStatus_t cudnn_err = cudnnConvolutionBackwardFilter(
-        cudnn_handle, &alpha, x_descriptor, d_x, dy_descriptor, d_dy, convolution_descriptor, convolution_algorithm,
-        d_workspace, workspace_bytes, &beta, dw_descriptor, d_dw);
-
-    cudaEventRecord(stop, NULL);
-    const auto cuda_err = cudaEventSynchronize(stop);
-
-    state.PauseTiming();
-    if (PRINT_IF_ERROR(cudnn_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnConvolutionBackwardFilter");
-      break;
-    }
-    if (PRINT_IF_ERROR(cuda_err)) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-
-    float msecTotal = 0.0f;
-    if (PRINT_IF_ERROR(cudaEventElapsedTime(&msecTotal, start, stop))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to launch kernel");
-      break;
-    }
-    state.SetIterationTime(msecTotal / 1000);
-    state.ResumeTiming();
-  }
+  cudnnStatus_t cudnn_err;
+  BENCHMARK_BLOCK(cudnn_err, {
+    cudnn_err = cudnnConvolutionBackwardFilter(cudnn_handle, &alpha, x_descriptor, d_x, dy_descriptor, d_dy,
+                                               convolution_descriptor, convolution_algorithm, d_workspace,
+                                               workspace_bytes, &beta, dw_descriptor, d_dw);
+  });
 
   state.counters.insert({{"input_size", batch_size * channels * height * width},
                          {"input_batch_size", batch_size},
@@ -289,7 +263,6 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
                             {predicted_advised_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
   }
 
-  cudnnStatus_t cudnn_err;
   static const int max_count = 10;
   /* cudnn_err = cudnnGetConvolutionBackwardFilterAlgorithmMaxCount(cudnn_handle, &max_count); */
   /* if (PRINT_IF_ERROR(cudnn_err)) { */
@@ -403,23 +376,27 @@ static void LAYER_CUDNN_CONV_BWD_FILTER_DOUBLE(benchmark::State& state) {
 
 #define CONV_PROBLEMS ALL_INFERENCE_SERVER_CONV_PROBLEMS
 
-#define BENCHMARK_CUDNN(b)                                                                                             \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_0)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();       \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_1)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();       \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_FFT)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();     \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_3)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime();       \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_WINOGRAD_NONFUSED)                                           \
+#define BENCHMARK_LAYER(b)                                                                                             \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_0)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_1)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_FFT)                                                   \
       ->INFERENCE_SERVER_CONV_PROBLEMS()                                                                               \
       ->UseManualTime();                                                                                               \
-  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_FFT_TILING)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime()
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_3)->INFERENCE_SERVER_CONV_PROBLEMS()->UseManualTime(); \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_WINOGRAD_NONFUSED)                                     \
+      ->INFERENCE_SERVER_CONV_PROBLEMS()                                                                               \
+      ->UseManualTime();                                                                                               \
+  BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_BWD_FILTER_ALGO_FFT_TILING)                                            \
+      ->INFERENCE_SERVER_CONV_PROBLEMS()                                                                               \
+      ->UseManualTime()
 
-// BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BWD_FILTER_INT8);
-// BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BWD_FILTER_INT32);
-BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BWD_FILTER_HALF);
+// BENCHMARK_LAYER(LAYER_CUDNN_CONV_BWD_FILTER_INT8);
+// BENCHMARK_LAYER(LAYER_CUDNN_CONV_BWD_FILTER_INT32);
+BENCHMARK_LAYER(LAYER_CUDNN_CONV_BWD_FILTER_HALF);
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BWD_FILTER_HALF_TENSOROP);
+BENCHMARK_LAYER(LAYER_CUDNN_CONV_BWD_FILTER_HALF_TENSOROP);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
-BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BWD_FILTER_FLOAT);
-// BENCHMARK_CUDNN(LAYER_CUDNN_CONV_BWD_FILTER_DOUBLE);
+BENCHMARK_LAYER(LAYER_CUDNN_CONV_BWD_FILTER_FLOAT);
+// BENCHMARK_LAYER(LAYER_CUDNN_CONV_BWD_FILTER_DOUBLE);
 
 #endif // GENERATED_BENCHMARK_LAYER
