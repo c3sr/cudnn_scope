@@ -123,10 +123,6 @@ static void iLAYER_CUBLAS_GEMV_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-  cudaEvent_t start, stop;
-  PRINT_IF_ERROR(cudaEventCreate(&start));
-  PRINT_IF_ERROR(cudaEventCreate(&stop));
-
   const int incx = 1;
   const int incy = 1;
 
