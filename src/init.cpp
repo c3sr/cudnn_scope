@@ -35,7 +35,7 @@ DEFINE_FLAG_int32(num_warmup, 4, "number of times to run warmup code");
 DEFINE_FLAG_bool(list_metrics, false, "list cupti metrics");
 DEFINE_FLAG_bool(list_events, false, "list cupti events");
 
-FLAGS_NS(std::vector<std::string> metrics({"flop_count_sp", "flop_count_dp", "flop_count_sp_add"}));
+FLAGS_NS(std::vector<std::string> metrics({"flop_count_sp", "dram_read_bytes", "dram_write_bytes", "inst_integer", "inst_bit_convert", "inst_convert", "inst_executed", "inst_issued", "inst_fp_32"}));
 FLAGS_NS(std::vector<std::string> events({}));
 
 int cuda_device_id = 0;
