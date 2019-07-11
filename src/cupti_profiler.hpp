@@ -300,6 +300,7 @@ struct profiler {
     CUpti_MetricID *metric_ids = (CUpti_MetricID *) calloc(sizeof(CUpti_MetricID), m_num_metrics);
     defer(free(metric_ids));
     for (int i = 0; i < m_num_metrics; ++i) {
+        std::cout << "metric_name = " << m_metric_names[i] << "\n";
       CUPTI_CALL(cuptiMetricGetIdFromName(m_device, m_metric_names[i].c_str(), &metric_ids[i]));
     }
 
