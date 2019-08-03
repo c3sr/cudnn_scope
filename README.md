@@ -17,6 +17,7 @@ See the `docs` folder for a description of the benchmarks.
 ./scripts/run_benchmarks.sh
 ```
 
+You need a recent CMAKE which can be downloaded from https://apt.kitware.com/
 
 ## Build / Run with CUPTI Profiling
 
