@@ -16,7 +16,10 @@ extern std::string gpu_name;
 extern std::string host_name;
 extern std::string cuda_driver_version;
 extern std::string cuda_runtime_version;
-extern std::string cupti_version;
 extern std::string cudnn_version;
 extern std::string cublas_version;
 extern std::string compute_capability;
+
+#ifdef ENABLE_CUDNN_CUPTI
+extern std::string cupti_version;
+#endif // ENABLE_CUDNN_CUPTI

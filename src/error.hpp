@@ -2,7 +2,9 @@
 
 #include <cublas_v2.h>
 #include <cudnn.h>
+#ifdef ENABLE_CUDNN_CUPTI
 #include <cupti.h>
+#endif
 
 #include "utils/error.hpp"
 
@@ -90,10 +92,12 @@ namespace detail {
     return err == CUBLAS_STATUS_SUCCESS;
   }
 
+#ifdef ENABLE_CUDNN_CUPTI
   template <>
   ALWAYS_INLINE bool is_success<CUptiResult>(const CUptiResult &err) {
     return err == CUPTI_SUCCESS;
   }
+#endif // ENABLE_CUDNN_CUPTI
 
 } // namespace detail
 } // namespace utils

@@ -26,16 +26,20 @@ std::string gpu_name{""};
 std::string host_name{""};
 std::string cuda_driver_version{""};
 std::string cuda_runtime_version{""};
+#ifdef ENABLE_CUDNN_CUPTI
 std::string cupti_version{""};
+#endif // ENABLE_CUDNN_CUPTI
 std::string cublas_version{""};
 std::string cudnn_version{""};
 std::string compute_capability{""};
 
-DEFINE_FLAG_int32(num_warmup, 4, "number of times to run warmup code");
+DEFINE_FLAG_int32(num_warmup, 10, "number of times to run warmup code");
 DEFINE_FLAG_bool(list_metrics, false, "list cupti metrics");
 DEFINE_FLAG_bool(list_events, false, "list cupti events");
 
-FLAGS_NS(std::vector<std::string> metrics({"flop_count_sp", "dram_read_bytes", "dram_write_bytes", "inst_integer", "inst_bit_convert",  "inst_fp_32"}));
+FLAGS_NS(std::vector<std::string> metrics({"flop_count_sp", "flops_sp_add", "flops_sp_mul", "flops_sp_fma",
+                                           "flops_sp_special", "achieved_occupancy", "dram_read_bytes",
+                                           "dram_write_bytes"}));
 FLAGS_NS(std::vector<std::string> events({}));
 
 int cuda_device_id = 0;
@@ -154,11 +158,13 @@ static std::string get_cuda_driver_version() {
   return fmt::format("{}.{}", version / 1000, version % 100);
 }
 
+#ifdef ENABLE_CUDNN_CUPTI
 static std::string get_cupti_version() {
   uint32_t version = 0;
   PRINT_IF_ERROR(cuptiGetVersion(&version));
   return fmt::format("{}.{}", version / 1000, version % 100);
 }
+#endif // ENABLE_CUDNN_CUPTI
 
 static std::string get_cublas_version() {
   int version = 0;
@@ -203,9 +209,11 @@ static void system_info() {
   cuda_runtime_version = get_cuda_runtime_version();
   cuda_driver_version  = get_cuda_driver_version();
   cublas_version       = get_cublas_version();
-  cupti_version        = get_cupti_version();
-  cudnn_version        = get_cudnn_version();
-  compute_capability   = get_compute_capability();
+#ifdef ENABLE_CUDNN_CUPTI
+  cupti_version = get_cupti_version();
+#endif // ENABLE_CUDNN_CUPTI
+  cudnn_version      = get_cudnn_version();
+  compute_capability = get_compute_capability();
 }
 
 SCOPE_REGISTER_BEFORE_INIT(cudnn_before_init);

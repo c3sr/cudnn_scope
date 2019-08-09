@@ -13,7 +13,9 @@
 #ifdef ENABLE_CUDNN_CUPTI
 #define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->Iterations(CUDNN_CUPTI_NUM_ITERS)
 #define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->Iterations(CUDNN_CUPTI_NUM_ITERS)
-#define CUPTI_STATE_COUNTER_INFO {"cupti_enabled", ENABLE_CUDNN_CUPTI}, {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},
+#define CUPTI_STATE_COUNTER_INFO                                                                                       \
+  {"cupti_enabled", ENABLE_CUDNN_CUPTI}, {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},                                   \
+      {std::string("cupti_version:") + cupti_version, fnv1a_64(cupti_version)},
 #define CUPTI_PROFILE_START cupti_profiler::profiler profiler(events, metrics)
 #define CUPTI_PROFILE_STOP(current_iter)                                                                               \
   do {                                                                                                                 \
@@ -38,7 +40,7 @@
 #else // ENABLE_CUDNN_CUPTI
 #define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)
 #define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)
-#define CUPTI_STATE_COUNTER_INFO
+#define CUPTI_STATE_COUNTER_INFO {"cupti_enabled", 0},
 #define CUPTI_PROFILE_START
 #define CUPTI_PROFILE_STOP(current_iter)
 #endif // ENABLE_CUDNN_CUPTI
@@ -91,7 +93,6 @@
          {std::string("cuda_driver_version:") + cuda_driver_version, fnv1a_64(cuda_driver_version)},                   \
          {std::string("cuda_runtime_version:") + cuda_runtime_version, fnv1a_64(cuda_runtime_version)},                \
          {std::string("cublas_version:") + cublas_version, fnv1a_64(cublas_version)},                                  \
-         {std::string("cupti_version:") + cupti_version, fnv1a_64(cupti_version)},                                     \
          {std::string("cudnn_version:") + cudnn_version, fnv1a_64(cudnn_version)},                                     \
          {std::string("compute_capability:") + compute_capability, fnv1a_64(compute_capability)},                      \
          {std::string("gpu_name:") + gpu_name, fnv1a_64(gpu_name)},                                                    \

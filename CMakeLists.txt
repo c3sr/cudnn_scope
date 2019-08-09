@@ -5,7 +5,8 @@ endif()
 
 option(ENABLE_CUDNN_DLPERF "Enable CUDNN|Scope Generated benchmarks" OFF)
 option(ENABLE_CUDNN_CUPTI "Enable CUDNN|Scope with CUPTI support" OFF)
-option(CUDNN_CUPTI_NUM_ITERS "Number of iterations to use for CUPTI evaluation" 4)
+option(CUDNN_CUPTI_NUM_ITERS "Number of iterations to use for CUPTI evaluation"
+       4)
 option(CUDNN_BATCH_SIZE "Batch size to use for generated DLPerf data" OFF)
 
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
@@ -14,7 +15,6 @@ project(cudnn|Scope LANGUAGES CXX VERSION 1.0.0)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 include(ScopeStatus)
-
 
 hunter_add_package(spdlog)
 
@@ -37,8 +37,7 @@ target_include_directories(cudnn_scope
                                    ${PROJECT_BINARY_DIR}/src
                                    ${PROJECT_SOURCE_DIR}/src
                                    ${CUDNN_INCLUDE_DIR}
-                                   ${CUPTI_INCLUDE_DIR}
-                                   )
+                                   ${CUPTI_INCLUDE_DIR})
 
 # Get the git version
 git_get_head_revision(GIT_REFSPEC GIT_HASH)
@@ -55,24 +54,29 @@ target_compile_options(cudnn_scope
                                -Wno-unused-function
                                -Wno-vla)
 
-if (ENABLE_CUDNN_CUPTI) 
-  target_compile_options(cudnn_scope PRIVATE -DENABLE_CUDNN_CUPTI=1 -DCUDNN_CUPTI_NUM_ITERS=${CUDNN_CUPTI_NUM_ITERS})
-endif (ENABLE_CUDNN_CUPTI)
+if(ENABLE_CUDNN_CUPTI)
+  target_compile_options(
+    cudnn_scope
+    PRIVATE -DENABLE_CUDNN_CUPTI=1
+            -DCUDNN_CUPTI_NUM_ITERS=${CUDNN_CUPTI_NUM_ITERS})
+endif(ENABLE_CUDNN_CUPTI)
 if(ENABLE_CUDNN_DLPERF)
   target_compile_options(cudnn_scope PRIVATE -DGENERATED_BENCHMARK_LAYER=1)
 endif(ENABLE_CUDNN_DLPERF)
 if(CUDNN_BATCH_SIZE)
-  target_compile_options(cudnn_scope PRIVATE -DCUDNN_BATCH_SIZE=${CUDNN_BATCH_SIZE})
+  target_compile_options(cudnn_scope
+                         PRIVATE -DCUDNN_BATCH_SIZE=${CUDNN_BATCH_SIZE})
 endif(CUDNN_BATCH_SIZE)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
-                      PUBLIC 
-                             cuda
-                             ${CUDNN_LIBRARY} 
+                      PUBLIC cuda
+                             ${CUDNN_LIBRARY}
                              ${CUDA_LIBRARIES}
-                             ${CUPTI_LIBRARY}
                              ${CUDA_CUBLAS_LIBRARIES}
                              spdlog::spdlog)
+if(ENABLE_CUDNN_CUPTI)
+  target_link_libraries(cudnn_scope PUBLIC ${CUPTI_LIBRARY})
+endif(ENABLE_CUDNN_CUPTI)
 scope_status(
   "${PROJECT_SOURCE_DIR}/src/config.hpp.in -> ${PROJECT_BINARY_DIR}/src/config.hpp"
   )
