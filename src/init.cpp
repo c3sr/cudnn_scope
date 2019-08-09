@@ -44,6 +44,7 @@ FLAGS_NS(std::vector<std::string> events({}));
 
 int cuda_device_id = 0;
 
+#ifdef ENABLE_CUDNN_CUPTI
 static void register_cupti_flags() {
   RegisterOpt(clara::Opt(FLAG(num_warmup), "num_warmup")["-w"]["--num_warmup"]("number of times to run warmup code"));
   RegisterOpt(clara::Opt(FLAG(metrics), "metrics")["--metrics"]("metrics to capture"));
@@ -51,6 +52,7 @@ static void register_cupti_flags() {
   RegisterOpt(clara::Opt(FLAG(list_metrics), "list_metrics")["-m"]["--list_metrics"]("list cupti metrics"));
   RegisterOpt(clara::Opt(FLAG(list_events), "list_events")["-e"]["--list_events"]("list cupti events"));
 }
+#endif // ENABLE_CUDNN_CUPTI
 
 static int cuda_init() {
   if (PRINT_IF_ERROR(cuDeviceGet(&m_device, cuda_device_id))) {
@@ -65,6 +67,7 @@ static int cuda_init() {
   return 0;
 }
 
+#ifdef ENABLE_CUDNN_CUPTI
 static void cupti_options() {
   using namespace cupti_profiler;
 
@@ -82,6 +85,7 @@ static void cupti_options() {
     exit(0);
   }
 }
+#endif // ENABLE_CUDNN_CUPTI
 
 static void cudnn_before_init() {
   // Create a version string and tell scope about it
@@ -217,9 +221,13 @@ static void system_info() {
 }
 
 SCOPE_REGISTER_BEFORE_INIT(cudnn_before_init);
+#ifdef ENABLE_CUDNN_CUPTI
 SCOPE_REGISTER_BEFORE_INIT(register_cupti_flags);
+#endif // ENABLE_CUDNN_CUPTI
 SCOPE_REGISTER_INIT(cudnn_init);
 SCOPE_REGISTER_INIT(cublas_init);
+#ifdef ENABLE_CUDNN_CUPTI
 SCOPE_REGISTER_AFTER_INIT(cupti_options, "cupti");
+#endif // ENABLE_CUDNN_CUPTI
 SCOPE_REGISTER_AFTER_INIT(color_logger, "logger");
 SCOPE_REGISTER_AFTER_INIT(system_info, "system_info");
