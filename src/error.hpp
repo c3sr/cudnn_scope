@@ -75,12 +75,14 @@ namespace detail {
     }
   }
 
+#ifdef ENABLE_CUDNN_CUPTI
   template <>
   ALWAYS_INLINE const char *error_string<CUptiResult>(const CUptiResult &status) {
     const char *res;
     cuptiGetResultString(status, &res);
     return res;
   }
+#endif // ENABLE_CUDNN_CUPTI
 
   template <>
   ALWAYS_INLINE bool is_success<cudnnStatus_t>(const cudnnStatus_t &err) {
