@@ -18,7 +18,9 @@ include(ScopeStatus)
 
 hunter_add_package(spdlog)
 
-find_package(CUPTI REQUIRED)
+if(ENABLE_CUDNN_CUPTI)
+  find_package(CUPTI REQUIRED)
+endif(ENABLE_CUDNN_CUPTI)
 find_package(CuDNN REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(CUDA REQUIRED)
