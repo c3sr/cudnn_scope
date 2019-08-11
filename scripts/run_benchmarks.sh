@@ -14,7 +14,22 @@ rm -fr ${RESULTS_DIR}
 mkdir -p ${RESULTS_DIR}
 nvidia-smi -x -q -a > ${RESULTS_DIR}/nvidia_smi.xml
 
-for BATCH_SIZE in 1 2 4 8 16
+
+declare -a batch_sizes=(
+  # 1 \
+  # 2 \
+  # 4 \
+  # 8 \
+  # 16 \
+  32 \
+  64 \
+  128 \
+  256 \
+  512 \
+  1024
+)
+
+for batch_size in "${batch_sizes[@]}"
 do
   rm -fr build && mkdir build
   pushd build
