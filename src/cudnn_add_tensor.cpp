@@ -121,12 +121,13 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
             << "output_batch_size " << out_n <<
       " output_channels " << out_c << " output_height " << out_h << " output_width " << out_w << "\n";
 
+#endif
+
   const double predicted_flops = in_n * in_c * in_h * in_w;
   state.counters.insert(
       {{"predicted_flops_count", predicted_flops},
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
 
-#endif
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
 }
 
