@@ -119,23 +119,7 @@ static void LAYER_CUDNN_SCALE_TENSOR_Impl(benchmark::State& state) {
 
 #define ENABLE_LAYER_CUDNN_SCALE_TENSOR 1
 
-#if !defined(CUDNN_BATCH_SIZE)
-#include "dlperf/generated_benchmarks_1.hpp"
-#include "dlperf/generated_benchmarks_16.hpp"
-#include "dlperf/generated_benchmarks_2.hpp"
-#include "dlperf/generated_benchmarks_4.hpp"
-#include "dlperf/generated_benchmarks_8.hpp"
-#elif CUDNN_BATCH_SIZE == 1
-#include "dlperf/generated_benchmarks_1.hpp"
-#elif CUDNN_BATCH_SIZE == 2
-#include "dlperf/generated_benchmarks_2.hpp"
-#elif CUDNN_BATCH_SIZE == 4
-#include "dlperf/generated_benchmarks_4.hpp"
-#elif CUDNN_BATCH_SIZE == 8
-#include "dlperf/generated_benchmarks_8.hpp"
-#elif CUDNN_BATCH_SIZE == 16
-#include "dlperf/generated_benchmarks_16.hpp"
-#endif // CUDNN_BATCH_SIZE
+#include "generated_benchmarks.hpp"
 
 #undef ENABLE_LAYER_CUDNN_SCALE_TENSOR
 

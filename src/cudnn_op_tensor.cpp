@@ -168,25 +168,21 @@ DECLARE_OP(NOT, CUDNN_OP_TENSOR_NOT)
 #define ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_BWD 1
 #define ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_BWD 1
 
-#if !defined(CUDNN_BATCH_SIZE)
-#include "dlperf/generated_benchmarks_1.hpp"
-#include "dlperf/generated_benchmarks_16.hpp"
-#include "dlperf/generated_benchmarks_2.hpp"
-#include "dlperf/generated_benchmarks_4.hpp"
-#include "dlperf/generated_benchmarks_8.hpp"
-#elif CUDNN_BATCH_SIZE == 1
-#include "dlperf/generated_benchmarks_1.hpp"
-#elif CUDNN_BATCH_SIZE == 2
-#include "dlperf/generated_benchmarks_2.hpp"
-#elif CUDNN_BATCH_SIZE == 4
-#include "dlperf/generated_benchmarks_4.hpp"
-#elif CUDNN_BATCH_SIZE == 8
-#include "dlperf/generated_benchmarks_8.hpp"
-#elif CUDNN_BATCH_SIZE == 16
-#include "dlperf/generated_benchmarks_16.hpp"
-#endif // CUDNN_BATCH_SIZE
+#include "generated_benchmarks.hpp"
 
 #undef ENABLE_LAYER_CUDNN_OP_TENSOR
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MUL_FWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MIN_FWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MAX_FWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_FWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_FWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_BWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MUL_BWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MIN_BWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MAX_BWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_BWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_BWD 
 
 #else // GENERATED_BENCHMARK_LAYER
 
