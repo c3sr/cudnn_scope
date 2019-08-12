@@ -38,9 +38,13 @@ DEFINE_FLAG_bool(list_metrics, false, "list cupti metrics");
 DEFINE_FLAG_bool(list_events, false, "list cupti events");
 
 
-FLAGS_NS(std::vector<std::string> metrics({"flop_count_sp", "flops_sp_add", "flops_sp_mul", "flops_sp_fma",
-                                                       "flops_sp_special", "achieved_occupancy", "dram_read_bytes",
+FLAGS_NS(std::vector<std::string> flop_metrics({"flop_count_sp", "flops_sp_add", "flops_sp_mul", "flops_sp_fma",
+                                                       "flops_sp_special"}));
+FLAGS_NS(std::vector<std::string> occupancy_metrics({"achieved_occupancy"}));
+FLAGS_NS(std::vector<std::string> memory_metrics({"dram_read_bytes",
                                                                                                   "dram_write_bytes"}));
+
+FLAGS_NS(std::vector<std::string> metrics = flop_metrics;);
 FLAGS_NS(std::vector<std::string> events({}));
 
 int cuda_device_id = 0;
