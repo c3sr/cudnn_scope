@@ -34,7 +34,7 @@ do
   rm -fr build && mkdir build
   pushd build
   cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=${BATCH_SIZE}
-  make -j $(nproc)
+  make -j 2
   ./scope --benchmark_out_format=json --benchmark_out=${RESULTS_DIR}/${BATCH_SIZE}.json
   popd
 done
