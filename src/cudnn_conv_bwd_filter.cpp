@@ -209,7 +209,6 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
                          {"stride_width", stride_width},
                          {"dilation_height", dilation_height},
                          {"dilation_width", dilation_width},
-                         {"group", group},
                          {"output_size", out_n * out_c * out_h * out_w},
                          {"output_batch_size", out_n},
                          {"output_channels", out_c},
