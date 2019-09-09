@@ -16,11 +16,11 @@ nvidia-smi -x -q -a > ${RESULTS_DIR}/nvidia_smi.xml
 
 
 declare -a batch_sizes=(
-  # 1 \
-  # 2 \
-  # 4 \
-  # 8 \
-  # 16 \
+  1 \
+  2 \
+  4 \
+  8 \
+  16 \
   32 \
   64 \
   128 \
@@ -34,7 +34,7 @@ do
   rm -fr build && mkdir build
   pushd build
   cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=${BATCH_SIZE}
-  make -j 2
+  make -j 6
   ./scope --benchmark_out_format=json --benchmark_out=${RESULTS_DIR}/${BATCH_SIZE}.json
   popd
 done
