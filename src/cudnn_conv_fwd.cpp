@@ -218,7 +218,6 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
                          {"pad_width", pad_width},
                          {"stride_height", stride_height},
                          {"stride_width", stride_width},
-                         {"group", group},
                          {"dilation_height", dilation_height},
                          {"dilation_width", dilation_width},
                          {"output_size", out_n * out_c * out_h * out_w},
