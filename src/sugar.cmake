@@ -21,17 +21,17 @@ sugar_files(cudnn_BENCHMARK_HEADERS
 
 sugar_files(cudnn_BENCHMARK_SOURCES
             ctc_loss.cpp
-            cublas_gemm_fwd.cpp
-            cublas_gemv_fwd.cpp
-            cudnn_activation_fwd.cpp
-            cudnn_add_tensor.cpp
-            cudnn_batchnorm_fwd.cpp
+            # cublas_gemm_fwd.cpp
+            # cublas_gemv_fwd.cpp
+            # cudnn_activation_fwd.cpp
+            # cudnn_add_tensor.cpp
+            # cudnn_batchnorm_fwd.cpp
             # cudnn_conv_bias_activation_fwd.cpp
             cudnn_conv_fwd.cpp
-            cudnn_dropout_fwd.cpp
-            cudnn_op_tensor.cpp
-            cudnn_pooling_fwd.cpp
-            cudnn_softmax_fwd.cpp
+            # cudnn_dropout_fwd.cpp
+            # cudnn_op_tensor.cpp
+            # cudnn_pooling_fwd.cpp
+            # cudnn_softmax_fwd.cpp
             init.cpp)
 
 sugar_files(cudnn_BENCHMARK_BWD_SOURCES
