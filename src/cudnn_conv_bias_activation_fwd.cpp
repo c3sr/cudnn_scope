@@ -317,7 +317,9 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
 
 #define ENABLE_LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD 1
 
+#define FUSED_ONLY_BENCHMARKS 1
 #include "generated_benchmarks.hpp"
+#undef FUSED_ONLY_BENCHMARKS
 
 #undef ENABLE_LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD
 
