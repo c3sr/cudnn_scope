@@ -40,7 +40,7 @@
 #elif CUDNN_BATCH_SIZE == 1024
 #include "dlperf/generated_profile_benchmarks_1024.hpp"
 #endif // CUDNN_BATCH_SIZE
-#elif FUSED_ONLY_BENCHMARKS 
+#elif defined(FUSED_ONLY_BENCHMARKS)
 #if !defined(CUDNN_BATCH_SIZE)
 #include "dlperf/generated_only_fused_benchmarks_1.hpp"
 #include "dlperf/generated_only_fused_benchmarks_1024.hpp"
