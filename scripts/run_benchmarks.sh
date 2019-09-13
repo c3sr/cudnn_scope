@@ -29,12 +29,12 @@ declare -a batch_sizes=(
   1024
 )
 
-for batch_size in "${batch_sizes[@]}"
+for BATCH_SIZE in "${batch_sizes[@]}"
 do
   rm -fr build && mkdir build
   pushd build
   cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=${BATCH_SIZE}
-  make -j4
+  make VERBOSE=1 -j4
   ./scope --benchmark_out_format=json --benchmark_out=${RESULTS_DIR}/${BATCH_SIZE}.json
   popd
 done

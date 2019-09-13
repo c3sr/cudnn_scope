@@ -337,11 +337,11 @@ void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
 #ifdef GENERATED_BENCHMARK_LAYER
 
-#define ENABLE_LAYER_CUDNN_CONV_FWD 1
+/* #define ENABLE_LAYER_CUDNN_CONV_FWD 1 */
 
 #include "generated_benchmarks.hpp"
 
-#undef ENABLE_LAYER_CUDNN_CONV_FWD
+/* #undef ENABLE_LAYER_CUDNN_CONV_FWD */
 
 #else // GENERATED_BENCHMARK_LAYER
 
