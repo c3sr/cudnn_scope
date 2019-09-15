@@ -26,12 +26,12 @@ sugar_files(cudnn_BENCHMARK_SOURCES
             cudnn_activation_fwd.cpp
             cudnn_add_tensor.cpp
             cudnn_batchnorm_fwd.cpp
-            cudnn_conv_bias_activation_fwd_0.cpp
-            cudnn_conv_bias_activation_fwd_1.cpp
-            cudnn_conv_bias_activation_fwd_2.cpp
-            cudnn_conv_bias_activation_fwd_3.cpp
-            cudnn_conv_bias_activation_fwd_4.cpp
-            cudnn_conv_bias_activation_fwd_5.cpp
+            # cudnn_conv_bias_activation_fwd_0.cpp
+            # cudnn_conv_bias_activation_fwd_1.cpp
+            # cudnn_conv_bias_activation_fwd_2.cpp
+            # cudnn_conv_bias_activation_fwd_3.cpp
+            # cudnn_conv_bias_activation_fwd_4.cpp
+            # cudnn_conv_bias_activation_fwd_5.cpp
             cudnn_conv_fwd_0.cpp
             cudnn_conv_fwd_1.cpp
             cudnn_conv_fwd_2.cpp
