@@ -24,7 +24,7 @@ do
   cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=${BATCH_SIZE}
   make -j $(nproc)
   ./scope --benchmark_out_format=json --benchmark_out=${RESULTS_DIR}/${BATCH_SIZE}.json #--metrics=${CUPTI_METRICS}
-  gunzip ${RESULTS_DIR}/${BATCH_SIZE}.json
+  gzip ${RESULTS_DIR}/${BATCH_SIZE}.json
   popd
 done
 
