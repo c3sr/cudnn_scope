@@ -5,6 +5,7 @@ endif()
 
 option(ENABLE_CUDNN_DLPERF "Enable CUDNN|Scope Generated benchmarks" OFF)
 option(ENABLE_CUDNN_CUPTI "Enable CUDNN|Scope with CUPTI support" OFF)
+option(RESNET50_ONLY "Enable only ResNet50-v1 model" OFF)
 option(CUDNN_CUPTI_NUM_ITERS "Number of iterations to use for CUPTI evaluation"
        4)
 option(CUDNN_BATCH_SIZE "Batch size to use for generated DLPerf data" OFF)
@@ -29,7 +30,11 @@ find_package(CUDA REQUIRED)
 sugar_include("src")
 
 # The plugin is a static library that Scope will be linked with
-scope_add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_SOURCES})
+
+if(RESNET50_ONLY)
+  LIST(APPEND cudnn_BENCHMARK_FWD_SOURCES ${cudnn_BENCHMARK_FWD_FUSED_SOURCES})
+endif(RESNET50_ONLY)
+scope_add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_FWD_SOURCES})
 target_include_scope_directories(cudnn_scope)
 target_include_directories(cudnn_scope
                            PRIVATE ${SCOPE_SRC_DIR}
@@ -69,6 +74,10 @@ if(CUDNN_BATCH_SIZE)
   target_compile_options(cudnn_scope
                          PRIVATE -DCUDNN_BATCH_SIZE=${CUDNN_BATCH_SIZE})
 endif(CUDNN_BATCH_SIZE)
+if(RESNET50_ONLY)
+  target_compile_options(cudnn_scope
+                         PRIVATE -DRESNET50_ONLY=${RESNET50_ONLY})
+endif(RESNET50_ONLY)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
                       PUBLIC cuda
