@@ -32,6 +32,10 @@ sugar_files(cudnn_BENCHMARK_SOURCES
             # cudnn_conv_bias_activation_fwd_3.cpp
             # cudnn_conv_bias_activation_fwd_4.cpp
             # cudnn_conv_bias_activation_fwd_5.cpp
+            # cudnn_conv_bias_activation_fwd_6.cpp
+            # cudnn_conv_bias_activation_fwd_7.cpp
+            # cudnn_conv_bias_activation_fwd_8.cpp
+            # cudnn_conv_bias_activation_fwd_9.cpp
             cudnn_conv_fwd_0.cpp
             cudnn_conv_fwd_1.cpp
             cudnn_conv_fwd_2.cpp
