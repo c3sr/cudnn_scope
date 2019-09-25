@@ -183,7 +183,7 @@ static std::string get_cublas_version() {
 
 static std::string get_cudnn_version() {
   const auto version = CUDNN_VERSION;
-  return fmt::format("{}.{}", version / 1000, version % 100);
+  return fmt::format("{}.{}.{}", CUDNN_MAJOR, CUDNN_MINOR, CUDNN_PATCHLEVEL);
 }
 
 /*!
