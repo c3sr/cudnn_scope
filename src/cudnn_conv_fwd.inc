@@ -113,8 +113,9 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   cudnnFilterDescriptor_t w_descriptor = w_filter.get();
 
   int out_n, out_c, out_h, out_w;
-  if (PRINT_IF_ERROR(cudnnGetConvolution2dForwardOutputDim(convolution_descriptor, x_descriptor, w_descriptor, &out_n,
-                                                           &out_c, &out_h, &out_w))) {
+  const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(convolution_descriptor, x_descriptor, w_descriptor, &out_n,
+                                                           &out_c, &out_h, &out_w);
+  if (PRINT_IF_ERROR(cudnn_get_conv_output_err)) {
     state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim because of {}",
                                     utils::detail::error_string(cudnn_get_conv_output_err))
                             .c_str());
