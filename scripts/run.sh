@@ -3,7 +3,7 @@
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-sudo ${DIR}/../setup.sh
+sudo bash -c ${DIR}/../setup.sh
 
 rm -fr ${DIR}/../results 
 
