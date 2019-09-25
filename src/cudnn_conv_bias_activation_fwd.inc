@@ -58,7 +58,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
 
   const float alpha = 1, beta = 0;
   const double coef                      = 1;
-  const cudnnConvolutionMode_t conv_mode = CUDNN_CONVOLUTION;
+  const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
   cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
@@ -252,6 +252,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
                          {"output_channels", out_c},
                          {"output_height", out_h},
                          {"output_width", out_w},
+                         {"conv_mode", (int) conv_mode},
                          {"workspace_bytes", workspace_bytes},
                          {"workspace_megabytes", workspace_bytes / 1048576.0},
                          {"convolution_algorithm", (int) convolution_algorithm},
@@ -312,16 +313,16 @@ static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   }
 }
 
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_0_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_1_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_2_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_3_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_4_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_5_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_6_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_7_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_8_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
-#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_9_Impl  LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_0_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_1_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_2_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_3_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_4_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_5_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_6_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_7_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_8_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
+#define LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_9_Impl LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl
 
 #ifdef GENERATED_BENCHMARK_LAYER
 

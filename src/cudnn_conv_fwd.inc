@@ -43,7 +43,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
   const float alpha = 1, beta = 0;
-  const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION ; //CUDNN_CONVOLUTION;
+  const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
   const auto batch_size      = state.range(0);
@@ -113,11 +113,13 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   cudnnFilterDescriptor_t w_descriptor = w_filter.get();
 
   int out_n, out_c, out_h, out_w;
-  const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(convolution_descriptor, x_descriptor, w_descriptor, &out_n,
-                                                           &out_c, &out_h, &out_w);
+  const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(
+      convolution_descriptor, x_descriptor, w_descriptor, &out_n, &out_c, &out_h, &out_w);
   if (PRINT_IF_ERROR(cudnn_get_conv_output_err)) {
-    state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim because of {}. x_shape = [{}x{}x{}x{}], w_shape=[{}x{}x{}x{}], group={}",
-                                    utils::detail::error_string(cudnn_get_conv_output_err), batch_size, channels, height, width, num_filters, channels, filter_width, filter_height, group)
+    state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim because of {}. "
+                                                   "x_shape = [{}x{}x{}x{}], w_shape=[{}x{}x{}x{}], group={}",
+                                    utils::detail::error_string(cudnn_get_conv_output_err), batch_size, channels,
+                                    height, width, num_filters, channels, filter_width, filter_height, group)
                             .c_str());
     return;
   }
@@ -228,6 +230,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
                          {"output_channels", out_c},
                          {"output_height", out_h},
                          {"output_width", out_w},
+                         {"conv_mode", (int) conv_mode},
                          {"workspace_bytes", workspace_bytes},
                          {"workspace_megabytes", workspace_bytes / 1048576.0},
                          {"convolution_algorithm", (int) convolution_algorithm},
