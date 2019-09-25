@@ -3,9 +3,9 @@
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-sudo bash -c ${DIR}/../setup.sh
+sudo bash -c ${DIR}/../setup/setup.sh
 
-rm -fr ${DIR}/../results 
+rm -fr ${DIR}/../results
 
 ${DIR}/run_benchmarks.sh
 ${DIR}/run_resnet50_benchmarks.sh
