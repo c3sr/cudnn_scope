@@ -129,7 +129,8 @@ struct Tensor {
 
     if (PRINT_IF_ERROR(
             cudnnSetTensor4dDescriptor(descriptor, layout, value_type, dims[0], dims[1], dims[2], dims[3]))) {
-      state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor");
+      const auto err  = fmt::format(BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{}", dims[0], dims[1], dims[2], dims[3]);
+      state.SkipWithError(err.c_str());
       return;
     }
     is_valid = true;

@@ -5,6 +5,7 @@ endif()
 
 option(ENABLE_CUDNN_DLPERF "Enable CUDNN|Scope Generated benchmarks" OFF)
 option(ENABLE_CUDNN_CUPTI "Enable CUDNN|Scope with CUPTI support" OFF)
+option(MOBILENETV2_ONLY "Enable only MobileNet-v2 model" OFF)
 option(RESNET50_ONLY "Enable only ResNet50-v1 model" OFF)
 option(CUDNN_CUPTI_NUM_ITERS "Number of iterations to use for CUPTI evaluation"
        4)
@@ -78,6 +79,10 @@ if(RESNET50_ONLY)
   target_compile_options(cudnn_scope
                          PRIVATE -DRESNET50_ONLY=${RESNET50_ONLY})
 endif(RESNET50_ONLY)
+if(MOBILENETV2_ONLY)
+  target_compile_options(cudnn_scope
+                         PRIVATE -DMOBILENETV2_ONLY=${MOBILENETV2_ONLY})
+endif(MOBILENETV2_ONLY)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
                       PUBLIC cuda

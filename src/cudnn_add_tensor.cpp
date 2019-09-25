@@ -48,8 +48,8 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto in_h  = height;
   const auto in_c  = width;
   const auto out_n = batch_size;
-  const auto out_w = detail::calc_conv_out_dim(width, filter_width, pad_width, stride_width, dilation_width);
-  const auto out_h = detail::calc_conv_out_dim(height, filter_height, pad_height, stride_height, dilation_height);
+  const auto out_w = in_w;
+  const auto out_h = in_h;
   const auto out_c = num_filters;
 
   const auto bias_dim = out_c;
