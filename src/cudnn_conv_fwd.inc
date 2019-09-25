@@ -43,7 +43,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
   const float alpha = 1, beta = 0;
-  const cudnnConvolutionMode_t conv_mode = CUDNN_CONVOLUTION;
+  const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION ; //CUDNN_CONVOLUTION;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
   const auto batch_size      = state.range(0);
@@ -104,7 +104,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
   const auto w_filter = Filter<T>(state,
                                   {/*out_channels=*/num_filters,
-                                   /*in_channels=*/channels,
+                                   /*in_channels=*/channels / group,
                                    /*kernel_height=*/filter_height,
                                    /*kernel_width=*/filter_width});
   if (!w_filter.is_valid) {
@@ -116,8 +116,8 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(convolution_descriptor, x_descriptor, w_descriptor, &out_n,
                                                            &out_c, &out_h, &out_w);
   if (PRINT_IF_ERROR(cudnn_get_conv_output_err)) {
-    state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim because of {}",
-                                    utils::detail::error_string(cudnn_get_conv_output_err))
+    state.SkipWithError(fmt::format(BENCHMARK_NAME " failed to cudnnGetConvolution2dForwardOutputDim because of {}. x_shape = [{}x{}x{}x{}], w_shape=[{}x{}x{}x{}], group={}",
+                                    utils::detail::error_string(cudnn_get_conv_output_err), batch_size, channels, height, width, num_filters, channels, filter_width, filter_height, group)
                             .c_str());
     return;
   }

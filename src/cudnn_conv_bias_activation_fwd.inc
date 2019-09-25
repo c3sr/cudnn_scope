@@ -110,7 +110,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
 
   const auto w_filter = Filter<T>(state,
                                   {/*out_channels=*/num_filters,
-                                   /*in_channels=*/channels,
+                                   /*in_channels=*/channels / group,
                                    /*kernel_height=*/filter_height,
                                    /*kernel_width=*/filter_width});
   if (!w_filter.is_valid) {
