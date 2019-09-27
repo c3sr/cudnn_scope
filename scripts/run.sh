@@ -12,5 +12,4 @@ ${DIR}/run_resnet50_benchmarks.sh
 ${DIR}/run_mobilenetv2_benchmarks.sh
 ${DIR}/run_benchmarks_profile.sh
 
-unalias cp
 cp -r ${DIR}/../results $GOPATH/src/github.com/rai-project/dlperf
