@@ -83,6 +83,10 @@ if(MOBILENETV2_ONLY)
   target_compile_options(cudnn_scope
                          PRIVATE -DMOBILENETV2_ONLY=${MOBILENETV2_ONLY})
 endif(MOBILENETV2_ONLY)
+if(ADD_TENSOR_ONLY)
+  target_compile_options(cudnn_scope
+                         PRIVATE -DADD_TENSOR_ONLY=${ADD_TENSOR_ONLY})
+endif(ADD_TENSOR_ONLY)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
                       PUBLIC cuda
