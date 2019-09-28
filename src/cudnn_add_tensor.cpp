@@ -26,38 +26,26 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     return;
   }
 
-  const auto batch_size      = state.range(0);
-  const auto channels        = state.range(1);
-  const auto height          = state.range(2);
-  const auto width           = state.range(3);
-  const auto num_filters     = state.range(4);
-  const auto filter_width    = state.range(5);
-  const auto filter_height   = state.range(6);
-  const auto pad_width       = state.range(7);
-  const auto pad_height      = state.range(8);
-  const auto stride_width    = state.range(9);
-  const auto stride_height   = state.range(10);
-  const auto dilation_height = state.range(11);
-  const auto dilation_width  = state.range(12);
+  const auto out_0      = state.range(0);
+  const auto out_1      = state.range(1);
+  const auto out_2      = state.range(2);
+  const auto out_3      = state.range(3);
+  const auto bias_0     = state.range(4);
+  const auto bias_1     = state.range(5);
+  const auto bias_2     = state.range(6);
+  const auto bias_3     = state.range(7);
+  const auto batch_size = state.range(8);
+
+  const auto out_n = out_0;
+  const auto out_c = out_1;
+  const auto out_h = out_2;
+  const auto out_w = out_3;
 
   const T alpha = detail::one<T>();
   const T beta  = detail::zero<T>();
 
-  const auto in_n  = batch_size;
-  const auto in_w  = channels;
-  const auto in_h  = height;
-  const auto in_c  = width;
-  const auto out_n = batch_size;
-  const auto out_w = in_w;
-  const auto out_h = in_h;
-  const auto out_c = num_filters;
-
   const auto bias_dim = out_c;
-  auto input_tensor   = Tensor<T>(state,
-                                {/*batch_size=*/1,
-                                 /*channels=*/bias_dim,
-                                 /*image_height=*/1,
-                                 /*image_width=*/1});
+  auto input_tensor   = Tensor<T>(state, {bias_0, bias_1, bias_2, bias_3});
   if (!input_tensor.is_valid) {
     return;
   }
@@ -69,7 +57,7 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   }
   cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
 
-  const auto input_bytes  = sizeof(T) * bias_dim;
+  const auto input_bytes  = sizeof(T) * bias_0 * bias_1 * bias_2 * bias3;
   const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
 
   auto input = std::vector<T>(input_bytes / sizeof(T));
@@ -95,40 +83,23 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
     cudnn_err = cudnnAddTensor(cudnn_handle, &alpha, input_descriptor, d_input, &beta, output_descriptor, d_output);
   });
 
-  state.counters.insert({{"input_size", batch_size * channels * height * width},
-                         {"input_batch_size", batch_size},
-                         {"input_channels", channels},
-                         {"input_height", height},
-                         {"input_width", width},
-                         {"num_filters", num_filters},
-                         {"filter_height", filter_height},
-                         {"filter_width", filter_width},
-                         {"pad_height", pad_height},
-                         {"pad_width", pad_width},
-                         {"stride_height", stride_height},
-                         {"stride_width", stride_width},
-                         {"output_size", out_n * out_c * out_h * out_w},
-                         {"output_batch_size", out_n},
-                         {"output_channels", out_c},
-                         {"output_height", out_h},
-                         {"output_width", out_w},
-                         {"bias_dim", bias_dim}});
-#if 0
-  std::cout << ""
-            << "input_bias_dim " << bias_dim <<
-"\n";
-  std::cout << ""
-            << "output_batch_size " << out_n <<
-      " output_channels " << out_c << " output_height " << out_h << " output_width " << out_w << "\n";
+  state.counters.insert({{"a_desc_0", bias_0},
+                         {"a_desc_1", bias_1},
+                         {"a_desc_2", bias_2},
+                         {"a_desc_3", bias_3},
+                         {"c_desc_0", out_0},
+                         {"c_desc_1", out_1},
+                         {"c_desc_2", out_2},
+                         {"c_desc_3", out_3},
+                         {"alpha", (int) alpha},
+                         {"beta", (int) beta}});
 
-#endif
-
-  const double predicted_flops = in_n * in_c * in_h * in_w;
+  const double predicted_flops = out_0 * out_1 * out_2 * out_3;
   state.counters.insert(
       {{"predicted_flops_count", predicted_flops},
        {"predicted_flops", {predicted_flops * state.iterations(), benchmark::Counter::kAvgThreadsRate}}});
 
-  state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
+  state.SetItemsProcessed(int64_t(state.iterations()) * predicted_flops);
 }
 
 template <typename T>
