@@ -57,7 +57,7 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   }
   cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
 
-  const auto input_bytes  = sizeof(T) * bias_0 * bias_1 * bias_2 * bias3;
+  const auto input_bytes  = sizeof(T) * bias_0 * bias_1 * bias_2 * bias_3;
   const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
 
   auto input = std::vector<T>(input_bytes / sizeof(T));
