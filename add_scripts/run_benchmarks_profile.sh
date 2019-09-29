@@ -3,7 +3,7 @@
 SCOPE_TOP_DIR=../..
 HOST_NAME=$(hostname)
 GPU_NAME=$(nvidia-smi --query-gpu="name" --format=csv | sed -n 2p | tr -s ' ' | tr ' ' '_')
-RESULTS_DIR=$(pwd)/results/profile/__add_tensor/${GPU_NAME}
+RESULTS_DIR=$(pwd)/results/__add_tensor/profile/${GPU_NAME}
 
 pushd ${SCOPE_TOP_DIR}
 
