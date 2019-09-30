@@ -1,70 +1,12 @@
-#ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__4019915958792843647 {
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      2048 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__4019915958792843647{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 2048} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__4019915958792843647(benchmark::State& state) {
-  const auto inputs = input_args__4019915958792843647;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__4019915958792843647(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__4019915958792843647(state);
-  LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__4019915958792843647(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
-  BENCHMARK_CUDNN(b)->\
-    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-
-
-BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__4019915958792843647);
-
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__4019915958792843647
-#endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
 #ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__9029827475528369272 {
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6852594140578207931 {
 
 #define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      2048 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
+      64 /* Input1 , idx = 1*/, \
+      112 /* Input2 , idx = 2*/, \
+      112 /* Input3 , idx = 3*/, \
       -1 /* Input4 , idx = 4*/, \
       -1 /* Input5 , idx = 5*/, \
       -1 /* Input6 , idx = 6*/, \
@@ -73,11 +15,11 @@ namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__9029827475528369272 {
   }})
 
 
-static const std::map<std::string, double> input_args__9029827475528369272{{
+static const std::map<std::string, double> input_args__6852594140578207931{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 2048} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 112} /* Input2 */, 
+      {"input[3]", 112} /* Input3 */, 
       {"input[4]", -1} /* Input4 */, 
       {"input[5]", -1} /* Input5 */, 
       {"input[6]", -1} /* Input6 */, 
@@ -88,17 +30,17 @@ static const std::map<std::string, double> input_args__9029827475528369272{{
 #define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
 
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__9029827475528369272(benchmark::State& state) {
-  const auto inputs = input_args__9029827475528369272;
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6852594140578207931(benchmark::State& state) {
+  const auto inputs = input_args__6852594140578207931;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
 
 template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__9029827475528369272(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__9029827475528369272(state);
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6852594140578207931(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6852594140578207931(state);
   LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__9029827475528369272(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6852594140578207931(state);
 }
 
 #define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
@@ -113,146 +55,130 @@ static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__9029827475528369272
   
 
 
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__9029827475528369272);
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6852594140578207931);
 
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__9029827475528369272
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6852594140578207931
 #endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUBLAS_GEMM_FWD
-namespace LAYER_CUBLAS_GEMM_FWD__BatchSize_2__571238508124193294 {
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1788481463126125362 {
 
-#define BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1000 /* Input1 , idx = 1*/, \
-      2048 /* Input2 , idx = 2*/, \
-      0 /* Input3 , idx = 3*/, \
-      1 /* Input4 , idx = 4*/, \
-      1 /* Input5 , idx = 5*/, \
-      1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__571238508124193294{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1000} /* Input1 */, 
-      {"input[2]", 2048} /* Input2 */, 
-      {"input[3]", 0} /* Input3 */, 
-      {"input[4]", 1} /* Input4 */, 
-      {"input[5]", 1} /* Input5 */, 
-      {"input[6]", 1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUBLAS_GEMM_FWD_ADD_COUNTERS__BatchSize_2__571238508124193294(benchmark::State& state) {
-  const auto inputs = input_args__571238508124193294;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-static void LAYER_CUBLAS_GEMM_FWD_FLOAT32__BatchSize_2__571238508124193294(benchmark::State& state) {
-  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_ADD_COUNTERS__BatchSize_2__571238508124193294(state);
-  LAYER_CUBLAS_GEMM_FWD_Impl<float>(state);
-  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_ADD_COUNTERS__BatchSize_2__571238508124193294(state);
-}
-
-
-
-
-BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_FLOAT32__BatchSize_2__571238508124193294)->\
-  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARG_NAMES()->\
-  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARGS()->\
-  UseManualTime();
-
-#undef BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARG_NAMES
-}
-#endif // ENABLE_LAYER_CUBLAS_GEMM_FWD
-#ifdef ENABLE_LAYER_CUDNN_POOLING_FWD
-namespace LAYER_CUDNN_POOLING_FWD__BatchSize_2__9240476157489154913 {
-
-#define BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS() \
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
       64 /* Input1 , idx = 1*/, \
-      112 /* Input2 , idx = 2*/, \
-      112 /* Input3 , idx = 3*/, \
-      3 /* FilterHeight , idx = 4*/, \
-      3 /* FilterWidth , idx = 5*/, \
-      1 /* PadHeight , idx = 6*/, \
-      1 /* PadWidth , idx = 7*/, \
-      2 /* StrideHeight , idx = 8*/, \
-      2 /* StrideWidth , idx = 9*/, \
-      2 /* BatchSize , idx = 10*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      64 /* FilterCount , idx = 4*/, \
+      3 /* FilterHeight , idx = 5*/, \
+      3 /* FilterWidth , idx = 6*/, \
+      1 /* PadHeight , idx = 7*/, \
+      1 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
   }})
 
 
-static const std::map<std::string, double> input_args__9240476157489154913{{
+static const std::map<std::string, double> input_args__1788481463126125362{{
       {"input[0]", 2} /* Input0 */, 
       {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 112} /* Input2 */, 
-      {"input[3]", 112} /* Input3 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"filter_count", 64} /* FilterCount */, 
       {"filter_height", 3} /* FilterHeight */, 
       {"filter_width", 3} /* FilterWidth */, 
       {"pad_height", 1} /* PadHeight */, 
       {"pad_width", 1} /* PadWidth */, 
-      {"stride_height", 2} /* StrideHeight */, 
-      {"stride_width", 2} /* StrideWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
       {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
 }};
 
-#define BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "batch_size"})
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
 
-static void BENCHMARK_LAYER_CUDNN_POOLING_FWD_ADD_COUNTERS__BatchSize_2__9240476157489154913(benchmark::State& state) {
-  const auto inputs = input_args__9240476157489154913;
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1788481463126125362(benchmark::State& state) {
+  const auto inputs = input_args__1788481463126125362;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
   
-  template <cudnnPoolingMode_t pooling_mode>
-  static void LAYER_CUDNN_POOLING_FWD_FLOAT32__BatchSize_2__9240476157489154913(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_POOLING_FWD_ADD_COUNTERS__BatchSize_2__9240476157489154913(state);
-    LAYER_CUDNN_POOLING_FWD_Impl<float, pooling_mode>(state);
-    BENCHMARK_LAYER_CUDNN_POOLING_FWD_ADD_COUNTERS__BatchSize_2__9240476157489154913(state);
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1788481463126125362(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1788481463126125362(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1788481463126125362(state);
   }
   
-#define BENCHMARK_LAYER_CUDNN_POOLING_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX)->\
-    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS()->\
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
     UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX_DETERMINISTIC)->\
-    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS()->\
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
     UseManualTime(); \
   
 
 
-BENCHMARK_LAYER_CUDNN_POOLING_FWD(LAYER_CUDNN_POOLING_FWD_FLOAT32__BatchSize_2__9240476157489154913);
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1788481463126125362);
 
-#undef BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_POOLING_FWD
-} // end namespace LAYER_CUDNN_POOLING_FWD__BatchSize_2__9240476157489154913
-#endif // ENABLE_LAYER_CUDNN_POOLING_FWD
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1788481463126125362
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
 #ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__7594517154695256192 {
+namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__8127437810882870180 {
 
 #define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      28 /* Input2 , idx = 2*/, \
-      28 /* Input3 , idx = 3*/, \
+      256 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
       -1 /* Input4 , idx = 4*/, \
       -1 /* Input5 , idx = 5*/, \
       -1 /* Input6 , idx = 6*/, \
@@ -261,11 +187,11 @@ namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__7594517154695256192 {
   }})
 
 
-static const std::map<std::string, double> input_args__7594517154695256192{{
+static const std::map<std::string, double> input_args__8127437810882870180{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 28} /* Input2 */, 
-      {"input[3]", 28} /* Input3 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
       {"input[4]", -1} /* Input4 */, 
       {"input[5]", -1} /* Input5 */, 
       {"input[6]", -1} /* Input6 */, 
@@ -276,16 +202,16 @@ static const std::map<std::string, double> input_args__7594517154695256192{{
 #define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
 
-static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__7594517154695256192(benchmark::State& state) {
-  const auto inputs = input_args__7594517154695256192;
+static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__8127437810882870180(benchmark::State& state) {
+  const auto inputs = input_args__8127437810882870180;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
 
-static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__7594517154695256192(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__7594517154695256192(state);
+static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__8127437810882870180(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__8127437810882870180(state);
   LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__7594517154695256192(state);
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__8127437810882870180(state);
 }
 
 #define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
@@ -295,12 +221,12 @@ static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__7594517154695256
     UseManualTime(); \
 
 
-BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__7594517154695256192);
+BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__8127437810882870180);
 
 #undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__7594517154695256192
+} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__8127437810882870180
 #endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
 #ifdef ENABLE_LAYER_CUDNN_CONV_FWD
 namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9915176047811170938 {
@@ -410,548 +336,74 @@ BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__991517
 } // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9915176047811170938
 #endif // ENABLE_LAYER_CUDNN_CONV_FWD
 
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__16134563646483157049 {
+#ifdef ENABLE_LAYER_CUDNN_POOLING_FWD
+namespace LAYER_CUDNN_POOLING_FWD__BatchSize_2__9240476157489154913 {
 
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
+#define BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
+      64 /* Input1 , idx = 1*/, \
+      112 /* Input2 , idx = 2*/, \
+      112 /* Input3 , idx = 3*/, \
+      3 /* FilterHeight , idx = 4*/, \
+      3 /* FilterWidth , idx = 5*/, \
+      1 /* PadHeight , idx = 6*/, \
+      1 /* PadWidth , idx = 7*/, \
+      2 /* StrideHeight , idx = 8*/, \
+      2 /* StrideWidth , idx = 9*/, \
+      2 /* BatchSize , idx = 10*/, \
   }})
 
 
-static const std::map<std::string, double> input_args__16134563646483157049{{
+static const std::map<std::string, double> input_args__9240476157489154913{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__16134563646483157049(benchmark::State& state) {
-  const auto inputs = input_args__16134563646483157049;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__16134563646483157049(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__16134563646483157049(state);
-  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__16134563646483157049(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__16134563646483157049);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__16134563646483157049
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__11467602854697196038 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__11467602854697196038{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__11467602854697196038(benchmark::State& state) {
-  const auto inputs = input_args__11467602854697196038;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__11467602854697196038(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__11467602854697196038(state);
-  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__11467602854697196038(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__11467602854697196038);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__11467602854697196038
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9528092812195853678 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      3 /* Input1 , idx = 1*/, \
-      224 /* Input2 , idx = 2*/, \
-      224 /* Input3 , idx = 3*/, \
-      64 /* FilterCount , idx = 4*/, \
-      7 /* FilterHeight , idx = 5*/, \
-      7 /* FilterWidth , idx = 6*/, \
-      3 /* PadHeight , idx = 7*/, \
-      3 /* PadWidth , idx = 8*/, \
-      2 /* StrideHeight , idx = 9*/, \
-      2 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__9528092812195853678{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 3} /* Input1 */, 
-      {"input[2]", 224} /* Input2 */, 
-      {"input[3]", 224} /* Input3 */, 
-      {"filter_count", 64} /* FilterCount */, 
-      {"filter_height", 7} /* FilterHeight */, 
-      {"filter_width", 7} /* FilterWidth */, 
-      {"pad_height", 3} /* PadHeight */, 
-      {"pad_width", 3} /* PadWidth */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 112} /* Input2 */, 
+      {"input[3]", 112} /* Input3 */, 
+      {"filter_height", 3} /* FilterHeight */, 
+      {"filter_width", 3} /* FilterWidth */, 
+      {"pad_height", 1} /* PadHeight */, 
+      {"pad_width", 1} /* PadWidth */, 
       {"stride_height", 2} /* StrideHeight */, 
       {"stride_width", 2} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
       {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
 }};
 
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+#define BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "batch_size"})
 
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9528092812195853678(benchmark::State& state) {
-  const auto inputs = input_args__9528092812195853678;
+static void BENCHMARK_LAYER_CUDNN_POOLING_FWD_ADD_COUNTERS__BatchSize_2__9240476157489154913(benchmark::State& state) {
+  const auto inputs = input_args__9240476157489154913;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
   
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9528092812195853678(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9528092812195853678(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9528092812195853678(state);
+  template <cudnnPoolingMode_t pooling_mode>
+  static void LAYER_CUDNN_POOLING_FWD_FLOAT32__BatchSize_2__9240476157489154913(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_POOLING_FWD_ADD_COUNTERS__BatchSize_2__9240476157489154913(state);
+    LAYER_CUDNN_POOLING_FWD_Impl<float, pooling_mode>(state);
+    BENCHMARK_LAYER_CUDNN_POOLING_FWD_ADD_COUNTERS__BatchSize_2__9240476157489154913(state);
   }
   
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+#define BENCHMARK_LAYER_CUDNN_POOLING_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX)->\
+    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS()->\
     UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_POOLING_MAX_DETERMINISTIC)->\
+    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS()->\
     UseManualTime(); \
   
 
 
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9528092812195853678);
+BENCHMARK_LAYER_CUDNN_POOLING_FWD(LAYER_CUDNN_POOLING_FWD_FLOAT32__BatchSize_2__9240476157489154913);
 
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9528092812195853678
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__8753455589369015865 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      64 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__8753455589369015865{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__8753455589369015865(benchmark::State& state) {
-  const auto inputs = input_args__8753455589369015865;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__8753455589369015865(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__8753455589369015865(state);
-  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__8753455589369015865(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__8753455589369015865);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__8753455589369015865
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__4158763455409251334 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      64 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__4158763455409251334{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__4158763455409251334(benchmark::State& state) {
-  const auto inputs = input_args__4158763455409251334;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__4158763455409251334(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__4158763455409251334(state);
-  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__4158763455409251334(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__4158763455409251334);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__4158763455409251334
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__18355428186735396751 {
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__18355428186735396751{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__18355428186735396751(benchmark::State& state) {
-  const auto inputs = input_args__18355428186735396751;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__18355428186735396751(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__18355428186735396751(state);
-  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__18355428186735396751(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__18355428186735396751);
-
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__18355428186735396751
-#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6352448163533453711 {
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      64 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__6352448163533453711{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6352448163533453711(benchmark::State& state) {
-  const auto inputs = input_args__6352448163533453711;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6352448163533453711(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6352448163533453711(state);
-  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6352448163533453711(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6352448163533453711);
-
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6352448163533453711
-#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__3708816116460517931 {
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__3708816116460517931{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__3708816116460517931(benchmark::State& state) {
-  const auto inputs = input_args__3708816116460517931;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__3708816116460517931(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__3708816116460517931(state);
-  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__3708816116460517931(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__3708816116460517931);
-
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__3708816116460517931
-#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#undef BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_POOLING_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_POOLING_FWD
+} // end namespace LAYER_CUDNN_POOLING_FWD__BatchSize_2__9240476157489154913
+#endif // ENABLE_LAYER_CUDNN_POOLING_FWD
 #ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
 namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__2593190917579189639 {
 
@@ -1015,242 +467,6 @@ BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSi
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
 } // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__2593190917579189639
-#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6852594140578207931 {
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      64 /* Input1 , idx = 1*/, \
-      112 /* Input2 , idx = 2*/, \
-      112 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__6852594140578207931{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 112} /* Input2 */, 
-      {"input[3]", 112} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6852594140578207931(benchmark::State& state) {
-  const auto inputs = input_args__6852594140578207931;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6852594140578207931(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6852594140578207931(state);
-  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6852594140578207931(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6852594140578207931);
-
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6852594140578207931
-#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3082791047268775970 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      128 /* Input1 , idx = 1*/, \
-      28 /* Input2 , idx = 2*/, \
-      28 /* Input3 , idx = 3*/, \
-      128 /* FilterCount , idx = 4*/, \
-      3 /* FilterHeight , idx = 5*/, \
-      3 /* FilterWidth , idx = 6*/, \
-      1 /* PadHeight , idx = 7*/, \
-      1 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__3082791047268775970{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 128} /* Input1 */, 
-      {"input[2]", 28} /* Input2 */, 
-      {"input[3]", 28} /* Input3 */, 
-      {"filter_count", 128} /* FilterCount */, 
-      {"filter_height", 3} /* FilterHeight */, 
-      {"filter_width", 3} /* FilterWidth */, 
-      {"pad_height", 1} /* PadHeight */, 
-      {"pad_width", 1} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3082791047268775970(benchmark::State& state) {
-  const auto inputs = input_args__3082791047268775970;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3082791047268775970(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3082791047268775970(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3082791047268775970(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3082791047268775970);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3082791047268775970
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__4202858852911894179 {
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__4202858852911894179{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__4202858852911894179(benchmark::State& state) {
-  const auto inputs = input_args__4202858852911894179;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__4202858852911894179(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__4202858852911894179(state);
-  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__4202858852911894179(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__4202858852911894179);
-
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__4202858852911894179
 #endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
 #ifdef ENABLE_LAYER_CUDNN_CONV_FWD
 namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__11515339523754660412 {
@@ -1358,402 +574,6 @@ BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__115153
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD
 } // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__11515339523754660412
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__12980056735596507784 {
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__12980056735596507784{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__12980056735596507784(benchmark::State& state) {
-  const auto inputs = input_args__12980056735596507784;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__12980056735596507784(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__12980056735596507784(state);
-  LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__12980056735596507784(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
-  BENCHMARK_CUDNN(b)->\
-    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-
-
-BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__12980056735596507784);
-
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__12980056735596507784
-#endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__12560189119241316872 {
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      128 /* Input1 , idx = 1*/, \
-      28 /* Input2 , idx = 2*/, \
-      28 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__12560189119241316872{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 128} /* Input1 */, 
-      {"input[2]", 28} /* Input2 */, 
-      {"input[3]", 28} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__12560189119241316872(benchmark::State& state) {
-  const auto inputs = input_args__12560189119241316872;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__12560189119241316872(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__12560189119241316872(state);
-  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__12560189119241316872(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__12560189119241316872);
-
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__12560189119241316872
-#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3537027277339344311 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      28 /* Input2 , idx = 2*/, \
-      28 /* Input3 , idx = 3*/, \
-      1024 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      2 /* StrideHeight , idx = 9*/, \
-      2 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__3537027277339344311{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 28} /* Input2 */, 
-      {"input[3]", 28} /* Input3 */, 
-      {"filter_count", 1024} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 2} /* StrideHeight */, 
-      {"stride_width", 2} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3537027277339344311(benchmark::State& state) {
-  const auto inputs = input_args__3537027277339344311;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3537027277339344311(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3537027277339344311(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3537027277339344311(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3537027277339344311);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3537027277339344311
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__8127437810882870180 {
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__8127437810882870180{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__8127437810882870180(benchmark::State& state) {
-  const auto inputs = input_args__8127437810882870180;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__8127437810882870180(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__8127437810882870180(state);
-  LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
-  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__8127437810882870180(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
-  BENCHMARK_CUDNN(b)->\
-    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-
-
-BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__8127437810882870180);
-
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__8127437810882870180
-#endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__11031159401119597681 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      2048 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      2 /* StrideHeight , idx = 9*/, \
-      2 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__11031159401119597681{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"filter_count", 2048} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 2} /* StrideHeight */, 
-      {"stride_width", 2} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__11031159401119597681(benchmark::State& state) {
-  const auto inputs = input_args__11031159401119597681;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__11031159401119597681(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__11031159401119597681(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__11031159401119597681(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__11031159401119597681);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__11031159401119597681
 #endif // ENABLE_LAYER_CUDNN_CONV_FWD
 
 #ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
@@ -1877,6 +697,1523 @@ BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
 } // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__6614949464138208042
 #endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3082791047268775970 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      128 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      128 /* FilterCount , idx = 4*/, \
+      3 /* FilterHeight , idx = 5*/, \
+      3 /* FilterWidth , idx = 6*/, \
+      1 /* PadHeight , idx = 7*/, \
+      1 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__3082791047268775970{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 128} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"filter_count", 128} /* FilterCount */, 
+      {"filter_height", 3} /* FilterHeight */, 
+      {"filter_width", 3} /* FilterWidth */, 
+      {"pad_height", 1} /* PadHeight */, 
+      {"pad_width", 1} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3082791047268775970(benchmark::State& state) {
+  const auto inputs = input_args__3082791047268775970;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3082791047268775970(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3082791047268775970(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3082791047268775970(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3082791047268775970);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3082791047268775970
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__7594517154695256192 {
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__7594517154695256192{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__7594517154695256192(benchmark::State& state) {
+  const auto inputs = input_args__7594517154695256192;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__7594517154695256192(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__7594517154695256192(state);
+  LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__7594517154695256192(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__7594517154695256192);
+
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__7594517154695256192
+#endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__1309056632027508125 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__1309056632027508125{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__1309056632027508125(benchmark::State& state) {
+  const auto inputs = input_args__1309056632027508125;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__1309056632027508125(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__1309056632027508125(state);
+  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__1309056632027508125(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__1309056632027508125);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__1309056632027508125
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__5973695314331854754 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__5973695314331854754{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__5973695314331854754(benchmark::State& state) {
+  const auto inputs = input_args__5973695314331854754;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__5973695314331854754(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__5973695314331854754(state);
+  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__5973695314331854754(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__5973695314331854754);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__5973695314331854754
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__12560189119241316872 {
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      128 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__12560189119241316872{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 128} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__12560189119241316872(benchmark::State& state) {
+  const auto inputs = input_args__12560189119241316872;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__12560189119241316872(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__12560189119241316872(state);
+  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__12560189119241316872(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__12560189119241316872);
+
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__12560189119241316872
+#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6352448163533453711 {
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      64 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__6352448163533453711{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6352448163533453711(benchmark::State& state) {
+  const auto inputs = input_args__6352448163533453711;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6352448163533453711(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6352448163533453711(state);
+  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__6352448163533453711(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__6352448163533453711);
+
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__6352448163533453711
+#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3537027277339344311 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      1024 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      2 /* StrideHeight , idx = 9*/, \
+      2 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__3537027277339344311{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"filter_count", 1024} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 2} /* StrideHeight */, 
+      {"stride_width", 2} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3537027277339344311(benchmark::State& state) {
+  const auto inputs = input_args__3537027277339344311;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3537027277339344311(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3537027277339344311(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3537027277339344311(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3537027277339344311);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3537027277339344311
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__9029827475528369272 {
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      2048 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__9029827475528369272{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 2048} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__9029827475528369272(benchmark::State& state) {
+  const auto inputs = input_args__9029827475528369272;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__9029827475528369272(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__9029827475528369272(state);
+  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__9029827475528369272(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__9029827475528369272);
+
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__9029827475528369272
+#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__6630016317270217678 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      2048 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__6630016317270217678{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 2048} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__6630016317270217678(benchmark::State& state) {
+  const auto inputs = input_args__6630016317270217678;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__6630016317270217678(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__6630016317270217678(state);
+  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__6630016317270217678(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__6630016317270217678);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__6630016317270217678
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__2075856622891784689 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      2048 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__2075856622891784689{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 2048} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__2075856622891784689(benchmark::State& state) {
+  const auto inputs = input_args__2075856622891784689;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__2075856622891784689(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__2075856622891784689(state);
+  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__2075856622891784689(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__2075856622891784689);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__2075856622891784689
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+#ifdef ENABLE_LAYER_CUBLAS_GEMM_FWD
+namespace LAYER_CUBLAS_GEMM_FWD__BatchSize_2__571238508124193294 {
+
+#define BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1000 /* Input1 , idx = 1*/, \
+      2048 /* Input2 , idx = 2*/, \
+      0 /* Input3 , idx = 3*/, \
+      1 /* Input4 , idx = 4*/, \
+      1 /* Input5 , idx = 5*/, \
+      1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__571238508124193294{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1000} /* Input1 */, 
+      {"input[2]", 2048} /* Input2 */, 
+      {"input[3]", 0} /* Input3 */, 
+      {"input[4]", 1} /* Input4 */, 
+      {"input[5]", 1} /* Input5 */, 
+      {"input[6]", 1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUBLAS_GEMM_FWD_ADD_COUNTERS__BatchSize_2__571238508124193294(benchmark::State& state) {
+  const auto inputs = input_args__571238508124193294;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUBLAS_GEMM_FWD_FLOAT32__BatchSize_2__571238508124193294(benchmark::State& state) {
+  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_ADD_COUNTERS__BatchSize_2__571238508124193294(state);
+  LAYER_CUBLAS_GEMM_FWD_Impl<float>(state);
+  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_ADD_COUNTERS__BatchSize_2__571238508124193294(state);
+}
+
+
+
+
+BENCHMARK_CUDNN(LAYER_CUBLAS_GEMM_FWD_FLOAT32__BatchSize_2__571238508124193294)->\
+  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARG_NAMES()->\
+  BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARGS()->\
+  UseManualTime();
+
+#undef BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUBLAS_GEMM_FWD_INPUT_ARG_NAMES
+}
+#endif // ENABLE_LAYER_CUBLAS_GEMM_FWD
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9528092812195853678 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      3 /* Input1 , idx = 1*/, \
+      224 /* Input2 , idx = 2*/, \
+      224 /* Input3 , idx = 3*/, \
+      64 /* FilterCount , idx = 4*/, \
+      7 /* FilterHeight , idx = 5*/, \
+      7 /* FilterWidth , idx = 6*/, \
+      3 /* PadHeight , idx = 7*/, \
+      3 /* PadWidth , idx = 8*/, \
+      2 /* StrideHeight , idx = 9*/, \
+      2 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__9528092812195853678{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 3} /* Input1 */, 
+      {"input[2]", 224} /* Input2 */, 
+      {"input[3]", 224} /* Input3 */, 
+      {"filter_count", 64} /* FilterCount */, 
+      {"filter_height", 7} /* FilterHeight */, 
+      {"filter_width", 7} /* FilterWidth */, 
+      {"pad_height", 3} /* PadHeight */, 
+      {"pad_width", 3} /* PadWidth */, 
+      {"stride_height", 2} /* StrideHeight */, 
+      {"stride_width", 2} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9528092812195853678(benchmark::State& state) {
+  const auto inputs = input_args__9528092812195853678;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9528092812195853678(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9528092812195853678(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9528092812195853678(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9528092812195853678);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9528092812195853678
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__4810283801867506630 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      256 /* FilterCount , idx = 4*/, \
+      3 /* FilterHeight , idx = 5*/, \
+      3 /* FilterWidth , idx = 6*/, \
+      1 /* PadHeight , idx = 7*/, \
+      1 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__4810283801867506630{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"filter_count", 256} /* FilterCount */, 
+      {"filter_height", 3} /* FilterHeight */, 
+      {"filter_width", 3} /* FilterWidth */, 
+      {"pad_height", 1} /* PadHeight */, 
+      {"pad_width", 1} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__4810283801867506630(benchmark::State& state) {
+  const auto inputs = input_args__4810283801867506630;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__4810283801867506630(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__4810283801867506630(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__4810283801867506630(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__4810283801867506630);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__4810283801867506630
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__780591776496674379 {
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__780591776496674379{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__780591776496674379(benchmark::State& state) {
+  const auto inputs = input_args__780591776496674379;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__780591776496674379(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__780591776496674379(state);
+  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__780591776496674379(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__780591776496674379);
+
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__780591776496674379
+#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__16134563646483157049 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__16134563646483157049{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__16134563646483157049(benchmark::State& state) {
+  const auto inputs = input_args__16134563646483157049;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__16134563646483157049(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__16134563646483157049(state);
+  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__16134563646483157049(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__16134563646483157049);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__16134563646483157049
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__11467602854697196038 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__11467602854697196038{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__11467602854697196038(benchmark::State& state) {
+  const auto inputs = input_args__11467602854697196038;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__11467602854697196038(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__11467602854697196038(state);
+  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__11467602854697196038(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__11467602854697196038);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__11467602854697196038
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__18355428186735396751 {
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__18355428186735396751{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__18355428186735396751(benchmark::State& state) {
+  const auto inputs = input_args__18355428186735396751;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__18355428186735396751(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__18355428186735396751(state);
+  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__18355428186735396751(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__18355428186735396751);
+
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__18355428186735396751
+#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__4202858852911894179 {
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__4202858852911894179{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__4202858852911894179(benchmark::State& state) {
+  const auto inputs = input_args__4202858852911894179;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnActivationMode_t activation_mode>
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__4202858852911894179(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__4202858852911894179(state);
+  LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__4202858852911894179(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_ACTIVATION_CLIPPED_RELU)->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__4202858852911894179);
+
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__4202858852911894179
+#endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
+#ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__4019915958792843647 {
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      2048 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__4019915958792843647{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 2048} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__4019915958792843647(benchmark::State& state) {
+  const auto inputs = input_args__4019915958792843647;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__4019915958792843647(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__4019915958792843647(state);
+  LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__4019915958792843647(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__4019915958792843647);
+
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__4019915958792843647
+#endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+#ifdef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__12980056735596507784 {
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__12980056735596507784{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__12980056735596507784(benchmark::State& state) {
+  const auto inputs = input_args__12980056735596507784;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__12980056735596507784(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__12980056735596507784(state);
+  LAYER_CUDNN_OP_TENSOR_ADD_FWD_Impl<float >(state);
+  BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_ADD_COUNTERS__BatchSize_2__12980056735596507784(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD(LAYER_CUDNN_OP_TENSOR_ADD_FWD_FLOAT32__BatchSize_2__12980056735596507784);
+
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+} // end namespace LAYER_CUDNN_OP_TENSOR_ADD_FWD__BatchSize_2__12980056735596507784
+#endif // ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__11031159401119597681 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      2048 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      2 /* StrideHeight , idx = 9*/, \
+      2 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__11031159401119597681{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"filter_count", 2048} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 2} /* StrideHeight */, 
+      {"stride_width", 2} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__11031159401119597681(benchmark::State& state) {
+  const auto inputs = input_args__11031159401119597681;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__11031159401119597681(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__11031159401119597681(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__11031159401119597681(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__11031159401119597681);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__11031159401119597681
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
 #ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
 namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__193151138211740209 {
 
@@ -1999,14 +2336,14 @@ BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_
 } // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__4783480041183293454
 #endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
 #ifdef ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__780591776496674379 {
+namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__3708816116460517931 {
 
 #define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
+      512 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
       -1 /* Input4 , idx = 4*/, \
       -1 /* Input5 , idx = 5*/, \
       -1 /* Input6 , idx = 6*/, \
@@ -2015,11 +2352,11 @@ namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__780591776496674379 {
   }})
 
 
-static const std::map<std::string, double> input_args__780591776496674379{{
+static const std::map<std::string, double> input_args__3708816116460517931{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
       {"input[4]", -1} /* Input4 */, 
       {"input[5]", -1} /* Input5 */, 
       {"input[6]", -1} /* Input6 */, 
@@ -2030,17 +2367,17 @@ static const std::map<std::string, double> input_args__780591776496674379{{
 #define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
 
-static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__780591776496674379(benchmark::State& state) {
-  const auto inputs = input_args__780591776496674379;
+static void BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__3708816116460517931(benchmark::State& state) {
+  const auto inputs = input_args__3708816116460517931;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
 
 template <cudnnActivationMode_t activation_mode>
-static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__780591776496674379(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__780591776496674379(state);
+static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__3708816116460517931(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__3708816116460517931(state);
   LAYER_CUDNN_ACTIVATION_FWD_Impl<float, activation_mode>(state);
-  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__780591776496674379(state);
+  BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_ADD_COUNTERS__BatchSize_2__3708816116460517931(state);
 }
 
 #define BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(b) \
@@ -2055,890 +2392,13 @@ static void LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__780591776496674379(
   
 
 
-BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__780591776496674379);
+BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD(LAYER_CUDNN_ACTIVATION_FWD_FLOAT32__BatchSize_2__3708816116460517931);
 
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_ACTIVATION_FWD
-} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__780591776496674379
+} // end namespace LAYER_CUDNN_ACTIVATION_FWD__BatchSize_2__3708816116460517931
 #endif // ENABLE_LAYER_CUDNN_ACTIVATION_FWD
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9589926678266437843 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      512 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      2 /* StrideHeight , idx = 9*/, \
-      2 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__9589926678266437843{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"filter_count", 512} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 2} /* StrideHeight */, 
-      {"stride_width", 2} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9589926678266437843(benchmark::State& state) {
-  const auto inputs = input_args__9589926678266437843;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9589926678266437843(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9589926678266437843(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9589926678266437843(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9589926678266437843);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9589926678266437843
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1788481463126125362 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      64 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      64 /* FilterCount , idx = 4*/, \
-      3 /* FilterHeight , idx = 5*/, \
-      3 /* FilterWidth , idx = 6*/, \
-      1 /* PadHeight , idx = 7*/, \
-      1 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__1788481463126125362{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"filter_count", 64} /* FilterCount */, 
-      {"filter_height", 3} /* FilterHeight */, 
-      {"filter_width", 3} /* FilterWidth */, 
-      {"pad_height", 1} /* PadHeight */, 
-      {"pad_width", 1} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1788481463126125362(benchmark::State& state) {
-  const auto inputs = input_args__1788481463126125362;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1788481463126125362(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1788481463126125362(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1788481463126125362(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1788481463126125362);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1788481463126125362
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__4810283801867506630 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      256 /* FilterCount , idx = 4*/, \
-      3 /* FilterHeight , idx = 5*/, \
-      3 /* FilterWidth , idx = 6*/, \
-      1 /* PadHeight , idx = 7*/, \
-      1 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__4810283801867506630{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"filter_count", 256} /* FilterCount */, 
-      {"filter_height", 3} /* FilterHeight */, 
-      {"filter_width", 3} /* FilterWidth */, 
-      {"pad_height", 1} /* PadHeight */, 
-      {"pad_width", 1} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__4810283801867506630(benchmark::State& state) {
-  const auto inputs = input_args__4810283801867506630;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__4810283801867506630(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__4810283801867506630(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__4810283801867506630(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__4810283801867506630);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__4810283801867506630
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1582425787574415356 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      28 /* Input2 , idx = 2*/, \
-      28 /* Input3 , idx = 3*/, \
-      128 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__1582425787574415356{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 28} /* Input2 */, 
-      {"input[3]", 28} /* Input3 */, 
-      {"filter_count", 128} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1582425787574415356(benchmark::State& state) {
-  const auto inputs = input_args__1582425787574415356;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1582425787574415356(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1582425787574415356(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1582425787574415356(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1582425787574415356);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1582425787574415356
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__3136705035542327805 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__3136705035542327805{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__3136705035542327805(benchmark::State& state) {
-  const auto inputs = input_args__3136705035542327805;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__3136705035542327805(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__3136705035542327805(state);
-  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__3136705035542327805(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__3136705035542327805);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__3136705035542327805
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__7731467469522074562 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__7731467469522074562{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__7731467469522074562(benchmark::State& state) {
-  const auto inputs = input_args__7731467469522074562;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__7731467469522074562(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__7731467469522074562(state);
-  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__7731467469522074562(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__7731467469522074562);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__7731467469522074562
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__8831579689838660052 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      128 /* Input1 , idx = 1*/, \
-      28 /* Input2 , idx = 2*/, \
-      28 /* Input3 , idx = 3*/, \
-      512 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__8831579689838660052{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 128} /* Input1 */, 
-      {"input[2]", 28} /* Input2 */, 
-      {"input[3]", 28} /* Input3 */, 
-      {"filter_count", 512} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__8831579689838660052(benchmark::State& state) {
-  const auto inputs = input_args__8831579689838660052;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__8831579689838660052(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__8831579689838660052(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__8831579689838660052(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__8831579689838660052);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__8831579689838660052
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__17791940042088592439 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      64 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      256 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__17791940042088592439{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 64} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"filter_count", 256} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__17791940042088592439(benchmark::State& state) {
-  const auto inputs = input_args__17791940042088592439;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__17791940042088592439(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__17791940042088592439(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__17791940042088592439(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__17791940042088592439);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__17791940042088592439
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__15437479176948621265 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
-      1024 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__15437479176948621265{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
-      {"filter_count", 1024} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__15437479176948621265(benchmark::State& state) {
-  const auto inputs = input_args__15437479176948621265;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__15437479176948621265(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__15437479176948621265(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__15437479176948621265(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__15437479176948621265);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__15437479176948621265
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
 #ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
 namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__10312163411967606206 {
 
@@ -3060,136 +2520,28 @@ BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
 } // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__14974549934243575681
 #endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__16473975165114316882 {
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__8753455589369015865 {
 
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
       64 /* Input1 , idx = 1*/, \
       56 /* Input2 , idx = 2*/, \
       56 /* Input3 , idx = 3*/, \
-      64 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
   }})
 
 
-static const std::map<std::string, double> input_args__16473975165114316882{{
+static const std::map<std::string, double> input_args__8753455589369015865{{
       {"input[0]", 2} /* Input0 */, 
       {"input[1]", 64} /* Input1 */, 
       {"input[2]", 56} /* Input2 */, 
       {"input[3]", 56} /* Input3 */, 
-      {"filter_count", 64} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__16473975165114316882(benchmark::State& state) {
-  const auto inputs = input_args__16473975165114316882;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__16473975165114316882(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__16473975165114316882(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__16473975165114316882(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__16473975165114316882);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__16473975165114316882
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__6630016317270217678 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      2048 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__6630016317270217678{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 2048} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
       {"input[4]", -1} /* Input4 */, 
       {"input[5]", -1} /* Input5 */, 
       {"input[6]", -1} /* Input6 */, 
@@ -3200,17 +2552,17 @@ static const std::map<std::string, double> input_args__6630016317270217678{{
 #define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
 
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__6630016317270217678(benchmark::State& state) {
-  const auto inputs = input_args__6630016317270217678;
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__8753455589369015865(benchmark::State& state) {
+  const auto inputs = input_args__8753455589369015865;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
 
 template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__6630016317270217678(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__6630016317270217678(state);
+static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__8753455589369015865(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__8753455589369015865(state);
   LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__6630016317270217678(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__8753455589369015865(state);
 }
 
 #define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
@@ -3221,23 +2573,23 @@ static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__6630016317
   
 
 
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__6630016317270217678);
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__8753455589369015865);
 
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__6630016317270217678
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__8753455589369015865
 #endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
 
 #ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__2075856622891784689 {
+namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__4158763455409251334 {
 
 #define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      2048 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
+      64 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
       -1 /* Input4 , idx = 4*/, \
       -1 /* Input5 , idx = 5*/, \
       -1 /* Input6 , idx = 6*/, \
@@ -3246,11 +2598,11 @@ namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__2075856622891784689 {
   }})
 
 
-static const std::map<std::string, double> input_args__2075856622891784689{{
+static const std::map<std::string, double> input_args__4158763455409251334{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 2048} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
       {"input[4]", -1} /* Input4 */, 
       {"input[5]", -1} /* Input5 */, 
       {"input[6]", -1} /* Input6 */, 
@@ -3261,17 +2613,17 @@ static const std::map<std::string, double> input_args__2075856622891784689{{
 #define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
 
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__2075856622891784689(benchmark::State& state) {
-  const auto inputs = input_args__2075856622891784689;
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__4158763455409251334(benchmark::State& state) {
+  const auto inputs = input_args__4158763455409251334;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
 
 template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__2075856622891784689(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__2075856622891784689(state);
+static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__4158763455409251334(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__4158763455409251334(state);
   LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__2075856622891784689(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__4158763455409251334(state);
 }
 
 #define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
@@ -3282,242 +2634,13 @@ static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__20758566228
   
 
 
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__2075856622891784689);
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__4158763455409251334);
 
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__2075856622891784689
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__4158763455409251334
 #endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__1309056632027508125 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__1309056632027508125{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__1309056632027508125(benchmark::State& state) {
-  const auto inputs = input_args__1309056632027508125;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__1309056632027508125(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__1309056632027508125(state);
-  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__1309056632027508125(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__1309056632027508125);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__1309056632027508125
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
-
-#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__5973695314331854754 {
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      -1 /* Input4 , idx = 4*/, \
-      -1 /* Input5 , idx = 5*/, \
-      -1 /* Input6 , idx = 6*/, \
-      -1 /* Input7 , idx = 7*/, \
-      2 /* BatchSize , idx = 8*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__5973695314331854754{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
-      {"input[4]", -1} /* Input4 */, 
-      {"input[5]", -1} /* Input5 */, 
-      {"input[6]", -1} /* Input6 */, 
-      {"input[7]", -1} /* Input7 */, 
-      {"batch_size", 2} /* BatchSize */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
-
-static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__5973695314331854754(benchmark::State& state) {
-  const auto inputs = input_args__5973695314331854754;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-
-template <cudnnBatchNormMode_t batchnorm_mode>
-static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__5973695314331854754(benchmark::State& state) {
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__5973695314331854754(state);
-  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
-  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__5973695314331854754(state);
-}
-
-#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__5973695314331854754);
-
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__5973695314331854754
-#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7630326367887916888 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      2048 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      512 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__7630326367887916888{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 2048} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
-      {"filter_count", 512} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7630326367887916888(benchmark::State& state) {
-  const auto inputs = input_args__7630326367887916888;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7630326367887916888(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7630326367887916888(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7630326367887916888(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7630326367887916888);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7630326367887916888
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
 #ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
 namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__9100550651633946381 {
 
@@ -3639,231 +2762,199 @@ BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_
 #undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
 } // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__4505788441000363314
 #endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3735814997020864682 {
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__3136705035542327805 {
 
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__3136705035542327805{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__3136705035542327805(benchmark::State& state) {
+  const auto inputs = input_args__3136705035542327805;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__3136705035542327805(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__3136705035542327805(state);
+  LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_ADD_COUNTERS__BatchSize_2__3136705035542327805(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE(LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_FLOAT32__BatchSize_2__3136705035542327805);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_INFERENCE__BatchSize_2__3136705035542327805
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_INFERENCE
+
+#ifdef ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__7731467469522074562 {
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      -1 /* Input4 , idx = 4*/, \
+      -1 /* Input5 , idx = 5*/, \
+      -1 /* Input6 , idx = 6*/, \
+      -1 /* Input7 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__7731467469522074562{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"input[4]", -1} /* Input4 */, 
+      {"input[5]", -1} /* Input5 */, 
+      {"input[6]", -1} /* Input6 */, 
+      {"input[7]", -1} /* Input7 */, 
+      {"batch_size", 2} /* BatchSize */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "input[4]", "input[5]", "input[6]", "input[7]", "batch_size"})
+
+static void BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__7731467469522074562(benchmark::State& state) {
+  const auto inputs = input_args__7731467469522074562;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+template <cudnnBatchNormMode_t batchnorm_mode>
+static void LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__7731467469522074562(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__7731467469522074562(state);
+  LAYER_CUDNN_BATCHNORM_FWD_TRAINING_Impl<float, batchnorm_mode>(state);
+  BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_ADD_COUNTERS__BatchSize_2__7731467469522074562(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_BATCHNORM_PER_ACTIVATION)->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING(LAYER_CUDNN_BATCHNORM_FWD_TRAINING_FLOAT32__BatchSize_2__7731467469522074562);
+
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+} // end namespace LAYER_CUDNN_BATCHNORM_FWD_TRAINING__BatchSize_2__7731467469522074562
+#endif // ENABLE_LAYER_CUDNN_BATCHNORM_FWD_TRAINING
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__6810053713345227633 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
       256 /* Input1 , idx = 1*/, \
       56 /* Input2 , idx = 2*/, \
       56 /* Input3 , idx = 3*/, \
-      128 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      2 /* StrideHeight , idx = 9*/, \
-      2 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      256 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
   }})
 
 
-static const std::map<std::string, double> input_args__3735814997020864682{{
+static const std::map<std::string, double> input_args__6810053713345227633{{
       {"input[0]", 2} /* Input0 */, 
       {"input[1]", 256} /* Input1 */, 
       {"input[2]", 56} /* Input2 */, 
       {"input[3]", 56} /* Input3 */, 
-      {"filter_count", 128} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 2} /* StrideHeight */, 
-      {"stride_width", 2} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 256} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
       {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
       {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
 }};
 
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
 
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3735814997020864682(benchmark::State& state) {
-  const auto inputs = input_args__3735814997020864682;
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__6810053713345227633(benchmark::State& state) {
+  const auto inputs = input_args__6810053713345227633;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3735814997020864682(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3735814997020864682(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3735814997020864682(state);
-  }
-  
 
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__6810053713345227633(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__6810053713345227633(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__6810053713345227633(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
     UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
 
 
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3735814997020864682);
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__6810053713345227633);
 
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3735814997020864682
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__6810053713345227633
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
 
 #ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7626742445768451512 {
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__17791940042088592439 {
 
 #define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      512 /* Input1 , idx = 1*/, \
-      7 /* Input2 , idx = 2*/, \
-      7 /* Input3 , idx = 3*/, \
-      2048 /* FilterCount , idx = 4*/, \
-      1 /* FilterHeight , idx = 5*/, \
-      1 /* FilterWidth , idx = 6*/, \
-      0 /* PadHeight , idx = 7*/, \
-      0 /* PadWidth , idx = 8*/, \
-      1 /* StrideHeight , idx = 9*/, \
-      1 /* StrideWidth , idx = 10*/, \
-      1 /* DilationWidth , idx = 11*/, \
-      1 /* DilationHeight , idx = 12*/, \
-      1 /* Group , idx = 13*/, \
-      2 /* BatchSize , idx = 14*/, \
-      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
-      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
-  }})
-
-
-static const std::map<std::string, double> input_args__7626742445768451512{{
-      {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 512} /* Input1 */, 
-      {"input[2]", 7} /* Input2 */, 
-      {"input[3]", 7} /* Input3 */, 
-      {"filter_count", 2048} /* FilterCount */, 
-      {"filter_height", 1} /* FilterHeight */, 
-      {"filter_width", 1} /* FilterWidth */, 
-      {"pad_height", 0} /* PadHeight */, 
-      {"pad_width", 0} /* PadWidth */, 
-      {"stride_height", 1} /* StrideHeight */, 
-      {"stride_width", 1} /* StrideWidth */, 
-      {"dilation_height", 1} /* DilationWidth */, 
-      {"dilation_width", 1} /* DilationHeight */, 
-      {"group", 1} /* Group */, 
-      {"batch_size", 2} /* BatchSize */, 
-      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
-      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
-}};
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
-  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
-
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7626742445768451512(benchmark::State& state) {
-  const auto inputs = input_args__7626742445768451512;
-  state.counters.insert(inputs.begin(), inputs.end());
-}
-
-  
-  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7626742445768451512(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7626742445768451512(state);
-    
-      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
-    
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7626742445768451512(state);
-  }
-  
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
-    UseManualTime(); \
-  
-
-
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7626742445768451512);
-
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
-#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7626742445768451512
-#endif // ENABLE_LAYER_CUDNN_CONV_FWD
-
-#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7300481346182188921 {
-
-#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
-  Args({{ \
-      2 /* Input0 , idx = 0*/, \
-      1024 /* Input1 , idx = 1*/, \
-      14 /* Input2 , idx = 2*/, \
-      14 /* Input3 , idx = 3*/, \
+      64 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
       256 /* FilterCount , idx = 4*/, \
       1 /* FilterHeight , idx = 5*/, \
       1 /* FilterWidth , idx = 6*/, \
@@ -3880,11 +2971,11 @@ namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7300481346182188921 {
   }})
 
 
-static const std::map<std::string, double> input_args__7300481346182188921{{
+static const std::map<std::string, double> input_args__17791940042088592439{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 1024} /* Input1 */, 
-      {"input[2]", 14} /* Input2 */, 
-      {"input[3]", 14} /* Input3 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
       {"filter_count", 256} /* FilterCount */, 
       {"filter_height", 1} /* FilterHeight */, 
       {"filter_width", 1} /* FilterWidth */, 
@@ -3903,19 +2994,19 @@ static const std::map<std::string, double> input_args__7300481346182188921{{
 #define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
 
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346182188921(benchmark::State& state) {
-  const auto inputs = input_args__7300481346182188921;
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__17791940042088592439(benchmark::State& state) {
+  const auto inputs = input_args__17791940042088592439;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
   
   template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7300481346182188921(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346182188921(state);
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__17791940042088592439(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__17791940042088592439(state);
     
       LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
     
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346182188921(state);
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__17791940042088592439(state);
   }
   
 
@@ -3955,13 +3046,247 @@ static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346
   
 
 
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7300481346182188921);
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__17791940042088592439);
 
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7300481346182188921
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__17791940042088592439
 #endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__11595216639615834735 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      64 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      64 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__11595216639615834735{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 64} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__11595216639615834735(benchmark::State& state) {
+  const auto inputs = input_args__11595216639615834735;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__11595216639615834735(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__11595216639615834735(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__11595216639615834735(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__11595216639615834735);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__11595216639615834735
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7925922752961753587 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      64 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__7925922752961753587{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"filter_count", 64} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752961753587(benchmark::State& state) {
+  const auto inputs = input_args__7925922752961753587;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7925922752961753587(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752961753587(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752961753587(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7925922752961753587);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7925922752961753587
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__14281272577482898959 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      256 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__14281272577482898959{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 256} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__14281272577482898959(benchmark::State& state) {
+  const auto inputs = input_args__14281272577482898959;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__14281272577482898959(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__14281272577482898959(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__14281272577482898959(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__14281272577482898959);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__14281272577482898959
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
 
 #ifdef ENABLE_LAYER_CUDNN_CONV_FWD
 namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__6459801229134422720 {
@@ -4071,16 +3396,79 @@ BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__645980
 } // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__6459801229134422720
 #endif // ENABLE_LAYER_CUDNN_CONV_FWD
 
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__15644551062228219632 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      256 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__15644551062228219632{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 256} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__15644551062228219632(benchmark::State& state) {
+  const auto inputs = input_args__15644551062228219632;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__15644551062228219632(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__15644551062228219632(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__15644551062228219632(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__15644551062228219632);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__15644551062228219632
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
 #ifdef ENABLE_LAYER_CUDNN_CONV_FWD
-namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7925922752961753587 {
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7300481346182188921 {
 
 #define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
   Args({{ \
       2 /* Input0 , idx = 0*/, \
-      256 /* Input1 , idx = 1*/, \
-      56 /* Input2 , idx = 2*/, \
-      56 /* Input3 , idx = 3*/, \
-      64 /* FilterCount , idx = 4*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      256 /* FilterCount , idx = 4*/, \
       1 /* FilterHeight , idx = 5*/, \
       1 /* FilterWidth , idx = 6*/, \
       0 /* PadHeight , idx = 7*/, \
@@ -4096,12 +3484,12 @@ namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7925922752961753587 {
   }})
 
 
-static const std::map<std::string, double> input_args__7925922752961753587{{
+static const std::map<std::string, double> input_args__7300481346182188921{{
       {"input[0]", 2} /* Input0 */, 
-      {"input[1]", 256} /* Input1 */, 
-      {"input[2]", 56} /* Input2 */, 
-      {"input[3]", 56} /* Input3 */, 
-      {"filter_count", 64} /* FilterCount */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"filter_count", 256} /* FilterCount */, 
       {"filter_height", 1} /* FilterHeight */, 
       {"filter_width", 1} /* FilterWidth */, 
       {"pad_height", 0} /* PadHeight */, 
@@ -4119,19 +3507,19 @@ static const std::map<std::string, double> input_args__7925922752961753587{{
 #define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
   ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
 
-static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752961753587(benchmark::State& state) {
-  const auto inputs = input_args__7925922752961753587;
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346182188921(benchmark::State& state) {
+  const auto inputs = input_args__7300481346182188921;
   state.counters.insert(inputs.begin(), inputs.end());
 }
 
   
   template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
-  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7925922752961753587(benchmark::State& state) {
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752961753587(state);
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7300481346182188921(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346182188921(state);
     
       LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
     
-    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752961753587(state);
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7300481346182188921(state);
   }
   
 
@@ -4171,11 +3559,1379 @@ static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7925922752
   
 
 
-BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7925922752961753587);
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7300481346182188921);
 
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
 #undef BENCHMARK_LAYER_CUDNN_CONV_FWD
-} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7925922752961753587
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7300481346182188921
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__15585232522992034385 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      64 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      64 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__15585232522992034385{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 64} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__15585232522992034385(benchmark::State& state) {
+  const auto inputs = input_args__15585232522992034385;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__15585232522992034385(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__15585232522992034385(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__15585232522992034385(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__15585232522992034385);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__15585232522992034385
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__16473975165114316882 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      64 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      64 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__16473975165114316882{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 64} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"filter_count", 64} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__16473975165114316882(benchmark::State& state) {
+  const auto inputs = input_args__16473975165114316882;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__16473975165114316882(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__16473975165114316882(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__16473975165114316882(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__16473975165114316882);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__16473975165114316882
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__8998952483528242241 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      512 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__8998952483528242241{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 512} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__8998952483528242241(benchmark::State& state) {
+  const auto inputs = input_args__8998952483528242241;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__8998952483528242241(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__8998952483528242241(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__8998952483528242241(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__8998952483528242241);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__8998952483528242241
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7630326367887916888 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      2048 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      512 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__7630326367887916888{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 2048} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"filter_count", 512} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7630326367887916888(benchmark::State& state) {
+  const auto inputs = input_args__7630326367887916888;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7630326367887916888(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7630326367887916888(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7630326367887916888(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7630326367887916888);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7630326367887916888
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__9982172701484151093 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      512 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__9982172701484151093{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 512} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__9982172701484151093(benchmark::State& state) {
+  const auto inputs = input_args__9982172701484151093;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__9982172701484151093(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__9982172701484151093(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__9982172701484151093(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__9982172701484151093);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__9982172701484151093
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__8831579689838660052 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      128 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      512 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__8831579689838660052{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 128} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"filter_count", 512} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__8831579689838660052(benchmark::State& state) {
+  const auto inputs = input_args__8831579689838660052;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__8831579689838660052(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__8831579689838660052(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__8831579689838660052(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__8831579689838660052);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__8831579689838660052
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__1949569203966329502 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      128 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      128 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__1949569203966329502{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 128} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 128} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__1949569203966329502(benchmark::State& state) {
+  const auto inputs = input_args__1949569203966329502;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__1949569203966329502(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__1949569203966329502(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__1949569203966329502(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__1949569203966329502);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__1949569203966329502
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1582425787574415356 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      128 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__1582425787574415356{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"filter_count", 128} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1582425787574415356(benchmark::State& state) {
+  const auto inputs = input_args__1582425787574415356;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1582425787574415356(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1582425787574415356(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__1582425787574415356(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__1582425787574415356);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__1582425787574415356
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__8761152447907271213 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      128 /* Input1 , idx = 1*/, \
+      28 /* Input2 , idx = 2*/, \
+      28 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      128 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__8761152447907271213{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 128} /* Input1 */, 
+      {"input[2]", 28} /* Input2 */, 
+      {"input[3]", 28} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 128} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__8761152447907271213(benchmark::State& state) {
+  const auto inputs = input_args__8761152447907271213;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__8761152447907271213(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__8761152447907271213(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__8761152447907271213(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__8761152447907271213);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__8761152447907271213
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3735814997020864682 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      56 /* Input2 , idx = 2*/, \
+      56 /* Input3 , idx = 3*/, \
+      128 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      2 /* StrideHeight , idx = 9*/, \
+      2 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__3735814997020864682{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 56} /* Input2 */, 
+      {"input[3]", 56} /* Input3 */, 
+      {"filter_count", 128} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 2} /* StrideHeight */, 
+      {"stride_width", 2} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3735814997020864682(benchmark::State& state) {
+  const auto inputs = input_args__3735814997020864682;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3735814997020864682(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3735814997020864682(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__3735814997020864682(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__3735814997020864682);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__3735814997020864682
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__11299823646475110791 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      2048 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      2048 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__11299823646475110791{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 2048} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 2048} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__11299823646475110791(benchmark::State& state) {
+  const auto inputs = input_args__11299823646475110791;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__11299823646475110791(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__11299823646475110791(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__11299823646475110791(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__11299823646475110791);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__11299823646475110791
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7626742445768451512 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      2048 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__7626742445768451512{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"filter_count", 2048} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7626742445768451512(benchmark::State& state) {
+  const auto inputs = input_args__7626742445768451512;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7626742445768451512(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7626742445768451512(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__7626742445768451512(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__7626742445768451512);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__7626742445768451512
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__10510579669122189149 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      512 /* Input1 , idx = 1*/, \
+      7 /* Input2 , idx = 2*/, \
+      7 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      512 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__10510579669122189149{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 512} /* Input1 */, 
+      {"input[2]", 7} /* Input2 */, 
+      {"input[3]", 7} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 512} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__10510579669122189149(benchmark::State& state) {
+  const auto inputs = input_args__10510579669122189149;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__10510579669122189149(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__10510579669122189149(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__10510579669122189149(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__10510579669122189149);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__10510579669122189149
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9589926678266437843 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      512 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      2 /* StrideHeight , idx = 9*/, \
+      2 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__9589926678266437843{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"filter_count", 512} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 2} /* StrideHeight */, 
+      {"stride_width", 2} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9589926678266437843(benchmark::State& state) {
+  const auto inputs = input_args__9589926678266437843;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9589926678266437843(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9589926678266437843(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__9589926678266437843(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__9589926678266437843);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__9589926678266437843
+#endif // ENABLE_LAYER_CUDNN_CONV_FWD
+
+#ifdef ENABLE_LAYER_CUDNN_ADD_TENSOR
+namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__7848215459132795342 {
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      1024 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      1 /* BiasShape0 , idx = 4*/, \
+      1024 /* BiasShape1 , idx = 5*/, \
+      1 /* BiasShape2 , idx = 6*/, \
+      1 /* BiasShape3 , idx = 7*/, \
+      2 /* BatchSize , idx = 8*/, \
+      ConvFwdTypeBias /* ConvFwdType , idx = 9*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 10*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__7848215459132795342{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 1024} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"bias[0]", 1} /* BiasShape0 */, 
+      {"bias[1]", 1024} /* BiasShape1 */, 
+      {"bias[2]", 1} /* BiasShape2 */, 
+      {"bias[3]", 1} /* BiasShape3 */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeBias} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "bias[0]", "bias[1]", "bias[2]", "bias[3]", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__7848215459132795342(benchmark::State& state) {
+  const auto inputs = input_args__7848215459132795342;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+
+static void LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__7848215459132795342(benchmark::State& state) {
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__7848215459132795342(state);
+  LAYER_CUDNN_ADD_TENSOR_Impl<float>(state);
+  BENCHMARK_LAYER_CUDNN_ADD_TENSOR_ADD_COUNTERS__BatchSize_2__7848215459132795342(state);
+}
+
+#define BENCHMARK_LAYER_CUDNN_ADD_TENSOR(b) \
+  BENCHMARK_CUDNN(b)->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS()->\
+    UseManualTime(); \
+
+
+BENCHMARK_LAYER_CUDNN_ADD_TENSOR(LAYER_CUDNN_ADD_TENSOR_FLOAT32__BatchSize_2__7848215459132795342);
+
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_ADD_TENSOR
+} // end namespace LAYER_CUDNN_ADD_TENSOR__BatchSize_2__7848215459132795342
+#endif // ENABLE_LAYER_CUDNN_ADD_TENSOR
+
+#ifdef ENABLE_LAYER_CUDNN_CONV_FWD
+namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__15437479176948621265 {
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS() \
+  Args({{ \
+      2 /* Input0 , idx = 0*/, \
+      256 /* Input1 , idx = 1*/, \
+      14 /* Input2 , idx = 2*/, \
+      14 /* Input3 , idx = 3*/, \
+      1024 /* FilterCount , idx = 4*/, \
+      1 /* FilterHeight , idx = 5*/, \
+      1 /* FilterWidth , idx = 6*/, \
+      0 /* PadHeight , idx = 7*/, \
+      0 /* PadWidth , idx = 8*/, \
+      1 /* StrideHeight , idx = 9*/, \
+      1 /* StrideWidth , idx = 10*/, \
+      1 /* DilationWidth , idx = 11*/, \
+      1 /* DilationHeight , idx = 12*/, \
+      1 /* Group , idx = 13*/, \
+      2 /* BatchSize , idx = 14*/, \
+      ConvFwdTypeConv /* ConvFwdType , idx = 15*/, \
+      ConvBwdTypeUndefined /* ConvBwdType , idx = 16*/, \
+  }})
+
+
+static const std::map<std::string, double> input_args__15437479176948621265{{
+      {"input[0]", 2} /* Input0 */, 
+      {"input[1]", 256} /* Input1 */, 
+      {"input[2]", 14} /* Input2 */, 
+      {"input[3]", 14} /* Input3 */, 
+      {"filter_count", 1024} /* FilterCount */, 
+      {"filter_height", 1} /* FilterHeight */, 
+      {"filter_width", 1} /* FilterWidth */, 
+      {"pad_height", 0} /* PadHeight */, 
+      {"pad_width", 0} /* PadWidth */, 
+      {"stride_height", 1} /* StrideHeight */, 
+      {"stride_width", 1} /* StrideWidth */, 
+      {"dilation_height", 1} /* DilationWidth */, 
+      {"dilation_width", 1} /* DilationHeight */, 
+      {"group", 1} /* Group */, 
+      {"batch_size", 2} /* BatchSize */, 
+      {"conv_fwd_type", ConvFwdTypeConv} /* ConvFwdType */, 
+      {"conv_bwd_type", ConvBwdTypeUndefined} /* ConvBwdType */, 
+}};
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES() \
+  ArgNames({"input[0]", "input[1]", "input[2]", "input[3]", "filter_count", "filter_height", "filter_width", "pad_height", "pad_width", "stride_height", "stride_width", "dilation_height", "dilation_width", "group", "batch_size", "conv_fwd_type", "conv_bwd_type"})
+
+static void BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__15437479176948621265(benchmark::State& state) {
+  const auto inputs = input_args__15437479176948621265;
+  state.counters.insert(inputs.begin(), inputs.end());
+}
+
+  
+  template <cudnnConvolutionFwdAlgo_t convolution_algorithm>
+  static void LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__15437479176948621265(benchmark::State& state) {
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__15437479176948621265(state);
+    
+      LAYER_CUDNN_CONV_FWD_Impl<float, convolution_algorithm>(state);
+    
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_ADD_COUNTERS__BatchSize_2__15437479176948621265(state);
+  }
+  
+
+#define BENCHMARK_LAYER_CUDNN_CONV_FWD(b) \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_GEMM)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_DIRECT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_FFT_TILING)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+   BENCHMARK_CUDNN_TEMPLATE(b, CUDNN_CONVOLUTION_FWD_ALGO_WINOGRAD_NONFUSED)->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES()->\
+    BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS()->\
+    UseManualTime(); \
+  
+
+
+BENCHMARK_LAYER_CUDNN_CONV_FWD(LAYER_CUDNN_CONV_FWD_FLOAT32__BatchSize_2__15437479176948621265);
+
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARGS
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD_INPUT_ARG_NAMES
+#undef BENCHMARK_LAYER_CUDNN_CONV_FWD
+} // end namespace LAYER_CUDNN_CONV_FWD__BatchSize_2__15437479176948621265
 #endif // ENABLE_LAYER_CUDNN_CONV_FWD
 
