@@ -35,7 +35,7 @@ sugar_include("src")
 
 if(RESNET50_ONLY AND NOT ADD_TENSOR_ONLY)
   list(APPEND cudnn_BENCHMARK_FWD_SOURCES ${cudnn_BENCHMARK_FWD_FUSED_SOURCES})
-endif(RESNET50_ONLY)
+endif(RESNET50_ONLY AND NOT ADD_TENSOR_ONLY)
 scope_add_library(cudnn_scope OBJECT ${cudnn_BENCHMARK_FWD_SOURCES})
 target_include_scope_directories(cudnn_scope)
 target_include_directories(cudnn_scope
