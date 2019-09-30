@@ -17,7 +17,7 @@ mkdir -p ${RESULTS_DIR}
 nvidia-smi -x -q -a > ${RESULTS_DIR}/nvidia_smi.xml
 echo ${CUPTI_METRICS} > ${RESULTS_DIR}/cupti_metrics.csv
 
-for BATCH_SIZE in 1 2 4 8 16
+for BATCH_SIZE in 1 2 4 8 16 32
 do
   rm -fr build && mkdir build
   pushd build
