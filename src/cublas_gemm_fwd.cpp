@@ -32,12 +32,12 @@ namespace gemm {
 namespace detail {
   template <typename T>
   static T one() {
-    return T{1};
+    return (T) 1;
   };
 
   template <typename T>
   static T zero() {
-    return T{0};
+    return (T) 0;
   };
 } // namespace detail
 } // namespace gemm
