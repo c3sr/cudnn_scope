@@ -25,7 +25,7 @@
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
           ,
-          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+          cudnnMathType_t math_type0 = CUDNN_DEFAULT_MATH
 #endif
           >
 void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
@@ -34,9 +34,13 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  if (math_type == CUDNN_TENSOR_OP_MATH && !detail::SupportsTensorCore(cuda_device_id)) {
+  int math_type = math_type0;
+  if ((is_half_t<T> || math_type == CUDNN_TENSOR_OP_MATH) && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;
+  }
+  if (is_half_t<T>) {
+    math_type = CUDNN_TENSOR_OP_MATH;
   }
 #else
   int math_type = 0;
@@ -81,7 +85,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, math_type))) {
+  if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionMathType");
     return;
   }

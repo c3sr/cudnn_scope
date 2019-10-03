@@ -23,7 +23,7 @@
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
           ,
-          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+          cudnnMathType_t math_type0 = CUDNN_DEFAULT_MATH
 #endif
           >
 static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
@@ -32,9 +32,13 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  if (math_type == CUDNN_TENSOR_OP_MATH && !detail::SupportsTensorCore(cuda_device_id)) {
+  int math_type = math_type0;
+  if ((is_half_t<T> || math_type == CUDNN_TENSOR_OP_MATH) && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;
+  }
+  if (is_half_t<T>) {
+    math_type = CUDNN_TENSOR_OP_MATH;
   }
 #else
   int math_type = 0;
@@ -93,7 +97,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   defer(cudnnDestroyActivationDescriptor(activation_descriptor));
 
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  cudnnSetConvolutionMathType(convolution_descriptor, math_type);
+  cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
   PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));

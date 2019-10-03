@@ -162,7 +162,6 @@ __half zero<__half>() {
   return res;
 };
 
-
 // calculates convolution output dimension
 // yh = int64(math.Floor(float64(xh+c.Pads[0]+c.Pads[1]-(c.Dilations[0]*(wh-1)+1))/float64(c.Strides[0])) + 1)
 // yw = int64(math.Floor(float64(xw+c.Pads[2]+c.Pads[3]-(c.Dilations[1]*(ww-1)+1))/float64(c.Strides[1])) + 1)
@@ -208,24 +207,23 @@ inline constexpr bool is_half_t = std::is_same_v<__half, T>;
 
 template <typename T>
 static constexpr bool is_half() {
-    return false;
+  return false;
 }
 
 template <>
 constexpr bool is_half<__half>() {
-    return true;
+  return true;
 }
-
 
 template <typename T>
 inline constexpr bool is_int8_t = std::is_same_v<int8_t, T>;
 
 template <typename T>
 static constexpr bool is_int8() {
-    return false;
+  return false;
 }
 
 template <>
 constexpr bool is_int8<int8_t>() {
-    return true;
+  return true;
 }

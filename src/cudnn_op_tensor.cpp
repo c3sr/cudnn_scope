@@ -107,7 +107,7 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
                          {"input_c", in_c},
                          {"input_h", in_h},
                          {"input_w", in_w},
-                         {"alpha",(double) alpha},
+                         {"alpha", (double) alpha},
                          {"beta", (double) beta},
                          {"op_type", (int) op_type}});
 

@@ -24,7 +24,7 @@
 template <typename T, cudnnConvolutionBwdFilterAlgo_t convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
           ,
-          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+          cudnnMathType_t math_type0 = CUDNN_DEFAULT_MATH
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
           >
 static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
@@ -33,10 +33,17 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  if (math_type == CUDNN_TENSOR_OP_MATH && !detail::SupportsTensorCore(cuda_device_id)) {
+  int math_type = math_type0;
+  if ((is_half_t<T> || math_type == CUDNN_TENSOR_OP_MATH) && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;
   }
+  if (is_half_t<T>) {
+    math_type = CUDNN_TENSOR_OP_MATH;
+  }
+
+#else
+  int math_type = 0;
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
   const float alpha = 1, beta = 0;
@@ -78,7 +85,7 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, math_type))) {
+  if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionMathType");
     return;
   }
@@ -220,7 +227,7 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
                          {"workspace_megabytes", workspace_bytes / 1048576.0},
                          {"convolution_algorithm", (int) convolution_algorithm},
                          {"advised_convolution_algorithm", (int) advised_convolution_algorithm},
-                         {"math_type", (int) 0}});
+                         {"math_type", (int) math_type}});
 
   const auto N = batch_size, K = num_filters, C = channels, H = height, W = width, R = filter_height, S = filter_width;
   const auto P = out_h, Q = out_w;

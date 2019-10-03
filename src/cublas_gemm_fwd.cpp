@@ -86,19 +86,17 @@ static void iLAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   std::fill(c.begin(), c.end(), zero);
 
   if constexpr (is_half_t<T>) {
-      if (PRINT_IF_ERROR(cublasSetMathMode(cublas_handle, CUBLAS_TENSOR_OP_MATH))) {
-    LOG(critical, "CUBLAS/{} failed to sett math mode to default", IMPLEMENTATION_NAME);
-    state.SkipWithError(
-        fmt::format("CUBLAS/{} failed to set math mode to defaultt", IMPLEMENTATION_NAME).c_str());
-    return;
-              }
+    if (PRINT_IF_ERROR(cublasSetMathMode(cublas_handle, CUBLAS_TENSOR_OP_MATH))) {
+      LOG(critical, "CUBLAS/{} failed to sett math mode to default", IMPLEMENTATION_NAME);
+      state.SkipWithError(fmt::format("CUBLAS/{} failed to set math mode to defaultt", IMPLEMENTATION_NAME).c_str());
+      return;
+    }
   } else {
-      if (PRINT_IF_ERROR(cublasSetMathMode(cublas_handle, CUBLAS_DEFAULT_MATH))) {
-    LOG(critical, "CUBLAS/{} failed to sett math mode to default", IMPLEMENTATION_NAME);
-    state.SkipWithError(
-        fmt::format("CUBLAS/{} failed to set math mode to defaultt", IMPLEMENTATION_NAME).c_str());
-    return;
-              }
+    if (PRINT_IF_ERROR(cublasSetMathMode(cublas_handle, CUBLAS_DEFAULT_MATH))) {
+      LOG(critical, "CUBLAS/{} failed to sett math mode to default", IMPLEMENTATION_NAME);
+      state.SkipWithError(fmt::format("CUBLAS/{} failed to set math mode to defaultt", IMPLEMENTATION_NAME).c_str());
+      return;
+    }
   }
 
   T *d_a{nullptr}, *d_b{nullptr}, *d_c{nullptr};
@@ -148,9 +146,8 @@ static void iLAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   cublasStatus_t cublas_err;
   if constexpr (is_half_t<T>) {
     BENCHMARK_BLOCK(cublas_err, {
-      cublas_err = cublasGemmEx(cublas_handle, CUBLAS_OP_N, CUBLAS_OP_N, M, N, K, &alpha, d_a, CUDA_R_16F,
-                   M, d_b, CUDA_R_16F, K, &beta, d_c, CUDA_R_16F, M, CUDA_R_16F,
- CUBLAS_GEMM_DEFAULT_TENSOR_OP );
+      cublas_err = cublasGemmEx(cublas_handle, CUBLAS_OP_N, CUBLAS_OP_N, M, N, K, &alpha, d_a, CUDA_R_16F, M, d_b,
+                                CUDA_R_16F, K, &beta, d_c, CUDA_R_16F, M, CUDA_R_16F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
     });
   } else {
     BENCHMARK_BLOCK(cublas_err, {
@@ -183,7 +180,7 @@ static void LAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
 
 template <>
 void LAYER_CUBLAS_GEMM_FWD_Impl<int8_t>(benchmark::State& state) {
-    return LAYER_CUBLAS_GEMM_FWD_Impl<float>(state);
+  return LAYER_CUBLAS_GEMM_FWD_Impl<float>(state);
 }
 
 #ifdef GENERATED_BENCHMARK_LAYER
