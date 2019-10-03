@@ -107,9 +107,8 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
                          {"input_c", in_c},
                          {"input_h", in_h},
                          {"input_w", in_w},
-                         {"alpha", alpha},
-                         {"alpha", alpha},
-                         {"beta", beta},
+                         {"alpha",(double) alpha},
+                         {"beta", (double) beta},
                          {"op_type", (int) op_type}});
 
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
@@ -171,18 +170,18 @@ DECLARE_OP(NOT, CUDNN_OP_TENSOR_NOT)
 #include "generated_benchmarks.hpp"
 
 #undef ENABLE_LAYER_CUDNN_OP_TENSOR
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MUL_FWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MIN_FWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MAX_FWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_FWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_FWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_BWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MUL_BWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MIN_BWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MAX_BWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_BWD 
-#undef ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_BWD 
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_FWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MUL_FWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MIN_FWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MAX_FWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_FWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_FWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_ADD_BWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MUL_BWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MIN_BWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_MAX_BWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_SQRT_BWD
+#undef ENABLE_LAYER_CUDNN_OP_TENSOR_NOT_BWD
 
 #else // GENERATED_BENCHMARK_LAYER
 

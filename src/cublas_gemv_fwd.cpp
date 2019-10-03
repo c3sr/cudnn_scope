@@ -155,6 +155,18 @@ static void LAYER_CUBLAS_GEMV_FWD_Impl(benchmark::State& state) {
   }
 }
 
+template <>
+void iLAYER_CUBLAS_GEMV_FWD_Impl<__half>(benchmark::State& state) {
+  cublasSetMathMode(cublas_handle, CUBLAS_TENSOR_OP_MATH);
+  return iLAYER_CUBLAS_GEMV_FWD_Impl<float>(state); // there is no half precision
+}
+
+template <>
+void iLAYER_CUBLAS_GEMV_FWD_Impl<int8_t>(benchmark::State& state) {
+  cublasSetMathMode(cublas_handle, CUBLAS_TENSOR_OP_MATH);
+  return iLAYER_CUBLAS_GEMV_FWD_Impl<float>(state); // there is no half precision
+}
+
 #ifdef GENERATED_BENCHMARK_LAYER
 
 #define ENABLE_LAYER_CUBLAS_GEMV_FWD 1

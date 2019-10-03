@@ -57,7 +57,7 @@ scope_status(GIT_HASH=${GIT_HASH})
 scope_status(GIT_LOCAL_CHANGES=${GIT_LOCAL_CHANGES})
 
 set_property(TARGET cudnn_scope PROPERTY CUDA_STANDARD 11)
-target_compile_features(cudnn_scope PUBLIC cxx_std_11)
+target_compile_features(cudnn_scope PUBLIC cxx_std_17)
 target_compile_options(cudnn_scope
                        PRIVATE -Wno-narrowing
                                -Wno-unused-variable
