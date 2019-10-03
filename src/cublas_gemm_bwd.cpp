@@ -30,20 +30,6 @@ static void constantInit(float* data, int size, float val) {
   }
 }
 
-namespace gemm {
-namespace detail {
-  template <typename T>
-  static T one() {
-    return T{1};
-  };
-
-  template <typename T>
-  static T zero() {
-    return T{0};
-  };
-} // namespace detail
-} // namespace gemm
-
 // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
 template <typename T>
 static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
@@ -83,8 +69,8 @@ static void iLAYER_CUBLAS_GEMM_BWD_Impl(benchmark::State& state) {
             << (transB == CUBLAS_OP_N ? 0 : 1) << "\n";
 #endif
 
-  const T one  = gemm::detail::one<T>();
-  const T zero = gemm::detail::zero<T>();
+  const T one  = detail::one<T>();
+  const T zero = detail::zero<T>();
 
   auto a = std::vector<T>(M * K);
   auto b = std::vector<T>(K * N);
