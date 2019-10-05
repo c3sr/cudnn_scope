@@ -21,7 +21,7 @@
 #endif // BENCHMARK_NAME
 
 template <typename T>
-struct DeviceMemory {
+struct alignas(128) DeviceMemory {
   using type = T;
   MEM_ALIGNED_128 T *ptr{nullptr};
   bool is_valid{false};
@@ -60,7 +60,7 @@ struct DeviceMemory {
 };
 
 template <typename T>
-struct Filter {
+struct alignas(128) Filter {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
 
@@ -73,7 +73,7 @@ struct Filter {
   Filter(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
 
     assert(shape.size() <= 4);
-    int dims[4] = {1, 1, 1, 1};
+    alignas(128) int dims[4] = {1, 1, 1, 1};
     for (size_t ii = 0; ii < shape.size(); ++ii) {
       dims[ii] = shape[ii];
     }
@@ -106,7 +106,7 @@ struct Filter {
 };
 
 template <typename T>
-struct Tensor {
+struct alignas(128) Tensor {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
   static const auto layout     = std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
@@ -118,7 +118,7 @@ struct Tensor {
   Tensor(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
 
     assert(shape.size() <= 4);
-    int dims[4] = {1, 1, 1, 1};
+    alignas(128) int dims[4] = {1, 1, 1, 1};
     for (size_t ii = 0; ii < shape.size(); ++ii) {
       dims[ii] = shape[ii];
     }
@@ -153,7 +153,7 @@ struct Tensor {
 };
 
 template <typename T>
-struct Layer {
+struct alignas(128) Layer {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
 
