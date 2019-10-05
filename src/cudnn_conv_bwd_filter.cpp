@@ -46,8 +46,8 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   int math_type = 0;
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha          = detail::one<T>();
+  MEM_ALIGNED_128 const T beta           = detail::zero<T>();
   const cudnnConvolutionMode_t conv_mode = CUDNN_CONVOLUTION;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
@@ -66,7 +66,7 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   const auto dilation_width  = state.range(12);
   const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
-  cudnnConvolutionDescriptor_t convolution_descriptor;
+  MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateConvolutionDescriptor");
     return;
@@ -97,25 +97,25 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
     return;
   }
 
-  auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/batch_size,
-                             /*channels=*/channels,
-                             /*image_height=*/height,
-                             /*image_width=*/width});
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
+                                            {/*batch_size=*/batch_size,
+                                             /*channels=*/channels,
+                                             /*image_height=*/height,
+                                             /*image_width=*/width});
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  const auto dw_filter = Filter<T>(state,
-                                   {/*out_channels=*/num_filters,
-                                    /*in_channels=*/channels,
-                                    /*kernel_height=*/filter_height,
-                                    /*kernel_width=*/filter_width});
+  MEM_ALIGNED_128 const auto dw_filter = Filter<T>(state,
+                                                   {/*out_channels=*/num_filters,
+                                                    /*in_channels=*/channels,
+                                                    /*kernel_height=*/filter_height,
+                                                    /*kernel_width=*/filter_width});
   if (!dw_filter.is_valid) {
     return;
   }
-  cudnnFilterDescriptor_t dw_descriptor = dw_filter.get();
+  MEM_ALIGNED_128 cudnnFilterDescriptor_t dw_descriptor = dw_filter.get();
 
   int out_n, out_c, out_h, out_w;
   if (PRINT_IF_ERROR(cudnnGetConvolution2dForwardOutputDim(convolution_descriptor, x_descriptor, dw_descriptor, &out_n,
@@ -126,24 +126,24 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
     return;
   }
 
-  auto dy_tensor = Tensor<T>(state,
-                             {/*batch_size=*/out_n,
-                              /*channels=*/out_c,
-                              /*image_height=*/out_h,
-                              /*image_width=*/out_w});
+  MEM_ALIGNED_128 auto dy_tensor = Tensor<T>(state,
+                                             {/*batch_size=*/out_n,
+                                              /*channels=*/out_c,
+                                              /*image_height=*/out_h,
+                                              /*image_width=*/out_w});
   if (!dy_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t dy_descriptor = dy_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t dy_descriptor = dy_tensor.get();
 
-  cudnnConvolutionBwdFilterAlgo_t advised_convolution_algorithm = (cudnnConvolutionBwdFilterAlgo_t) -1;
+  MEM_ALIGNED_128 cudnnConvolutionBwdFilterAlgo_t advised_convolution_algorithm = (cudnnConvolutionBwdFilterAlgo_t) -1;
   if (IS_ERROR(cudnnGetConvolutionBackwardFilterAlgorithm(
           cudnn_handle, x_descriptor, dy_descriptor, convolution_descriptor, dw_descriptor,
           CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &advised_convolution_algorithm))) {
     advised_convolution_algorithm = (cudnnConvolutionBwdFilterAlgo_t) -1;
   }
 
-  size_t workspace_bytes = 0;
+  MEM_ALIGNED_128 size_t workspace_bytes = 0;
   if (std::is_same<T, int8_t>::value) {
 
     // Note: cudnn workspace size function doesn't work for INT8_CONFIG
@@ -174,29 +174,29 @@ static void iLAYER_CUDNN_CONV_BWD_FILTER_Impl(benchmark::State& state) {
   auto output             = std::vector<T>(output_bytes / sizeof(T));
   std::fill(output.begin(), output.end(), detail::one<T>());
 
-  DeviceMemory<T> workspace_memory(state, workspace_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> workspace_memory(state, workspace_bytes);
   if (!workspace_memory.is_valid) {
     return;
   }
-  const auto d_workspace = workspace_memory.get();
+  MEM_ALIGNED_128 const auto d_workspace = workspace_memory.get();
 
-  DeviceMemory<T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }
-  const auto d_x = x_memory.get();
+  MEM_ALIGNED_128 const auto d_x = x_memory.get();
 
-  DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
   if (!dy_memory.is_valid) {
     return;
   }
-  const auto d_dy = dy_memory.get();
+  MEM_ALIGNED_128 const auto d_dy = dy_memory.get();
 
-  DeviceMemory<T> dw_memory(state, kernel_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dw_memory(state, kernel_bytes);
   if (!dw_memory.is_valid) {
     return;
   }
-  const auto d_dw = dw_memory.get();
+  MEM_ALIGNED_128 const auto d_dw = dw_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {

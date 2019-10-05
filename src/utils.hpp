@@ -23,7 +23,7 @@
 #if defined(_MSC_VER)
 #define MEM_ALIGNED(x) __declspec(align(x))
 #else
-#define MEM_ALIGNED(x) __attribute__ ((aligned(x)))
+#define MEM_ALIGNED(x) __attribute__((aligned(x)))
 #endif
 
 #define MEM_ALIGNED_128 MEM_ALIGNED(128)

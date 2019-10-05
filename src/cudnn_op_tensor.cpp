@@ -32,42 +32,40 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   const auto in_h = state.range(2);
   const auto in_w = state.range(3);
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha = detail::one<T>();
+  MEM_ALIGNED_128 const T beta  = detail::zero<T>();
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
-
-
 
   MEM_ALIGNED_128 cudnnOpTensorDescriptor_t op_descriptor;
   PRINT_IF_ERROR(cudnnCreateOpTensorDescriptor(&op_descriptor));
   PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, valueDataType<T>::type, CUDNN_NOT_PROPAGATE_NAN));
 
   MEM_ALIGNED_128 auto input_a_tensor = Tensor<T>(state,
-                                  {
-                                      in_n,
-                                      in_c,
-                                      in_h,
-                                      in_w,
-                                  });
+                                                  {
+                                                      in_n,
+                                                      in_c,
+                                                      in_h,
+                                                      in_w,
+                                                  });
   if (!input_a_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t input_a_descriptor = input_a_tensor.get();
 
- MEM_ALIGNED_128  auto input_b_tensor = Tensor<T>(state,
-                                  {
-                                      in_n,
-                                      in_c,
-                                      in_h,
-                                      in_w,
-                                  });
+  MEM_ALIGNED_128 auto input_b_tensor = Tensor<T>(state,
+                                                  {
+                                                      in_n,
+                                                      in_c,
+                                                      in_h,
+                                                      in_w,
+                                                  });
   if (!input_b_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t input_b_descriptor = input_b_tensor.get();
 
- MEM_ALIGNED_128  auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
+  MEM_ALIGNED_128 auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
   if (!output_tensor.is_valid) {
     return;
   }

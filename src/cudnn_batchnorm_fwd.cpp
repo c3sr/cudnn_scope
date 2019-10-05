@@ -34,18 +34,18 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   const auto in_h = state.range(2);
   const auto in_w = state.range(3);
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha           = detail::one<T>();
+  MEM_ALIGNED_128 const T beta            = detail::zero<T>();
   const double exponential_average_factor = 1.0;  // exponentialAverageFactor
   const double epsilon                    = 1e-5; // CUDNN_BN_MIN_EPSILON
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/in_n,
-                             /*channels=*/in_c,
-                             /*image_height=*/in_h,
-                             /*image_width=*/in_w});
+                                            {/*batch_size=*/in_n,
+                                             /*channels=*/in_c,
+                                             /*image_height=*/in_h,
+                                             /*image_width=*/in_w});
   if (!x_tensor.is_valid) {
     return;
   }
@@ -91,7 +91,7 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   if (!scale_memory.is_valid) {
     return;
   }
- MEM_ALIGNED_128  const auto d_scale = scale_memory.get();
+  MEM_ALIGNED_128 const auto d_scale = scale_memory.get();
 
   MEM_ALIGNED_128 DeviceMemory<T> bias_memory(state, scale_bias.data(), scale_bias_bytes);
   if (!bias_memory.is_valid) {

@@ -41,11 +41,11 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto out_h = out_2;
   const auto out_w = out_3;
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha = detail::one<T>();
+  MEM_ALIGNED_128 const T beta  = detail::zero<T>();
 
-  const auto bias_dim = out_c;
-  MEM_ALIGNED_128 auto input_tensor   = Tensor<T>(state, {bias_0, bias_1, bias_2, bias_3});
+  const auto bias_dim               = out_c;
+  MEM_ALIGNED_128 auto input_tensor = Tensor<T>(state, {bias_0, bias_1, bias_2, bias_3});
   if (!input_tensor.is_valid) {
     return;
   }

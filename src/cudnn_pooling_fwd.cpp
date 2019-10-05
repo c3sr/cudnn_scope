@@ -39,8 +39,8 @@ static void iLAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
   const auto vert_stride  = state.range(8);
   const auto hori_stride  = state.range(9);
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha = detail::one<T>();
+  MEM_ALIGNED_128 const T beta  = detail::zero<T>();
 
   auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,

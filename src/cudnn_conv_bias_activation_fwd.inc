@@ -60,8 +60,8 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   const auto dilation_width  = state.range(12);
   const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha          = detail::one<T>();
+  MEM_ALIGNED_128 const T beta           = detail::zero<T>();
   const double coef                      = 1;
   const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
@@ -104,20 +104,20 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/batch_size,
-                             /*channels=*/channels,
-                             /*image_height=*/height,
-                             /*image_width=*/width});
+                                            {/*batch_size=*/batch_size,
+                                             /*channels=*/channels,
+                                             /*image_height=*/height,
+                                             /*image_width=*/width});
   if (!x_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
   MEM_ALIGNED_128 const auto w_filter = Filter<T>(state,
-                                  {/*out_channels=*/num_filters,
-                                   /*in_channels=*/channels / group,
-                                   /*kernel_height=*/filter_height,
-                                   /*kernel_width=*/filter_width});
+                                                  {/*out_channels=*/num_filters,
+                                                   /*in_channels=*/channels / group,
+                                                   /*kernel_height=*/filter_height,
+                                                   /*kernel_width=*/filter_width});
   if (!w_filter.is_valid) {
     return;
   }
@@ -134,20 +134,20 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   }
 
   MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
-                            {/*batch_size=*/out_n,
-                             /*channels=*/out_c,
-                             /*image_height=*/out_h,
-                             /*image_width=*/out_w});
+                                            {/*batch_size=*/out_n,
+                                             /*channels=*/out_c,
+                                             /*image_height=*/out_h,
+                                             /*image_width=*/out_w});
   if (!y_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
 
   MEM_ALIGNED_128 auto bias_tensor = Tensor<T>(state,
-                               {/*batch_size=*/1,
-                                /*channels=*/out_c,
-                                /*image_height=*/1,
-                                /*image_width=*/1});
+                                               {/*batch_size=*/1,
+                                                /*channels=*/out_c,
+                                                /*image_height=*/1,
+                                                /*image_width=*/1});
   if (!bias_tensor.is_valid) {
     return;
   }
@@ -211,7 +211,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   if (!w_memory.is_valid) {
     return;
   }
- MEM_ALIGNED_128  const auto d_w = w_memory.get();
+  MEM_ALIGNED_128 const auto d_w = w_memory.get();
 
   MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, output_bytes);
   if (!y_memory.is_valid) {

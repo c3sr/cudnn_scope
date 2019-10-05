@@ -33,17 +33,17 @@ static void iLAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
   const auto in_h = state.range(2) == -1 ? 1 : state.range(2);
   const auto in_w = state.range(3) == -1 ? 1 : state.range(3);
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
-  const double coef = 1;
+  MEM_ALIGNED_128 const T alpha = detail::one<T>();
+  MEM_ALIGNED_128 const T beta  = detail::zero<T>();
+  const double coef             = 1;
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/in_n,
-                             /*channels=*/in_c,
-                             /*image_height=*/in_h,
-                             /*image_width=*/in_w});
+                                            {/*batch_size=*/in_n,
+                                             /*channels=*/in_c,
+                                             /*image_height=*/in_h,
+                                             /*image_width=*/in_w});
   if (!x_tensor.is_valid) {
     return;
   }

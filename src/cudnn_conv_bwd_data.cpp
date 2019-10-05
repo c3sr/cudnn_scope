@@ -39,8 +39,8 @@ static void iLAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha          = detail::one<T>();
+  MEM_ALIGNED_128 const T beta           = detail::zero<T>();
   const cudnnConvolutionMode_t conv_mode = CUDNN_CONVOLUTION;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
@@ -93,20 +93,20 @@ static void iLAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   }
 
   MEM_ALIGNED_128 auto dx_tensor = Tensor<T>(state,
-                             {/*batch_size=*/batch_size,
-                              /*channels=*/channels,
-                              /*image_height=*/height,
-                              /*image_width=*/width});
+                                             {/*batch_size=*/batch_size,
+                                              /*channels=*/channels,
+                                              /*image_height=*/height,
+                                              /*image_width=*/width});
   if (!dx_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t dx_descriptor = dx_tensor.get();
 
   MEM_ALIGNED_128 const auto w_filter = Filter<T>(state,
-                                  {/*out_channels=*/num_filters,
-                                   /*in_channels=*/channels,
-                                   /*kernel_height=*/filter_height,
-                                   /*kernel_width=*/filter_width});
+                                                  {/*out_channels=*/num_filters,
+                                                   /*in_channels=*/channels,
+                                                   /*kernel_height=*/filter_height,
+                                                   /*kernel_width=*/filter_width});
   if (!w_filter.is_valid) {
     return;
   }
@@ -123,10 +123,10 @@ static void iLAYER_CUDNN_CONV_BWD_DATA_Impl(benchmark::State& state) {
   }
 
   MEM_ALIGNED_128 auto dy_tensor = Tensor<T>(state,
-                             {/*batch_size=*/out_n,
-                              /*channels=*/out_c,
-                              /*image_height=*/out_h,
-                              /*image_width=*/out_w});
+                                             {/*batch_size=*/out_n,
+                                              /*channels=*/out_c,
+                                              /*image_height=*/out_h,
+                                              /*image_width=*/out_w});
   if (!dy_tensor.is_valid) {
     return;
   }

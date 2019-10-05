@@ -46,9 +46,9 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   int math_type = 0;
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
-  const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
+  MEM_ALIGNED_128 const T alpha                          = detail::one<T>();
+  MEM_ALIGNED_128 const T beta                           = detail::zero<T>();
+  MEM_ALIGNED_128 const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
   const auto batch_size      = state.range(0);
@@ -66,7 +66,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   const auto dilation_width  = state.range(12);
   const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
-  cudnnConvolutionDescriptor_t convolution_descriptor;
+  MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateConvolutionDescriptor");
     return;
@@ -98,10 +98,10 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/batch_size,
-                             /*channels=*/channels,
-                             /*image_height=*/height,
-                             /*image_width=*/width});
+                                            {/*batch_size=*/batch_size,
+                                             /*channels=*/channels,
+                                             /*image_height=*/height,
+                                             /*image_width=*/width});
   if (!x_tensor.is_valid) {
     return;
   }
@@ -130,10 +130,10 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 
   MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
-                            {/*batch_size=*/out_n,
-                             /*channels=*/out_c,
-                             /*image_height=*/out_h,
-                             /*image_width=*/out_w});
+                                            {/*batch_size=*/out_n,
+                                             /*channels=*/out_c,
+                                             /*image_height=*/out_h,
+                                             /*image_width=*/out_w});
   if (!y_tensor.is_valid) {
     return;
   }
@@ -175,17 +175,17 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
   const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
 
-  DeviceMemory<T> workspace_memory(state, workspace_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> workspace_memory(state, workspace_bytes);
   if (!workspace_memory.is_valid) {
     return;
   }
-  const auto d_workspace = workspace_memory.get();
+  MEM_ALIGNED_128 const auto d_workspace = workspace_memory.get();
 
-  DeviceMemory<T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }
-  const auto d_x = x_memory.get();
+  MEM_ALIGNED_128 const auto d_x = x_memory.get();
 
   MEM_ALIGNED_128 DeviceMemory<T> w_memory(state, kernel.data(), kernel_bytes);
   if (!w_memory.is_valid) {
@@ -290,7 +290,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   /*   state.SkipWithError(BENCHMARK_NAME " failed to perform cudnnGetConvolutionForwardAlgorithmMaxCount"); */
   /* } */
 
-  cudnnConvolutionFwdAlgoPerf_t perfResults[max_count];
+  MEM_ALIGNED_128 cudnnConvolutionFwdAlgoPerf_t perfResults[max_count];
   int returned_count;
   cudnn_err = cudnnFindConvolutionForwardAlgorithm(cudnn_handle, x_descriptor, w_descriptor, convolution_descriptor,
                                                    y_descriptor, max_count, &returned_count, perfResults);

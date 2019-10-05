@@ -39,14 +39,14 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   const auto vert_stride  = state.range(8);
   const auto hori_stride  = state.range(9);
 
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha = detail::one<T>();
+  MEM_ALIGNED_128 const T beta  = detail::zero<T>();
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/in_n,
-                             /*channels=*/in_c,
-                             /*image_height=*/in_h,
-                             /*image_width=*/in_w});
+                                            {/*batch_size=*/in_n,
+                                             /*channels=*/in_c,
+                                             /*image_height=*/in_h,
+                                             /*image_width=*/in_w});
   if (!x_tensor.is_valid) {
     return;
   }
@@ -80,10 +80,10 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   }
 
   MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
-                            {/*batch_size=*/out_n,
-                             /*channels=*/out_c,
-                             /*image_height=*/out_h,
-                             /*image_width=*/out_w});
+                                            {/*batch_size=*/out_n,
+                                             /*channels=*/out_c,
+                                             /*image_height=*/out_h,
+                                             /*image_width=*/out_w});
   if (!y_tensor.is_valid) {
     return;
   }

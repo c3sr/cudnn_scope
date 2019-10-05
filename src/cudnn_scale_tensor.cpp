@@ -33,12 +33,12 @@ static void iLAYER_CUDNN_SCALE_TENSOR_Impl(benchmark::State& state) {
   const T alpha   = state.range(4);
 
   MEM_ALIGNED_128 auto input_tensor = Tensor<T>(state,
-                                {
-                                    in_n,
-                                    in_c,
-                                    in_h,
-                                    in_w,
-                                });
+                                                {
+                                                    in_n,
+                                                    in_c,
+                                                    in_h,
+                                                    in_w,
+                                                });
   if (!input_tensor.is_valid) {
     return;
   }
@@ -49,7 +49,7 @@ static void iLAYER_CUDNN_SCALE_TENSOR_Impl(benchmark::State& state) {
   auto input = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
- MEM_ALIGNED_128  DeviceMemory<T> input_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> input_memory(state, input.data(), input_bytes);
   if (!input_memory.is_valid) {
     return;
   }

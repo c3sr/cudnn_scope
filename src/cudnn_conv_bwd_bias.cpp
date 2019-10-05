@@ -25,8 +25,8 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
   }
-  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
-   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha = detail::one<T>();
+  MEM_ALIGNED_128 const T beta  = detail::zero<T>();
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
   const auto batch_size      = state.range(0);
@@ -55,10 +55,10 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   MEM_ALIGNED_128 cudnnTensorDescriptor_t db_descriptor = db_tensor.get();
 
   MEM_ALIGNED_128 auto dy_tensor = Tensor<T>(state,
-                             {/*batch_size=*/out_n,
-                              /*channels=*/out_c,
-                              /*image_height=*/out_h,
-                              /*image_width=*/out_w});
+                                             {/*batch_size=*/out_n,
+                                              /*channels=*/out_c,
+                                              /*image_height=*/out_h,
+                                              /*image_width=*/out_w});
   if (!dy_tensor.is_valid) {
     return;
   }

@@ -38,17 +38,17 @@ static void iLAYER_CUDNN_DROPOUT_BWD_Impl(benchmark::State& state) {
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
-  auto x_tensor = Tensor<T>(state,
-                            {/*batch_size=*/in_n,
-                             /*channels=*/in_c,
-                             /*image_height=*/in_h,
-                             /*image_width=*/in_w});
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
+                                            {/*batch_size=*/in_n,
+                                             /*channels=*/in_c,
+                                             /*image_height=*/in_h,
+                                             /*image_width=*/in_w});
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  cudnnDropoutDescriptor_t dropout_descriptor;
+  MEM_ALIGNED_128 cudnnDropoutDescriptor_t dropout_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateDropoutDescriptor(&dropout_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateDropoutDescriptor");
     return;
@@ -60,11 +60,11 @@ static void iLAYER_CUDNN_DROPOUT_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-  DeviceMemory<T> states_memory(state, states_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> states_memory(state, states_bytes);
   if (!states_memory.is_valid) {
     return;
   }
-  const auto d_states = states_memory.get();
+  MEM_ALIGNED_128 const auto d_states = states_memory.get();
 
   if (PRINT_IF_ERROR(
           cudnnSetDropoutDescriptor(dropout_descriptor, cudnn_handle, dropout, d_states, states_bytes, seed))) {
@@ -79,27 +79,27 @@ static void iLAYER_CUDNN_DROPOUT_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-  DeviceMemory<T> reserve_space_memory(state, reserve_space_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> reserve_space_memory(state, reserve_space_bytes);
   if (!reserve_space_memory.is_valid) {
     return;
   }
-  const auto d_reserve_space = reserve_space_memory.get();
+  MEM_ALIGNED_128 const auto d_reserve_space = reserve_space_memory.get();
 
   const auto input_bytes = in_n * in_w * in_h * in_c * sizeof(T);
   auto input             = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> dx_memory(state, input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dx_memory(state, input_bytes);
   if (!dx_memory.is_valid) {
     return;
   }
-  const auto d_dx = dx_memory.get();
+  MEM_ALIGNED_128 const auto d_dx = dx_memory.get();
 
-  DeviceMemory<T> dy_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dy_memory(state, input.data(), input_bytes);
   if (!dy_memory.is_valid) {
     return;
   }
-  const auto d_dy = dy_memory.get();
+  MEM_ALIGNED_128 const auto d_dy = dy_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {
