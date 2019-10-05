@@ -266,6 +266,10 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
                          {"convolution_algorithm", (int) convolution_algorithm},
                          {"advised_convolution_algorithm", (int) advised_convolution_algorithm},
                          {"math_type", (int) math_type},
+                         {"x_tensor_layout", (int) x_tensor.layout},
+                         {"y_tensor_layout", (int) y_tensor.layout},
+                         {"bias_tensor_layout", (int) bias_tensor.layout},
+                         {"w_filter_layout", (int) w_filter.layout},
                          {"activation_mode", (int) activation_mode}});
 
   static const int max_count = 20;

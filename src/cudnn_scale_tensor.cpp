@@ -95,6 +95,7 @@ static void iLAYER_CUDNN_SCALE_TENSOR_Impl(benchmark::State& state) {
                          {"input_c", in_c},
                          {"input_h", in_h},
                          {"input_w", in_w},
+                         {"x_tensor_layout", (int) x_tensor.layout},
                          {"alpha", alpha}});
 
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);

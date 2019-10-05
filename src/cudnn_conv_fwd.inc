@@ -240,6 +240,9 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
                          {"workspace_megabytes", workspace_bytes / 1048576.0},
                          {"convolution_algorithm", (int) convolution_algorithm},
                          {"advised_convolution_algorithm", (int) advised_convolution_algorithm},
+                         {"x_tensor_layout", (int) x_tensor.layout},
+                         {"y_tensor_layout", (int) y_tensor.layout},
+                         {"w_filter_layout", (int) w_filter.layout},
                          {"math_type", (int) math_type}});
 
   const auto N = batch_size, K = num_filters, C = channels, H = height, W = width, R = filter_height, S = filter_width;

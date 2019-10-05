@@ -79,6 +79,7 @@ static void iLAYER_CUDNN_SOFTMAX_FWD_Impl(benchmark::State& state) {
                          {"output_channels", out_c},
                          {"output_height", out_h},
                          {"output_width", out_w},
+                         {"x_tensor_layout", (int) x_tensor.layout},
                          {"softmax_algorithm", (int) softmax_algorithm},
                          {"softmax_mode", (int) softmax_mode}});
 

@@ -64,7 +64,12 @@ struct alignas(128) Filter {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
 
-  static const auto layout = std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+  static const auto layout =
+#ifdef LOW_PRECISION_NHWC_MODE
+      std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+#else  // LOW_PRECISION_NHWC_MODE
+      std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+#endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
 
   bool is_valid{false};
@@ -109,7 +114,12 @@ template <typename T>
 struct alignas(128) Tensor {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
-  static const auto layout     = std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+  static const auto layout =
+#ifdef LOW_PRECISION_NHWC_MODE
+      std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+#else  // LOW_PRECISION_NHWC_MODE
+      std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+#endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
 
   bool is_valid{false};

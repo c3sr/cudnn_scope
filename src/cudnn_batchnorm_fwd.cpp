@@ -185,6 +185,7 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
                          {"output_height", out_h},
                          {"output_width", out_w},
                          {"is_training", is_training},
+                         {"x_tensor_layout", (int) x_tensor.layout},
                          {"batchnorm_mode", (int) batchnorm_mode}});
 
   const auto compute_flops = [&](cudnnBatchNormMode_t mode) {

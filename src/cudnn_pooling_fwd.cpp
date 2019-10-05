@@ -129,6 +129,8 @@ static void iLAYER_CUDNN_POOLING_FWD_Impl(benchmark::State& state) {
                          {"horizontal_padding", hori_padding},
                          {"vertical_stride", vert_stride},
                          {"horizontal_stride", hori_stride},
+                         {"x_tensor_layout", (int) x_tensor.layout},
+                         {"y_tensor_layout", (int) y_tensor.layout},
                          {"pooling_mode", (int) pooling_mode}});
 
   const double predicted_flops = in_n * in_c * in_h * in_w;

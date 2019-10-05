@@ -91,6 +91,8 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
                          {"c_desc_1", out_1},
                          {"c_desc_2", out_2},
                          {"c_desc_3", out_3},
+                         {"input_tensor_layout", (int) input_tensor.layout},
+                         {"output_tensor_layout", (int) output_tensor.layout},
                          {"alpha", (int) alpha},
                          {"beta", (int) beta}});
 

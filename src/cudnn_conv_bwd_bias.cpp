@@ -107,6 +107,9 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
                          {"output_height", out_h},
                          {"output_width", out_w},
                          {"output_channels", out_c},
+                         {"x_tensor_layout", (int) x_tensor.layout},
+                         {"y_tensor_layout", (int) y_tensor.layout},
+                         {"w_filter_layout", (int) w_filter.layout},
                          {"output_batch_size", out_n}});
 
   const auto N = batch_size, K = num_filters, C = channels, H = height, W = width, R = filter_height, S = filter_width;

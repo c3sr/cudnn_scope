@@ -117,6 +117,7 @@ static void iLAYER_CUDNN_DROPOUT_FWD_Impl(benchmark::State& state) {
                          {"output_channels", out_c},
                          {"output_height", out_h},
                          {"output_width", out_w},
+                         {"x_tensor_layout", (int) x_tensor.layout},
                          {"dropout", dropout}});
 
   const double predicted_flops = in_n * in_c * in_h * in_w;

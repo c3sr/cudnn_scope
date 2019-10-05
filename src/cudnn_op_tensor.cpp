@@ -109,6 +109,9 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
                          {"input_w", in_w},
                          {"alpha", (double) alpha},
                          {"beta", (double) beta},
+                         {"x_tensor_layout", (int) x_tensor.layout},
+                         {"y_tensor_layout", (int) y_tensor.layout},
+                         {"output_tensor_layout", (int) output_tensor.layout},
                          {"op_type", (int) op_type}});
 
   state.SetItemsProcessed(int64_t(state.iterations()) * in_n * in_c * in_h * in_w);
