@@ -141,11 +141,11 @@ struct alignas(128) Tensor {
       return;
     }
 
-    const auto N  = dims[0];
-    const auto C  = dims[1];
-    const auto H  = dims[2];
-    const auto W  = dims[3];
-    const auto CC = C / group;
+    const int N  = dims[0];
+    const int C  = dims[1];
+    const int H  = dims[2];
+    const int W  = dims[3];
+    const int CC = C / group;
 
     if (layout == CUDNN_TENSOR_NHWC) {
       if (PRINT_IF_ERROR(
