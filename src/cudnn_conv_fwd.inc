@@ -22,14 +22,19 @@
 // http://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionFwdAlgo_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionForward
 // https://github.com/apache/incubator-mxnet/blob/master/src/operator/nn/cudnn/cudnn_convolution-inl.h
-template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm>
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+          ,
+          cudnnMathType_t math_type0 = CUDNN_DEFAULT_MATH
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+          >
 void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  int math_type = CUDNN_DEFAULT_MATH;
+  int math_type = math_type0;
   if ((is_half_t<T> || math_type == CUDNN_TENSOR_OP_MATH) && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;
@@ -305,11 +310,21 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
-template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm>
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+          ,
+          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+          >
 void LAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
   try {
-    iLAYER_CUDNN_CONV_FWD_Impl<T, convolution_algorithm>(state);
+    iLAYER_CUDNN_CONV_FWD_Impl<T, convolution_algorithm
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+                               ,
+                               math_type
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+                               >(state);
   } catch (const std::exception& e) {
     const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
     state.SkipWithError(err.c_str());
