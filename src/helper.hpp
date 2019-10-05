@@ -149,7 +149,7 @@ struct alignas(128) Tensor {
 
     if (layout == CUDNN_TENSOR_NHWC) {
       if (PRINT_IF_ERROR(
-              cudnnSetTensor4dDescriptorEx(descriptor, layout, value_type, N, CC, H, W, H * W * C, 1, W * C, C))) {
+              cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, H * W * C, 1, W * C, C))) {
         const auto err = fmt::format(
             BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
             N,
@@ -165,7 +165,7 @@ struct alignas(128) Tensor {
       }
     } else {
       if (PRINT_IF_ERROR(
-              cudnnSetTensor4dDescriptorEx(descriptor, layout, value_type, N, CC, H, W, C * H * W, H * W, W, 1))) {
+              cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, C * H * W, H * W, W, 1))) {
         const auto err = fmt::format(
             BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
             N,
