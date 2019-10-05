@@ -20,6 +20,12 @@
 #define CUDNN_SUPPORTS_TENSOR_OPS 1
 #endif // CUDNN_VERSION >= 7000
 
+#if defined(_MSC_VER)
+#define MEM_ALIGNED(x) __declspec(align(x))
+#else
+#define MEM_ALIGNED(x) __attribute__ ((aligned(x)))
+#endif
+
 static const int ConvBwdTypeUndefined = 0;
 static const int ConvBwdTypeData      = 1;
 static const int ConvBwdTypeFilter    = 2;
