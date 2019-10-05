@@ -37,11 +37,13 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
-  cudnnOpTensorDescriptor_t op_descriptor;
-  PRINT_IF_ERROR(cudnnCreateOpTensorDescriptor(&op_descriptor));
-  PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, CUDNN_DATA_FLOAT, CUDNN_NOT_PROPAGATE_NAN));
 
-  auto input_a_tensor = Tensor<T>(state,
+
+  MEM_ALIGNED_128 cudnnOpTensorDescriptor_t op_descriptor;
+  PRINT_IF_ERROR(cudnnCreateOpTensorDescriptor(&op_descriptor));
+  PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, valueDataType<T>::type, CUDNN_NOT_PROPAGATE_NAN));
+
+  MEM_ALIGNED_128 auto input_a_tensor = Tensor<T>(state,
                                   {
                                       in_n,
                                       in_c,
@@ -51,9 +53,9 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   if (!input_a_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t input_a_descriptor = input_a_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t input_a_descriptor = input_a_tensor.get();
 
-  auto input_b_tensor = Tensor<T>(state,
+ MEM_ALIGNED_128  auto input_b_tensor = Tensor<T>(state,
                                   {
                                       in_n,
                                       in_c,
@@ -63,13 +65,13 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   if (!input_b_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t input_b_descriptor = input_b_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t input_b_descriptor = input_b_tensor.get();
 
-  auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
+ MEM_ALIGNED_128  auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
   if (!output_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
 
   const auto input_bytes  = sizeof(T) * in_n * in_w * in_h * in_c;
   const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
@@ -77,11 +79,11 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   auto input = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> input_a_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> input_a_memory(state, input.data(), input_bytes);
   if (!input_a_memory.is_valid) {
     return;
   }
-  DeviceMemory<T> input_b_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> input_b_memory(state, input.data(), input_bytes);
   if (!input_b_memory.is_valid) {
     return;
   }
@@ -90,11 +92,11 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
 
   auto output = std::vector<T>(output_bytes / sizeof(T));
   std::fill(output.begin(), output.end(), detail::one<T>());
-  DeviceMemory<T> output_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> output_memory(state, output.data(), output_bytes);
   if (!output_memory.is_valid) {
     return;
   }
-  const auto d_output = output_memory.get();
+  MEM_ALIGNED_128 const auto d_output = output_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {

@@ -42,7 +42,7 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   MEM_ALIGNED_128 const T alpha  = detail::one<T>();
    MEM_ALIGNED_128 const T beta = detail::zero<T>();
 
-  auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,
                              /*channels=*/in_c,
                              /*image_height=*/in_h,
@@ -50,9 +50,9 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  cudnnPoolingDescriptor_t pooling_descriptor;
+  MEM_ALIGNED_128 cudnnPoolingDescriptor_t pooling_descriptor;
   if (PRINT_IF_ERROR(cudnnCreatePoolingDescriptor(&pooling_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreatePoolingDescriptor");
     return;
@@ -79,7 +79,7 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
     return;
   }
 
-  auto y_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
                             {/*batch_size=*/out_n,
                              /*channels=*/out_c,
                              /*image_height=*/out_h,
@@ -87,7 +87,7 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   if (!y_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
 
   const auto input_bytes = in_n * in_w * in_h * in_c * sizeof(T);
   auto input             = std::vector<T>(input_bytes / sizeof(T));
@@ -97,29 +97,29 @@ static void iLAYER_CUDNN_POOLING_BWD_Impl(benchmark::State& state) {
   auto output             = std::vector<T>(output_bytes / sizeof(T));
   std::fill(output.begin(), output.end(), detail::one<T>());
 
-  DeviceMemory<T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }
-  const auto d_x = x_memory.get();
+  MEM_ALIGNED_128 const auto d_x = x_memory.get();
 
-  DeviceMemory<T> dx_memory(state, input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dx_memory(state, input_bytes);
   if (!dx_memory.is_valid) {
     return;
   }
-  const auto d_dx = dx_memory.get();
+  MEM_ALIGNED_128 const auto d_dx = dx_memory.get();
 
-  DeviceMemory<T> y_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, output.data(), output_bytes);
   if (!y_memory.is_valid) {
     return;
   }
-  const auto d_y = y_memory.get();
+  MEM_ALIGNED_128 const auto d_y = y_memory.get();
 
-  DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
   if (!y_memory.is_valid) {
     return;
   }
-  const auto d_dy = dy_memory.get();
+  MEM_ALIGNED_128 const auto d_dy = dy_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {

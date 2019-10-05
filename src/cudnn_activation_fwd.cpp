@@ -53,7 +53,7 @@ static void iLAYER_CUDNN_ACTIVATION_FWD_Impl(benchmark::State& state) {
   auto input             = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  MEM_ALIGNED_128 <T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }

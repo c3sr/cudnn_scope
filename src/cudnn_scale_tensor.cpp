@@ -32,7 +32,7 @@ static void iLAYER_CUDNN_SCALE_TENSOR_Impl(benchmark::State& state) {
   const auto in_w = state.range(3);
   const T alpha   = state.range(4);
 
-  auto input_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto input_tensor = Tensor<T>(state,
                                 {
                                     in_n,
                                     in_c,
@@ -42,18 +42,18 @@ static void iLAYER_CUDNN_SCALE_TENSOR_Impl(benchmark::State& state) {
   if (!input_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t input_descriptor = input_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t input_descriptor = input_tensor.get();
 
   const auto input_bytes = sizeof(T) * in_n * in_w * in_h * in_c;
 
   auto input = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> input_memory(state, input.data(), input_bytes);
+ MEM_ALIGNED_128  DeviceMemory<T> input_memory(state, input.data(), input_bytes);
   if (!input_memory.is_valid) {
     return;
   }
-  const auto d_input = input_memory.get();
+  MEM_ALIGNED_128 const auto d_input = input_memory.get();
 
   cudaEvent_t start, stop;
   PRINT_IF_ERROR(cudaEventCreate(&start));

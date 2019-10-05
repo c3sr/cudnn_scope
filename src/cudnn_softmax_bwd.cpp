@@ -37,7 +37,7 @@ static void iLAYER_CUDNN_SOFTMAX_BWD_Impl(benchmark::State& state) {
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
-  auto dx_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto dx_tensor = Tensor<T>(state,
                              {/*batch_size=*/in_n,
                               /*channels=*/in_c,
                               /*image_height=*/in_h,
@@ -45,29 +45,29 @@ static void iLAYER_CUDNN_SOFTMAX_BWD_Impl(benchmark::State& state) {
   if (!dx_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t dx_descriptor = dx_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t dx_descriptor = dx_tensor.get();
 
   const auto input_bytes = in_n * in_c * in_w * in_h * sizeof(T);
   auto input             = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> dx_memory(state, input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dx_memory(state, input_bytes);
   if (!dx_memory.is_valid) {
     return;
   }
-  const auto d_dx = dx_memory.get();
+  MEM_ALIGNED_128 const auto d_dx = dx_memory.get();
 
-  DeviceMemory<T> y_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, input.data(), input_bytes);
   if (!y_memory.is_valid) {
     return;
   }
-  const auto d_y = y_memory.get();
+  MEM_ALIGNED_128 const auto d_y = y_memory.get();
 
-  DeviceMemory<T> dy_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dy_memory(state, input.data(), input_bytes);
   if (!dy_memory.is_valid) {
     return;
   }
-  const auto d_dy = dy_memory.get();
+  MEM_ALIGNED_128 const auto d_dy = dy_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {
