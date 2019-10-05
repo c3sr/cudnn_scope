@@ -71,11 +71,13 @@ struct alignas(128) Filter {
       std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
 #endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
+  int group{};
 
   bool is_valid{false};
   MEM_ALIGNED_128 cudnnFilterDescriptor_t descriptor{nullptr};
 
-  Filter(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
+  Filter(benchmark::State &state, const std::initializer_list<int> &shape0, int group0 = 1)
+      : shape(shape0), group(group0) {
 
     assert(shape.size() <= 4);
     alignas(128) int dims[4] = {1, 1, 1, 1};
@@ -121,11 +123,13 @@ struct alignas(128) Tensor {
       std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
 #endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
+  int group{1};
 
   bool is_valid{false};
   MEM_ALIGNED_128 cudnnTensorDescriptor_t descriptor{nullptr};
 
-  Tensor(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
+  Tensor(benchmark::State &state, const std::initializer_list<int> &shape0, int group0 = 1)
+      : shape(shape0), group(group0) {
 
     assert(shape.size() <= 4);
     alignas(128) int dims[4] = {1, 1, 1, 1};
@@ -137,12 +141,44 @@ struct alignas(128) Tensor {
       return;
     }
 
-    if (PRINT_IF_ERROR(
-            cudnnSetTensor4dDescriptor(descriptor, layout, value_type, dims[0], dims[1], dims[2], dims[3]))) {
-      const auto err = fmt::format(BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{}",
-                                   dims[0], dims[1], dims[2], dims[3]);
-      state.SkipWithError(err.c_str());
-      return;
+    const auto N  = dims[0];
+    const auto C  = dims[1];
+    const auto H  = dims[2];
+    const auto W  = dims[3];
+    const auto CC = C / group;
+
+    if (layout == CUDNN_TENSOR_NHWC) {
+      if (PRINT_IF_ERROR(
+              cudnnSetTensor4dDescriptorEx(descriptor, layout, value_type, N, CC, H, W, H * W * C, 1, W * C, C))) {
+        const auto err = fmt::format(
+            BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
+            N,
+            CC,
+            H,
+            W,
+            H * W * C,
+            1,
+            W * C,
+            C);
+        state.SkipWithError(err.c_str());
+        return;
+      }
+    } else {
+      if (PRINT_IF_ERROR(
+              cudnnSetTensor4dDescriptorEx(descriptor, layout, value_type, N, CC, H, W, C * H * W, H * W, W, 1))) {
+        const auto err = fmt::format(
+            BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
+            N,
+            CC,
+            H,
+            W,
+            H * W * C,
+            1,
+            W * C,
+            C);
+        state.SkipWithError(err.c_str());
+        return;
+      }
     }
     is_valid = true;
   }

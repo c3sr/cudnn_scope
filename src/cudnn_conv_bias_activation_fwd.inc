@@ -118,9 +118,10 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
 
   MEM_ALIGNED_128 const auto w_filter = Filter<T>(state,
                                                   {/*out_channels=*/num_filters,
-                                                   /*in_channels=*/channels / group,
+                                                   /*in_channels=*/channels,
                                                    /*kernel_height=*/filter_height,
-                                                   /*kernel_width=*/filter_width});
+                                                   /*kernel_width=*/filter_width},
+                                                  group);
   if (!w_filter.is_valid) {
     return;
   }
