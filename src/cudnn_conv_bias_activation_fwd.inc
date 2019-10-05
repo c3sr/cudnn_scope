@@ -291,20 +291,10 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   state.SetItemsProcessed(int64_t(state.iterations()) * N * K * C * W * H);
 }
 
-template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode
-#ifdef CUDNN_SUPPORTS_TENSOR_OPS
-          ,
-          cudnnMathType_t math_type = CUDNN_DEFAULT_MATH
-#endif
-          >
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode>
 static void LAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   try {
-    iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<T, convolution_algorithm, activation_mode
-#ifdef CUDNN_SUPPORTS_TENSOR_OPS
-                                               ,
-                                               math_type
-#endif
-                                               >(state);
+    iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl<T, convolution_algorithm, activation_mode>(state);
   } catch (const std::exception& e) {
     const auto err = std::string("Exception in " BENCHMARK_NAME) + e.what();
     state.SkipWithError(err.c_str());
