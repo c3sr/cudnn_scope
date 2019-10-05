@@ -71,7 +71,7 @@ static void iLAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   std::fill(b.begin(), b.end(), one);
   std::fill(c.begin(), c.end(), zero);
 
-  if constexpr (is_half_t<T>) {
+  if constexpr (is_half_v<T>) {
     if (PRINT_IF_ERROR(cublasSetMathMode(cublas_handle, CUBLAS_TENSOR_OP_MATH))) {
       LOG(critical, "CUBLAS/{} failed to sett math mode to default", IMPLEMENTATION_NAME);
       state.SkipWithError(fmt::format("CUBLAS/{} failed to set math mode to defaultt", IMPLEMENTATION_NAME).c_str());
@@ -130,7 +130,7 @@ static void iLAYER_CUBLAS_GEMM_FWD_Impl(benchmark::State& state) {
   }
 
   cublasStatus_t cublas_err;
-  if constexpr (is_half_t<T>) {
+  if constexpr (is_half_v<T>) {
     BENCHMARK_BLOCK(cublas_err, {
       cublas_err = cublasGemmEx(cublas_handle, CUBLAS_OP_N, CUBLAS_OP_N, M, N, K, &alpha, d_a, CUDA_R_16F, M, d_b,
                                 CUDA_R_16F, K, &beta, d_c, CUDA_R_16F, M, CUDA_R_16F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);

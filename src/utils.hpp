@@ -211,7 +211,7 @@ static inline std::string demangle(const std::string& name) {
 }
 
 template <typename T>
-inline constexpr bool is_half_t = std::is_same_v<__half, T>;
+inline constexpr bool is_half_v = std::is_same_v<__half, T>;
 
 template <typename T>
 static constexpr bool is_half() {
