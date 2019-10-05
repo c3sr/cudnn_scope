@@ -90,7 +90,7 @@ struct alignas(128) Filter {
     }
 
     if (PRINT_IF_ERROR(
-            cudnnSetFilter4dDescriptor(descriptor, value_type, layout, dims[0], dims[1], dims[2], dims[3]))) {
+            cudnnSetFilter4dDescriptor(descriptor, value_type, layout, dims[0], dims[1] / group, dims[2], dims[3]))) {
       state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetFilter4dDescriptor");
       return;
     }
