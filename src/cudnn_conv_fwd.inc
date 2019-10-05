@@ -23,10 +23,6 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionForward
 // https://github.com/apache/incubator-mxnet/blob/master/src/operator/nn/cudnn/cudnn_convolution-inl.h
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
-#ifdef CUDNN_SUPPORTS_TENSOR_OPS
-          ,
-          cudnnMathType_t math_type0 = CUDNN_DEFAULT_MATH
-#endif
           >
 void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
@@ -34,7 +30,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  int math_type = math_type0;
+  int math_type = CUDNN_DEFAULT_MATH;
   if ((is_half_t<T> || math_type == CUDNN_TENSOR_OP_MATH) && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;

@@ -21,10 +21,6 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionBiasActivationForward
 // https://github.com/tensorflow/tensorflow/blob/575db18083d5437fd7a87ccf3414303498911bb1/tensorflow/stream_executor/cuda/cuda_dnn.cc#L2547
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode
-#ifdef CUDNN_SUPPORTS_TENSOR_OPS
-          ,
-          cudnnMathType_t math_type0 = CUDNN_DEFAULT_MATH
-#endif
           >
 static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
@@ -32,7 +28,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
     return;
   }
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
-  int math_type = math_type0;
+  int math_type = CUDNN_DEFAULT_MATH;
   if ((is_half_t<T> || math_type == CUDNN_TENSOR_OP_MATH) && !detail::SupportsTensorCore(cuda_device_id)) {
     state.SkipWithError(BENCHMARK_NAME "no Tensorcore support on current device");
     return;
