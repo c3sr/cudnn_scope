@@ -81,6 +81,11 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
+  if (group > 0 && PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group))) {
+    state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionGroupCount");
+    return;
+  }
+
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
   if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionMathType");
@@ -88,10 +93,6 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  if (PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group))) {
-    state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionGroupCount");
-    return;
-  }
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                                             {/*batch_size=*/batch_size,
