@@ -3,12 +3,12 @@
 SCOPE_TOP_DIR=../..
 HOST_NAME=$(hostname)
 GPU_NAME=$(nvidia-smi --query-gpu="name" --format=csv | sed -n 2p | tr -s ' ' | tr ' ' '_')
-RESULTS_DIR=$(pwd)/results/low_prec/${GPU_NAME}
+RESULTS_DIR=$(pwd)/results/low_prec_profile/${GPU_NAME}
 
 pushd ${SCOPE_TOP_DIR}
 
 
-CMAKE_OPTIONS="-DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=OFF -DENABLE_EXAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDNN_CUPTI=OFF -DLOW_PRECISION=ON -DRESNET50_ONLY=ON"
+CMAKE_OPTIONS="-DENABLE_CUDNN=ON -DENABLE_CUDNN_DLPERF=ON -DENABLE_COMM=OFF -DENABLE_EXAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDNN_CUPTI=ON -DLOW_PRECISION=ON -DRESNET50_ONLY=ON -DCUDNN_CUPTI_NUM_ITERS=10"
 
 rm -fr ${RESULTS_DIR}
 mkdir -p ${RESULTS_DIR}
@@ -36,6 +36,7 @@ do
   cmake .. ${CMAKE_OPTIONS} -DCUDNN_BATCH_SIZE=${BATCH_SIZE}
   make VERBOSE=1 -j4
   ./scope --benchmark_out_format=json --benchmark_out=${RESULTS_DIR}/${BATCH_SIZE}.json
+  gzip ${RESULTS_DIR}/${BATCH_SIZE}.json
   popd
 done
 

@@ -99,7 +99,7 @@ namespace detail {
     if ((cbid != CUPTI_RUNTIME_TRACE_CBID_cudaLaunch_v3020) &&
         (cbid != CUPTI_RUNTIME_TRACE_CBID_cudaLaunchKernel_v7000)) {
       const auto err = fmt::format("{}:{} Unexpected cbid {}.\n", __FILE__, __LINE__, cbid);
-      std::cerr << err;
+      /* std::cerr << err; */
       throw std::runtime_error(err);
     }
 
@@ -301,7 +301,7 @@ struct profiler {
     CUpti_MetricID *metric_ids = (CUpti_MetricID *) calloc(sizeof(CUpti_MetricID), m_num_metrics);
     defer(free(metric_ids));
     for (int i = 0; i < m_num_metrics; ++i) {
-      std::cout << "metric_name = " << m_metric_names[i] << "\n";
+      /* std::cout << "metric_name = " << m_metric_names[i] << "\n"; */
       CUPTI_CALL(cuptiMetricGetIdFromName(m_device, m_metric_names[i].c_str(), &metric_ids[i]));
     }
 
