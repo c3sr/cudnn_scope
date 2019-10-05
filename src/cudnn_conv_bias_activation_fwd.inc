@@ -60,11 +60,12 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   const auto dilation_width  = state.range(12);
   const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
-  const float alpha = 1, beta = 0;
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
   const double coef                      = 1;
   const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
-  cudnnConvolutionDescriptor_t convolution_descriptor;
+  MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateConvolutionDescriptor");
     return;
@@ -83,7 +84,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   }
   defer(cudnnDestroyConvolutionDescriptor(convolution_descriptor));
 
-  cudnnActivationDescriptor_t activation_descriptor;
+  MEM_ALIGNED_128 cudnnActivationDescriptor_t activation_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateActivationDescriptor(&activation_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateActivationDescriptor");
     return;
@@ -102,7 +103,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
 
   PRINT_IF_ERROR(cudnnSetConvolutionGroupCount(convolution_descriptor, group));
 
-  auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/batch_size,
                              /*channels=*/channels,
                              /*image_height=*/height,
@@ -110,9 +111,9 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  const auto w_filter = Filter<T>(state,
+  MEM_ALIGNED_128 const auto w_filter = Filter<T>(state,
                                   {/*out_channels=*/num_filters,
                                    /*in_channels=*/channels / group,
                                    /*kernel_height=*/filter_height,
@@ -120,7 +121,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   if (!w_filter.is_valid) {
     return;
   }
-  cudnnFilterDescriptor_t w_descriptor = w_filter.get();
+  MEM_ALIGNED_128 cudnnFilterDescriptor_t w_descriptor = w_filter.get();
 
   int out_n, out_c, out_h, out_w;
   const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(
@@ -132,7 +133,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
     return;
   }
 
-  auto y_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
                             {/*batch_size=*/out_n,
                              /*channels=*/out_c,
                              /*image_height=*/out_h,
@@ -140,9 +141,9 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   if (!y_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
 
-  auto bias_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto bias_tensor = Tensor<T>(state,
                                {/*batch_size=*/1,
                                 /*channels=*/out_c,
                                 /*image_height=*/1,
@@ -150,16 +151,16 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   if (!bias_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t bias_descriptor = bias_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t bias_descriptor = bias_tensor.get();
 
-  cudnnConvolutionFwdAlgo_t advised_convolution_algorithm = (cudnnConvolutionFwdAlgo_t) -1;
+  MEM_ALIGNED_128 cudnnConvolutionFwdAlgo_t advised_convolution_algorithm = (cudnnConvolutionFwdAlgo_t) -1;
   if (cudnnGetConvolutionForwardAlgorithm(cudnn_handle, x_descriptor, w_descriptor, convolution_descriptor,
                                           y_descriptor, CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, 0,
                                           &advised_convolution_algorithm) != CUDNN_STATUS_SUCCESS) {
     advised_convolution_algorithm = (cudnnConvolutionFwdAlgo_t) -1;
   }
 
-  size_t workspace_bytes = 0;
+  MEM_ALIGNED_128 size_t workspace_bytes = 0;
   if (std::is_same<T, int8_t>::value) {
 
     // Note: cudnn workspace size function doesn't work for INT8_CONFIG
@@ -194,41 +195,41 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   auto bias             = std::vector<T>(bias_bytes / sizeof(T));
   std::fill(bias.begin(), bias.end(), detail::one<T>());
 
-  DeviceMemory<T> workspace_memory(state, workspace_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> workspace_memory(state, workspace_bytes);
   if (!workspace_memory.is_valid) {
     return;
   }
-  const auto d_workspace = workspace_memory.get();
+  MEM_ALIGNED_128 const auto d_workspace = workspace_memory.get();
 
-  DeviceMemory<T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }
-  const auto d_x = x_memory.get();
+  MEM_ALIGNED_128 const auto d_x = x_memory.get();
 
-  DeviceMemory<T> w_memory(state, kernel.data(), kernel_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> w_memory(state, kernel.data(), kernel_bytes);
   if (!w_memory.is_valid) {
     return;
   }
-  const auto d_w = w_memory.get();
+ MEM_ALIGNED_128  const auto d_w = w_memory.get();
 
-  DeviceMemory<T> y_memory(state, output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, output_bytes);
   if (!y_memory.is_valid) {
     return;
   }
-  const auto d_y = y_memory.get();
+  MEM_ALIGNED_128 const auto d_y = y_memory.get();
 
-  DeviceMemory<T> z_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> z_memory(state, output.data(), output_bytes);
   if (!z_memory.is_valid) {
     return;
   }
-  const auto d_z = z_memory.get();
+  MEM_ALIGNED_128 const auto d_z = z_memory.get();
 
-  DeviceMemory<T> bias_memory(state, bias.data(), bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> bias_memory(state, bias.data(), bias_bytes);
   if (!bias_memory.is_valid) {
     return;
   }
-  const auto d_bias = bias_memory.get();
+  MEM_ALIGNED_128 const auto d_bias = bias_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {

@@ -25,7 +25,8 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
   }
-  const float alpha = 1, beta = 0;
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
 
   //  w, h, c, n, k, filter_w(s), filter_h(r), pad_w, pad_h, wstride, hstride
   const auto batch_size      = state.range(0);
@@ -47,13 +48,13 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   const auto out_h = detail::calc_conv_out_dim(height, filter_height, pad_height, stride_height, dilation_height);
   const auto out_c = num_filters;
 
-  auto db_tensor = Tensor<T>(state, {out_c});
+  MEM_ALIGNED_128 auto db_tensor = Tensor<T>(state, {out_c});
   if (!db_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t db_descriptor = db_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t db_descriptor = db_tensor.get();
 
-  auto dy_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto dy_tensor = Tensor<T>(state,
                              {/*batch_size=*/out_n,
                               /*channels=*/out_c,
                               /*image_height=*/out_h,
@@ -61,7 +62,7 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   if (!dy_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t dy_descriptor = dy_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t dy_descriptor = dy_tensor.get();
 
   const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
   auto output             = std::vector<T>(output_bytes / sizeof(T));
@@ -71,17 +72,17 @@ static void LAYER_CUDNN_CONV_BWD_BIAS_Impl(benchmark::State& state) {
   auto bias            = std::vector<T>(bias_bytes / sizeof(T));
   std::fill(bias.begin(), bias.end(), detail::one<T>());
 
-  DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dy_memory(state, output.data(), output_bytes);
   if (!dy_memory.is_valid) {
     return;
   }
-  const auto d_dy = dy_memory.get();
+  MEM_ALIGNED_128 const auto d_dy = dy_memory.get();
 
-  DeviceMemory<T> db_memory(state, bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> db_memory(state, bias_bytes);
   if (!db_memory.is_valid) {
     return;
   }
-  const auto d_db = db_memory.get();
+  MEM_ALIGNED_128 const auto d_db = db_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {

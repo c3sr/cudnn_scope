@@ -34,13 +34,14 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   const auto in_h = state.range(2);
   const auto in_w = state.range(3);
 
-  const float alpha = 1, beta = 0;
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
   const double exponential_average_factor = 1.0;  // exponentialAverageFactor
   const double epsilon                    = 1e-5; // CUDNN_BN_MIN_EPSILON
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
-  auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,
                              /*channels=*/in_c,
                              /*image_height=*/in_h,
@@ -48,9 +49,9 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  cudnnTensorDescriptor_t scale_bias_descriptor{nullptr};
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t scale_bias_descriptor{nullptr};
   if (PRINT_IF_ERROR(cudnnCreateTensorDescriptor(&scale_bias_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateTensorDescriptor");
     return;
@@ -74,65 +75,65 @@ static void iLAYER_CUDNN_BATCHNORM_FWD_Impl(benchmark::State& state) {
   auto input             = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }
-  const auto d_x = x_memory.get();
+  MEM_ALIGNED_128 const auto d_x = x_memory.get();
 
-  DeviceMemory<T> y_memory(state, input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, input_bytes);
   if (!y_memory.is_valid) {
     return;
   }
-  const auto d_y = y_memory.get();
+  MEM_ALIGNED_128 const auto d_y = y_memory.get();
 
-  DeviceMemory<T> scale_memory(state, scale_bias.data(), scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> scale_memory(state, scale_bias.data(), scale_bias_bytes);
   if (!scale_memory.is_valid) {
     return;
   }
-  const auto d_scale = scale_memory.get();
+ MEM_ALIGNED_128  const auto d_scale = scale_memory.get();
 
-  DeviceMemory<T> bias_memory(state, scale_bias.data(), scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> bias_memory(state, scale_bias.data(), scale_bias_bytes);
   if (!bias_memory.is_valid) {
     return;
   }
-  const auto d_bias = bias_memory.get();
+  MEM_ALIGNED_128 const auto d_bias = bias_memory.get();
 
-  DeviceMemory<T> batch_mean_memory(state, scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> batch_mean_memory(state, scale_bias_bytes);
   if (!batch_mean_memory.is_valid) {
     return;
   }
-  const auto d_batch_mean = batch_mean_memory.get();
+  MEM_ALIGNED_128 const auto d_batch_mean = batch_mean_memory.get();
 
-  DeviceMemory<T> batch_var_memory(state, scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> batch_var_memory(state, scale_bias_bytes);
   if (!batch_var_memory.is_valid) {
     return;
   }
-  const auto d_batch_var = batch_var_memory.get();
+  MEM_ALIGNED_128 const auto d_batch_var = batch_var_memory.get();
 
-  DeviceMemory<T> saved_mean_memory(state, scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> saved_mean_memory(state, scale_bias_bytes);
   if (!saved_mean_memory.is_valid) {
     return;
   }
-  const auto d_saved_mean = saved_mean_memory.get();
+  MEM_ALIGNED_128 const auto d_saved_mean = saved_mean_memory.get();
 
-  DeviceMemory<T> saved_in_var_memory(state, scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> saved_in_var_memory(state, scale_bias_bytes);
   if (!saved_in_var_memory.is_valid) {
     return;
   }
-  const auto d_saved_in_var = saved_in_var_memory.get();
+  MEM_ALIGNED_128 const auto d_saved_in_var = saved_in_var_memory.get();
 
-  DeviceMemory<T> estimated_mean_memory(state, scale_bias.data(), scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> estimated_mean_memory(state, scale_bias.data(), scale_bias_bytes);
   if (!estimated_mean_memory.is_valid) {
     return;
   }
-  const auto d_estimated_mean = estimated_mean_memory.get();
+  MEM_ALIGNED_128 const auto d_estimated_mean = estimated_mean_memory.get();
 
-  DeviceMemory<T> estimated_var_memory(state, scale_bias.data(), scale_bias_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> estimated_var_memory(state, scale_bias.data(), scale_bias_bytes);
   if (!estimated_var_memory.is_valid) {
     return;
   }
-  const auto d_estimated_var = estimated_var_memory.get();
+  MEM_ALIGNED_128 const auto d_estimated_var = estimated_var_memory.get();
 
   cudnnStatus_t cudnn_err;
 

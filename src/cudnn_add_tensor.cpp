@@ -41,21 +41,21 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   const auto out_h = out_2;
   const auto out_w = out_3;
 
-  const T alpha = detail::one<T>();
-  const T beta  = detail::zero<T>();
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
 
   const auto bias_dim = out_c;
-  auto input_tensor   = Tensor<T>(state, {bias_0, bias_1, bias_2, bias_3});
+  MEM_ALIGNED_128 auto input_tensor   = Tensor<T>(state, {bias_0, bias_1, bias_2, bias_3});
   if (!input_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t input_descriptor = input_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t input_descriptor = input_tensor.get();
 
-  auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
+  MEM_ALIGNED_128 auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
   if (!output_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
 
   const auto input_bytes  = sizeof(T) * bias_0 * bias_1 * bias_2 * bias_3;
   const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
@@ -63,20 +63,20 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   auto input = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> input_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> input_memory(state, input.data(), input_bytes);
   if (!input_memory.is_valid) {
     return;
   }
-  const auto d_input = input_memory.get();
+  MEM_ALIGNED_128 const auto d_input = input_memory.get();
 
   auto output = std::vector<T>(output_bytes / sizeof(T));
   std::fill(output.begin(), output.end(), detail::one<T>());
 
-  DeviceMemory<T> output_memory(state, output.data(), output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> output_memory(state, output.data(), output_bytes);
   if (!output_memory.is_valid) {
     return;
   }
-  const auto d_output = output_memory.get();
+  MEM_ALIGNED_128 const auto d_output = output_memory.get();
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {

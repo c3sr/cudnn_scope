@@ -32,8 +32,8 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   const auto in_h = state.range(2);
   const auto in_w = state.range(3);
 
-  const T alpha = 1.0;
-  const T beta  = 0.0;
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 

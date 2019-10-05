@@ -33,12 +33,15 @@ static void LAYER_CUDNN_ACTIVATION_BWD_Impl(benchmark::State& state) {
   const auto in_h = state.range(2) == -1 ? 1 : state.range(2);
   const auto in_w = state.range(3) == -1 ? 1 : state.range(3);
 
-  const float alpha = 1, beta = 0;
-  const double coef = 1;
+
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
+
+  MEM_ALIGNED_128 const double coef = 1;
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
-  auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/in_n,
                              /*channels=*/in_c,
                              /*image_height=*/in_h,
@@ -46,37 +49,37 @@ static void LAYER_CUDNN_ACTIVATION_BWD_Impl(benchmark::State& state) {
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
   const auto input_bytes = in_n * in_c * in_w * in_h * sizeof(T);
   auto input             = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
 
-  DeviceMemory<T> x_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> x_memory(state, input.data(), input_bytes);
   if (!x_memory.is_valid) {
     return;
   }
-  const auto d_x = x_memory.get();
+  MEM_ALIGNED_128 const auto d_x = x_memory.get();
 
-  DeviceMemory<T> dx_memory(state, input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dx_memory(state, input_bytes);
   if (!dx_memory.is_valid) {
     return;
   }
-  const auto d_dx = dx_memory.get();
+  MEM_ALIGNED_128 const auto d_dx = dx_memory.get();
 
-  DeviceMemory<T> y_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, input.data(), input_bytes);
   if (!y_memory.is_valid) {
     return;
   }
   const auto d_y = y_memory.get();
 
-  DeviceMemory<T> dy_memory(state, input.data(), input_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> dy_memory(state, input.data(), input_bytes);
   if (!dy_memory.is_valid) {
     return;
   }
-  const auto d_dy = dy_memory.get();
+  MEM_ALIGNED_128 const auto d_dy = dy_memory.get();
 
-  cudnnActivationDescriptor_t activation_descriptor;
+  MEM_ALIGNED_128 cudnnActivationDescriptor_t activation_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateActivationDescriptor(&activation_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateActivationDescriptor");
     return;

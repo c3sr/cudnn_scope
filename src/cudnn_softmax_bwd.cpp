@@ -32,7 +32,8 @@ static void iLAYER_CUDNN_SOFTMAX_BWD_Impl(benchmark::State& state) {
   const auto in_h = state.range(2) == -1 ? 1 : state.range(2);
   const auto in_w = state.range(3) == -1 ? 1 : state.range(3);
 
-  const float alpha = 1, beta = 0;
+  MEM_ALIGNED_128 const T alpha  = detail::one<T>();
+   MEM_ALIGNED_128 const T beta = detail::zero<T>();
 
   const auto out_n = in_n, out_c = in_c, out_h = in_h, out_w = in_w;
 
