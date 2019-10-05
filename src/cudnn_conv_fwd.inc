@@ -96,7 +96,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                             {/*batch_size=*/batch_size,
                              /*channels=*/channels,
                              /*image_height=*/height,
@@ -104,7 +104,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!x_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
   const auto w_filter = Filter<T>(state,
                                   {/*out_channels=*/num_filters,
@@ -114,7 +114,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!w_filter.is_valid) {
     return;
   }
-  cudnnFilterDescriptor_t w_descriptor = w_filter.get();
+  MEM_ALIGNED_128 cudnnFilterDescriptor_t w_descriptor = w_filter.get();
 
   int out_n, out_c, out_h, out_w;
   const auto cudnn_get_conv_output_err = cudnnGetConvolution2dForwardOutputDim(
@@ -128,7 +128,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  auto y_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
                             {/*batch_size=*/out_n,
                              /*channels=*/out_c,
                              /*image_height=*/out_h,
@@ -136,7 +136,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!y_tensor.is_valid) {
     return;
   }
-  cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
 
   cudnnConvolutionFwdAlgo_t advised_convolution_algorithm = (cudnnConvolutionFwdAlgo_t) -1;
   if (cudnnGetConvolutionForwardAlgorithm(cudnn_handle, x_descriptor, w_descriptor, convolution_descriptor,
@@ -145,7 +145,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     advised_convolution_algorithm = (cudnnConvolutionFwdAlgo_t) -1;
   }
 
-  size_t workspace_bytes = 0;
+  MEM_ALIGNED_128 size_t workspace_bytes = 0;
   if (std::is_same<T, int8_t>::value) {
 
     // Note: cudnn workspace size function doesn't work for INT8_CONFIG
@@ -186,13 +186,13 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
   const auto d_x = x_memory.get();
 
-  DeviceMemory<T> w_memory(state, kernel.data(), kernel_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> w_memory(state, kernel.data(), kernel_bytes);
   if (!w_memory.is_valid) {
     return;
   }
   const auto d_w = w_memory.get();
 
-  DeviceMemory<T> y_memory(state, output_bytes);
+  MEM_ALIGNED_128 DeviceMemory<T> y_memory(state, output_bytes);
   if (!y_memory.is_valid) {
     return;
   }

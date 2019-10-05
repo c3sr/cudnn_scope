@@ -26,6 +26,8 @@
 #define MEM_ALIGNED(x) __attribute__ ((aligned(x)))
 #endif
 
+#define MEM_ALIGNED_128 MEM_ALIGNED(128)
+
 static const int ConvBwdTypeUndefined = 0;
 static const int ConvBwdTypeData      = 1;
 static const int ConvBwdTypeFilter    = 2;

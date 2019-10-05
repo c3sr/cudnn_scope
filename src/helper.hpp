@@ -23,7 +23,7 @@
 template <typename T>
 struct DeviceMemory {
   using type = T;
-  T *ptr{nullptr};
+  MEM_ALIGNED_128 T *ptr{nullptr};
   bool is_valid{false};
   size_t size;
   DeviceMemory(benchmark::State &state, const size_t &size0) : size(size0) {
@@ -68,7 +68,7 @@ struct Filter {
   std::vector<int> shape{};
 
   bool is_valid{false};
-  cudnnFilterDescriptor_t descriptor{nullptr};
+  MEM_ALIGNED_128 cudnnFilterDescriptor_t descriptor{nullptr};
 
   Filter(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
 
@@ -113,7 +113,7 @@ struct Tensor {
   std::vector<int> shape{};
 
   bool is_valid{false};
-  cudnnTensorDescriptor_t descriptor{nullptr};
+  MEM_ALIGNED_128 cudnnTensorDescriptor_t descriptor{nullptr};
 
   Tensor(benchmark::State &state, const std::initializer_list<int> &shape0) : shape(shape0) {
 
