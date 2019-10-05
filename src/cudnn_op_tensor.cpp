@@ -109,8 +109,8 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
                          {"input_w", in_w},
                          {"alpha", (double) alpha},
                          {"beta", (double) beta},
-                         {"x_tensor_layout", (int) x_tensor.layout},
-                         {"y_tensor_layout", (int) y_tensor.layout},
+                         {"input_a_tensor_layout", (int) input_a_tensor.layout},
+                         {"input_b_tensor_layout", (int) input_b_tensor.layout},
                          {"output_tensor_layout", (int) output_tensor.layout},
                          {"op_type", (int) op_type}});
 
