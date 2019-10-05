@@ -22,8 +22,7 @@
 // http://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionFwdAlgo_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionForward
 // https://github.com/apache/incubator-mxnet/blob/master/src/operator/nn/cudnn/cudnn_convolution-inl.h
-template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
-          >
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm>
 void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
@@ -92,7 +91,6 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
-
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                                             {/*batch_size=*/batch_size,

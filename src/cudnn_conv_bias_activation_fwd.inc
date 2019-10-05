@@ -20,8 +20,7 @@
 
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionBiasActivationForward
 // https://github.com/tensorflow/tensorflow/blob/575db18083d5437fd7a87ccf3414303498911bb1/tensorflow/stream_executor/cuda/cuda_dnn.cc#L2547
-template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode
-          >
+template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm, cudnnActivationMode_t activation_mode>
 static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) {
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
@@ -97,11 +96,10 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionGroupCount");
     return;
   }
-  
+
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
   cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
-
 
   MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                                             {/*batch_size=*/batch_size,
