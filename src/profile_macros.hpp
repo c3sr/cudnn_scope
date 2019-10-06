@@ -1,18 +1,35 @@
 #pragma once
 
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+
 #include "cupti_profiler.hpp"
 
 #ifndef IMPLEMENTATION_NAME
 #define IMPLEMENTATION_NAME BENCHMARK_NAME
 #endif // IMPLEMENTATION_NAME
 
+#define CUSTOM_STATS                                                                                                   \
+  ComputeStatistics(                                                                                                   \
+      "max_t", [](const std::vector<double>& v) -> double { return *(std::max_element(std::begin(v), std::end(v))); }) \
+      ->ComputeStatistics(                                                                                             \
+          "min_t",                                                                                                     \
+          [](const std::vector<double>& v) -> double { return *(std::min_element(std::begin(v), std::end(v))); })      \
+      ->ComputeStatistics(                                                                                             \
+          "total_t", [](const std::vector<double>& v) -> double { return std::accumulate(v.begin(), v.end(), 0.0); })  \
+      ->ComputeStatistics("mean_t", benchmark::StatisticsMean)                                                         \
+      ->ComputeStatistics("median_t", benchmark::StatisticsMedian)                                                     \
+      ->ComputeStatistics("stddev_t", benchmark::StatisticsStdDev)
+
 #ifndef CUDNN_CUPTI_NUM_ITERS
 #define CUDNN_CUPTI_NUM_ITERS 4
 #endif // CUDNN_CUPTI_NUM_ITERS
 
 #ifdef ENABLE_CUDNN_CUPTI
-#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->Iterations(CUDNN_CUPTI_NUM_ITERS)
-#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->Iterations(CUDNN_CUPTI_NUM_ITERS)
+#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->CUSTOM_STATS->Iterations(CUDNN_CUPTI_NUM_ITERS)
+#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->CUSTOM_STATS->Iterations(CUDNN_CUPTI_NUM_ITERS)
 #define CUPTI_STATE_COUNTER_INFO                                                                                       \
   {"cupti_enabled", ENABLE_CUDNN_CUPTI}, {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},                                   \
       {std::string("cupti_version:") + cupti_version, fnv1a_64(cupti_version)},
@@ -38,8 +55,8 @@
     }                                                                                                                  \
   } while (0)
 #else // ENABLE_CUDNN_CUPTI
-#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)
-#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)
+#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->CUSTOM_STATS
+#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->CUSTOM_STATS
 #define CUPTI_STATE_COUNTER_INFO {"cupti_enabled", 0},
 #define CUPTI_PROFILE_START
 #define CUPTI_PROFILE_STOP(current_iter)
