@@ -45,13 +45,13 @@ static void iLAYER_CUDNN_ADD_TENSOR_Impl(benchmark::State& state) {
   MEM_ALIGNED_128 const T beta  = detail::zero<T>();
 
   const auto bias_dim               = out_c;
-  MEM_ALIGNED_128 auto input_tensor = Tensor<T, Layout::NCHW>(state, {bias_0, bias_1, bias_2, bias_3});
+  MEM_ALIGNED_128 auto input_tensor = Tensor<T>(state, {bias_0, bias_1, bias_2, bias_3});
   if (!input_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t input_descriptor = input_tensor.get();
 
-  MEM_ALIGNED_128 auto output_tensor = Tensor<T, Layout::NCHW>(state, {out_n, out_c, out_h, out_w});
+  MEM_ALIGNED_128 auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
   if (!output_tensor.is_valid) {
     return;
   }
