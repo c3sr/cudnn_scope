@@ -131,7 +131,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T, Layout::NCHW>(state,
                                             {/*batch_size=*/out_n,
                                              /*channels=*/out_c,
                                              /*image_height=*/out_h,
