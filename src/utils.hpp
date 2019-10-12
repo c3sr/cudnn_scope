@@ -101,31 +101,31 @@ struct mixedPrecisionAccumDataType {};
 
 template <>
 struct mixedPrecisionAccumDataType<int8_t> {
-  using elem_type = int8_t;
+  using element_type = int8_t;
   static const cudnnDataType_t type = CUDNN_DATA_INT32;
 };
 
 template <>
 struct mixedPrecisionAccumDataType<int32_t> {
-  using elem_type = int32_t;
+  using element_type = int32_t;
   static const cudnnDataType_t type = CUDNN_DATA_INT32;
 };
 
 template <>
 struct mixedPrecisionAccumDataType<__half> {
-  using elem_type = float;
+  using element_type = float;
   static const cudnnDataType_t type = CUDNN_DATA_FLOAT;
 };
 
 template <>
 struct mixedPrecisionAccumDataType<float> {
-  using elem_type = float;
+  using element_type = float;
   static const cudnnDataType_t type = CUDNN_DATA_FLOAT;
 };
 
 template <>
 struct mixedPrecisionAccumDataType<double> {
-  using elem_type = double;
+  using element_type = double;
   static const cudnnDataType_t type = CUDNN_DATA_DOUBLE;
 };
 
