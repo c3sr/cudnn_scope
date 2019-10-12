@@ -66,6 +66,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   const auto dilation_width  = state.range(12);
   const auto group           = state.range(13) == 0 ? 1 : state.range(13);
 
+
   MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateConvolutionDescriptor");
@@ -199,6 +200,14 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
   const auto d_y = y_memory.get();
+
+#ifdef CUDNN_SUPPORTS_TENSOR_OPS
+  if (PRINT_IF_ERROR(cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type))) {
+    state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolutionMathType");
+    return;
+  }
+#endif // CUDNN_SUPPORTS_TENSOR_OPS
+
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {
