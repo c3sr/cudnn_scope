@@ -173,15 +173,8 @@ struct alignas(128) Tensor {
     } else {
       if (PRINT_IF_ERROR(cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, C * H * W, H * W, W, 1))) {
         const auto err = fmt::format(
-            BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
-            N,
-            CC,
-            H,
-            W,
-            H * W * C,
-            1,
-            W * C,
-            C);
+            BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}", N, CC,
+            H, W, C * H * W, H * W, W, 1);
         state.SkipWithError(err.c_str());
         return;
       }
