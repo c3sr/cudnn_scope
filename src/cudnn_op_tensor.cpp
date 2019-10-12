@@ -18,9 +18,11 @@
 #include "init.hpp"
 #include "utils.hpp"
 
-// https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnAddTensor
+// https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnOpTensor
 template <typename T, cudnnOpTensorOp_t op_type>
 static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
+  // 
+  using output_type = typename mixedPrecisionAccumDataType<T>::element_type;
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -65,14 +67,14 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t input_b_descriptor = input_b_tensor.get();
 
-  MEM_ALIGNED_128 auto output_tensor = Tensor<T>(state, {out_n, out_c, out_h, out_w});
+  MEM_ALIGNED_128 auto output_tensor = Tensor<output_type>(state, {out_n, out_c, out_h, out_w});
   if (!output_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t output_descriptor = output_tensor.get();
 
   const auto input_bytes  = sizeof(T) * in_n * in_w * in_h * in_c;
-  const auto output_bytes = sizeof(T) * out_n * out_c * out_h * out_w;
+  const auto output_bytes = sizeof(output_type) * out_n * out_c * out_h * out_w;
 
   auto input = std::vector<T>(input_bytes / sizeof(T));
   std::fill(input.begin(), input.end(), detail::one<T>());
@@ -88,9 +90,9 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
   const auto d_a_input = input_a_memory.get();
   const auto d_b_input = input_b_memory.get();
 
-  auto output = std::vector<T>(output_bytes / sizeof(T));
-  std::fill(output.begin(), output.end(), detail::one<T>());
-  MEM_ALIGNED_128 DeviceMemory<T> output_memory(state, output.data(), output_bytes);
+  auto output = std::vector<output_type>(output_bytes / sizeof(output_type));
+  std::fill(output.begin(), output.end(), detail::one<output_type>());
+  MEM_ALIGNED_128 DeviceMemory<output_type> output_memory(state, output.data(), output_bytes);
   if (!output_memory.is_valid) {
     return;
   }
