@@ -20,7 +20,9 @@
 #define BENCHMARK_NAME "CUDNN"
 #endif // BENCHMARK_NAME
 
-template <typename T>
+enum class Layout : int { Automatic = 0, NHWC = 1, NCHW = 1 };
+
+template <typename T, Layout LayoutV = Layout::Automatic>
 struct alignas(128) DeviceMemory {
   using type = T;
   MEM_ALIGNED_128 T *ptr{nullptr};
@@ -59,16 +61,19 @@ struct alignas(128) DeviceMemory {
   }
 };
 
-template <typename T>
+template <typename T, Layout LayoutV = Layout::Automatic>
 struct alignas(128) Filter {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
 
   static const auto layout =
 #ifdef LOW_PRECISION_NHWC_MODE
-      std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+      LayoutV == Layout::Automatic
+          ? (std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+          : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
 #else  // LOW_PRECISION_NHWC_MODE
-      std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+      LayoutV == Layout::Automatic ? (std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+                                   : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
 #endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
   int group{};
@@ -112,15 +117,18 @@ struct alignas(128) Filter {
   }
 };
 
-template <typename T>
+template <typename T, Layout LayoutV = Layout::Automatic>
 struct alignas(128) Tensor {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
   static const auto layout =
 #ifdef LOW_PRECISION_NHWC_MODE
-      std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+      LayoutV == Layout::Automatic
+          ? (std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+          : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
 #else  // LOW_PRECISION_NHWC_MODE
-      std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW;
+      LayoutV == Layout::Automatic ? (std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+                                   : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
 #endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
   int group{1};
@@ -148,8 +156,7 @@ struct alignas(128) Tensor {
     const int CC = C / group;
 
     if (layout == CUDNN_TENSOR_NHWC) {
-      if (PRINT_IF_ERROR(
-              cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, H * W * C, 1, W * C, C))) {
+      if (PRINT_IF_ERROR(cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, H * W * C, 1, W * C, C))) {
         const auto err = fmt::format(
             BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
             N,
@@ -164,8 +171,7 @@ struct alignas(128) Tensor {
         return;
       }
     } else {
-      if (PRINT_IF_ERROR(
-              cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, C * H * W, H * W, W, 1))) {
+      if (PRINT_IF_ERROR(cudnnSetTensor4dDescriptorEx(descriptor, value_type, N, CC, H, W, C * H * W, H * W, W, 1))) {
         const auto err = fmt::format(
             BENCHMARK_NAME " failed to cudnnSetTensor4dDescriptor using dims {}x{}x{}x{} and stride {}x{}x{}x{}",
             N,
