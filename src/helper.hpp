@@ -65,7 +65,15 @@ template <typename T, Layout LayoutV = Layout::Automatic>
 struct alignas(128) Filter {
   using type                   = T;
   static const auto value_type = valueDataType<T>::type;
-  static const auto layout = (std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
+  static const auto layout =
+#ifdef LOW_PRECISION_NHWC_MODE
+      LayoutV == Layout::Automatic
+          ? (std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+          : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
+#else  // LOW_PRECISION_NHWC_MODE
+      LayoutV == Layout::Automatic ? (std::is_integral<T>::value  ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+                                   : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
+#endif // LOW_PRECISION_NHWC_MODE
   std::vector<int> shape{};
   int group{};
 
