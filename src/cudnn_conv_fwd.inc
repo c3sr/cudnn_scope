@@ -98,7 +98,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T, Layout::NCHW>(state,
                                             {/*batch_size=*/batch_size,
                                              /*channels=*/channels,
                                              /*image_height=*/height,
@@ -108,7 +108,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  const auto w_filter = Filter<T>(state,
+  const auto w_filter = Filter<T, Layout::Automatic>(state,
                                   {/*out_channels=*/num_filters,
                                    /*in_channels=*/channels,
                                    /*kernel_height=*/filter_height,
