@@ -41,7 +41,7 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
 
   MEM_ALIGNED_128 cudnnOpTensorDescriptor_t op_descriptor;
   PRINT_IF_ERROR(cudnnCreateOpTensorDescriptor(&op_descriptor));
-  PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, valueDataType<T>::type, CUDNN_NOT_PROPAGATE_NAN));
+  PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, mixedPrecisionAccumDataType<T>::type, CUDNN_NOT_PROPAGATE_NAN));
 
   MEM_ALIGNED_128 auto input_a_tensor = Tensor<T>(state,
                                                   {
