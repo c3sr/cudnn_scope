@@ -11,18 +11,17 @@
 #define IMPLEMENTATION_NAME BENCHMARK_NAME
 #endif // IMPLEMENTATION_NAME
 
-
-static auto StatisticsSum = [](const std::vector<double>& v) {
-  return std::accumulate(v.begin(), v.end(), 0.0);
-};
+static auto StatisticsSum = [](const std::vector<double>& v) { return std::accumulate(v.begin(), v.end(), 0.0); };
 
 static double StatisticsMean(const std::vector<double>& v) {
-  if (v.empty()) return 0.0;
+  if (v.empty())
+    return 0.0;
   return StatisticsSum(v) * (1.0 / v.size());
 }
 
 static double StatisticsMedian(const std::vector<double>& v) {
-  if (v.size() < 3) return StatisticsMean(v);
+  if (v.size() < 3)
+    return StatisticsMean(v);
   std::vector<double> copy(v);
 
   auto center = copy.begin() + v.size() / 2;
@@ -32,7 +31,8 @@ static double StatisticsMedian(const std::vector<double>& v) {
   // if yes, then center is the median
   // it no, then we are looking for the average between center and the value
   // before
-  if (v.size() % 2 == 1) return *center;
+  if (v.size() % 2 == 1)
+    return *center;
   auto center2 = copy.begin() + v.size() / 2 - 1;
   std::nth_element(copy.begin(), center2, copy.end());
   return (*center + *center2) / 2.0;
@@ -43,25 +43,28 @@ static auto SumSquares = [](const std::vector<double>& v) {
   return std::inner_product(v.begin(), v.end(), v.begin(), 0.0);
 };
 
-static auto Sqr = [](const double dat) { return dat * dat; };
+static auto Sqr  = [](const double dat) { return dat * dat; };
 static auto Sqrt = [](const double dat) {
   // Avoid NaN due to imprecision in the calculations
-  if (dat < 0.0) return 0.0;
+  if (dat < 0.0)
+    return 0.0;
   return std::sqrt(dat);
 };
 
 static double StatisticsStdDev(const std::vector<double>& v) {
   const auto mean = StatisticsMean(v);
-  if (v.empty()) return mean;
+  if (v.empty())
+    return mean;
 
   // Sample standard deviation is undefined for n = 1
-  if (v.size() == 1) return 0.0;
+  if (v.size() == 1)
+    return 0.0;
 
   const double avg_squares = SumSquares(v) * (1.0 / v.size());
   return Sqrt(v.size() / (v.size() - 1.0) * (avg_squares - Sqr(mean)));
 }
 
-#define CUSTOM_STATS                                                                                                   \
+#define CUSTOM_STATS()                                                                                                 \
   ComputeStatistics(                                                                                                   \
       "max_t", [](const std::vector<double>& v) -> double { return *(std::max_element(std::begin(v), std::end(v))); }) \
       ->ComputeStatistics(                                                                                             \
@@ -69,8 +72,8 @@ static double StatisticsStdDev(const std::vector<double>& v) {
           [](const std::vector<double>& v) -> double { return *(std::min_element(std::begin(v), std::end(v))); })      \
       ->ComputeStatistics(                                                                                             \
           "total_t", [](const std::vector<double>& v) -> double { return std::accumulate(v.begin(), v.end(), 0.0); })  \
-      ->ComputeStatistics("mean_t", StatisticsMean)                                                         \
-      ->ComputeStatistics("median_t", StatisticsMedian)                                                     \
+      ->ComputeStatistics("mean_t", StatisticsMean)                                                                    \
+      ->ComputeStatistics("median_t", StatisticsMedian)                                                                \
       ->ComputeStatistics("stddev_t", StatisticsStdDev)
 
 #ifndef CUDNN_CUPTI_NUM_ITERS
@@ -78,8 +81,8 @@ static double StatisticsStdDev(const std::vector<double>& v) {
 #endif // CUDNN_CUPTI_NUM_ITERS
 
 #ifdef ENABLE_CUDNN_CUPTI
-#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->CUSTOM_STATS->Iterations(CUDNN_CUPTI_NUM_ITERS)
-#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->CUSTOM_STATS->Iterations(CUDNN_CUPTI_NUM_ITERS)
+#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->CUSTOM_STATS()->Iterations(CUDNN_CUPTI_NUM_ITERS)
+#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->CUSTOM_STATS()->Iterations(CUDNN_CUPTI_NUM_ITERS)
 #define CUPTI_STATE_COUNTER_INFO                                                                                       \
   {"cupti_enabled", ENABLE_CUDNN_CUPTI}, {"cupti_num_iters", CUDNN_CUPTI_NUM_ITERS},                                   \
       {std::string("cupti_version:") + cupti_version, fnv1a_64(cupti_version)},
@@ -105,8 +108,8 @@ static double StatisticsStdDev(const std::vector<double>& v) {
     }                                                                                                                  \
   } while (0)
 #else // ENABLE_CUDNN_CUPTI
-#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->CUSTOM_STATS
-#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->CUSTOM_STATS
+#define BENCHMARK_CUDNN(...) BENCHMARK(__VA_ARGS__)->CUSTOM_STATS()
+#define BENCHMARK_CUDNN_TEMPLATE(...) BENCHMARK_TEMPLATE(__VA_ARGS__)->CUSTOM_STATS()
 #define CUPTI_STATE_COUNTER_INFO {"cupti_enabled", 0},
 #define CUPTI_PROFILE_START
 #define CUPTI_PROFILE_STOP(current_iter)

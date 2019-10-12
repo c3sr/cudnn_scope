@@ -10,6 +10,7 @@ option(ADD_TENSOR_ONLY "Enable only ADD Tensor layers" OFF)
 option(RESNET50_ONLY "Enable only ResNet50-v1 model" OFF)
 option(LOW_PRECISION "Enable only low precision benchmarks" OFF)
 option(LOW_PRECISION_NHWC_MODE "Use NHWC mode for low precision benchmarks" OFF)
+option(ENABLE_PADDING "Use padded conv layer" OFF)
 option(CUDNN_CUPTI_NUM_ITERS "Number of iterations to use for CUPTI evaluation"
        4)
 option(CUDNN_BATCH_SIZE "Batch size to use for generated DLPerf data" OFF)
@@ -89,13 +90,17 @@ if(MOBILENETV2_ONLY)
                          PRIVATE -DMOBILENETV2_ONLY=${MOBILENETV2_ONLY})
 endif(MOBILENETV2_ONLY)
 if(LOW_PRECISION_NHWC_MODE)
-  target_compile_options(cudnn_scope
-                         PRIVATE -DLOW_PRECISION_NHWC_MODE=${LOW_PRECISION_NHWC_MODE})
+  target_compile_options(
+    cudnn_scope
+    PRIVATE -DLOW_PRECISION_NHWC_MODE=${LOW_PRECISION_NHWC_MODE})
 endif(LOW_PRECISION_NHWC_MODE)
 if(ADD_TENSOR_ONLY)
   target_compile_options(cudnn_scope
                          PRIVATE -DADD_TENSOR_ONLY=${ADD_TENSOR_ONLY})
 endif(ADD_TENSOR_ONLY)
+if(ENABLE_PADDING)
+  target_compile_options(cudnn_scope PRIVATE -DENABLE_PADDING=${ENABLE_PADDING})
+endif(ENABLE_PADDING)
 target_link_libraries(cudnn_scope PRIVATE benchmark::benchmark)
 target_link_libraries(cudnn_scope
                       PUBLIC cuda
