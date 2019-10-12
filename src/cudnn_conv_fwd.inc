@@ -22,6 +22,7 @@
 // http://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionFwdAlgo_t
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnConvolutionForward
 // https://github.com/apache/incubator-mxnet/blob/master/src/operator/nn/cudnn/cudnn_convolution-inl.h
+// https://github.com/spcl/ucudnn/blob/master/test/main.cpp
 template <typename T, cudnnConvolutionFwdAlgo_t convolution_algorithm
 #ifdef CUDNN_SUPPORTS_TENSOR_OPS
           ,
@@ -98,7 +99,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 auto x_tensor = Tensor<T, Layout::NCHW>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
                                             {/*batch_size=*/batch_size,
                                              /*channels=*/channels,
                                              /*image_height=*/height,
@@ -108,12 +109,14 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  const auto w_filter = Filter<T, Layout::Automatic>(state,
+
+  const auto w_filter = Filter<T>(state,
                                   {/*out_channels=*/num_filters,
                                    /*in_channels=*/channels,
                                    /*kernel_height=*/filter_height,
                                    /*kernel_width=*/filter_width},
                                   group);
+                                  
   if (!w_filter.is_valid) {
     return;
   }
@@ -131,7 +134,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  MEM_ALIGNED_128 auto y_tensor = Tensor<T, Layout::NCHW>(state,
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
                                             {/*batch_size=*/out_n,
                                              /*channels=*/out_c,
                                              /*image_height=*/out_h,
