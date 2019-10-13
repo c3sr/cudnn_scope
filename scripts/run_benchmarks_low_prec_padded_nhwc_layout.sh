@@ -22,11 +22,11 @@ declare -a batch_sizes=(
   8 \
   16 \
   32 \
-  64 \
-  128 \
-  256 \
-  512 \
-  1024
+  # 64 \
+  # 128 \
+  # 256 \
+  # 512 \
+  # 1024
 )
 
 for BATCH_SIZE in "${batch_sizes[@]}"
