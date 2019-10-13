@@ -87,7 +87,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
                                                      /*dilation_height=*/dilation_height,
                                                      /*dilation_width=*/dilation_width,
                                                      /*mode=*/conv_mode,
-                                                     /*computeType=*/CUDNN_DATA_FLOAT))) {
+                                                     /*computeType=*/accumDataType<T>::type))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolution2dDescriptor");
     return;
   }
