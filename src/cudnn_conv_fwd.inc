@@ -47,6 +47,16 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   int math_type = 0;
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
+  static constexpr auto layout =
+#ifdef LOW_PRECISION_NHWC_MODE
+      LayoutV == Layout::Automatic
+          ? (std::is_integral<T>::value || is_half_v<T> ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+          : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
+#else  // LOW_PRECISION_NHWC_MODE
+      LayoutV == Layout::Automatic ? (std::is_integral<T>::value ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW)
+                                   : (LayoutV == Layout::NHWC ? CUDNN_TENSOR_NHWC : CUDNN_TENSOR_NCHW);
+#endif // LOW_PRECISION_NHWC_MODE
+
   MEM_ALIGNED_128 const T alpha                          = detail::one<T>();
   MEM_ALIGNED_128 const T beta                           = detail::zero<T>();
   MEM_ALIGNED_128 const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
@@ -66,7 +76,6 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   const auto dilation_height = state.range(11);
   const auto dilation_width  = state.range(12);
   const auto group           = state.range(13) == 0 ? 1 : state.range(13);
-
 
   MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
@@ -99,24 +108,23 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
-                                            {/*batch_size=*/batch_size,
-                                             /*channels=*/channels,
-                                             /*image_height=*/height,
-                                             /*image_width=*/width});
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T, layout>(state,
+                                                    {/*batch_size=*/batch_size,
+                                                     /*channels=*/channels,
+                                                     /*image_height=*/height,
+                                                     /*image_width=*/width});
   if (!x_tensor.is_valid) {
     return;
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
+  const auto w_filter = Filter<T, layout>(state,
+                                          {/*out_channels=*/num_filters,
+                                           /*in_channels=*/channels,
+                                           /*kernel_height=*/filter_height,
+                                           /*kernel_width=*/filter_width},
+                                          group);
 
-  const auto w_filter = Filter<T>(state,
-                                  {/*out_channels=*/num_filters,
-                                   /*in_channels=*/channels,
-                                   /*kernel_height=*/filter_height,
-                                   /*kernel_width=*/filter_width},
-                                  group);
-                                  
   if (!w_filter.is_valid) {
     return;
   }
@@ -134,11 +142,11 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 
-  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
-                                            {/*batch_size=*/out_n,
-                                             /*channels=*/out_c,
-                                             /*image_height=*/out_h,
-                                             /*image_width=*/out_w});
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T, layout>(state,
+                                                    {/*batch_size=*/out_n,
+                                                     /*channels=*/out_c,
+                                                     /*image_height=*/out_h,
+                                                     /*image_width=*/out_w});
   if (!y_tensor.is_valid) {
     return;
   }
@@ -210,7 +218,6 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
     return;
   }
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
-
 
   cudnnStatus_t cudnn_err;
   BENCHMARK_BLOCK(cudnn_err, {
