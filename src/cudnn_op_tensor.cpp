@@ -21,7 +21,7 @@
 // https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html#cudnnOpTensor
 template <typename T, cudnnOpTensorOp_t op_type>
 static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
-  using output_type = T ; // typename mixedPrecisionAccumDataType<T>::element_type;
+  using output_type = T; // typename mixedPrecisionAccumDataType<T>::element_type;
   if (!has_cuda) {
     state.SkipWithError(BENCHMARK_NAME " no CUDA device found");
     return;
@@ -40,7 +40,7 @@ static void iLAYER_CUDNN_OP_TENSOR_Impl(benchmark::State& state) {
 
   MEM_ALIGNED_128 cudnnOpTensorDescriptor_t op_descriptor;
   PRINT_IF_ERROR(cudnnCreateOpTensorDescriptor(&op_descriptor));
-  PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, mixedPrecisionAccumDataType<T>::type, CUDNN_NOT_PROPAGATE_NAN));
+  PRINT_IF_ERROR(cudnnSetOpTensorDescriptor(op_descriptor, op_type, accumDataType<T>::type, CUDNN_NOT_PROPAGATE_NAN));
 
   MEM_ALIGNED_128 auto input_a_tensor = Tensor<T>(state,
                                                   {

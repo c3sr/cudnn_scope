@@ -16,17 +16,17 @@ nvidia-smi -x -q -a > ${RESULTS_DIR}/nvidia_smi.xml
 
 
 declare -a batch_sizes=(
-  1 \
-  2 \
-  4 \
-  8 \
-  16 \
+  # 1 \
+  # 2 \
+  # 4 \
+  # 8 \
+  # 16 \
   32 \
-  64 \
-  128 \
-  256 \
-  512 \
-  1024
+  # 64 \
+  # 128 \
+  # 256 \
+  # 512 \
+  # 1024
 )
 
 for BATCH_SIZE in "${batch_sizes[@]}"

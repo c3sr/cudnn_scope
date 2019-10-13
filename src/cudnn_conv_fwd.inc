@@ -49,9 +49,9 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
 
   static constexpr auto layout =
 #ifdef LOW_PRECISION_NHWC_MODE
-           (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
+      (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
 #else  // LOW_PRECISION_NHWC_MODE
-       (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
+      (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
 #endif // LOW_PRECISION_NHWC_MODE
 
   MEM_ALIGNED_128 const T alpha                          = detail::one<T>();
@@ -87,7 +87,7 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
                                                      /*dilation_height=*/dilation_height,
                                                      /*dilation_width=*/dilation_width,
                                                      /*mode=*/conv_mode,
-                                                     /*computeType=*/accumDataType<T>::type))) {
+                                                     /*computeType=*/CUDNN_DATA_FLOAT))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnSetConvolution2dDescriptor");
     return;
   }
