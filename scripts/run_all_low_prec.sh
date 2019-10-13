@@ -14,4 +14,4 @@ ${DIR}/run_benchmarks_low_prec_padded_nhwc_layout.sh
 # ${DIR}/run_benchmarks_low_prec_profile.sh
 
 
-cp -r ${DIR}/../results $GOPATH/src/github.com/rai-project/dlperf
+# cp -r ${DIR}/../results $GOPATH/src/github.com/rai-project/dlperf
