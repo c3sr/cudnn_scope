@@ -7,10 +7,10 @@ sudo bash -c ${DIR}/../setup/setup.sh
 
 rm -fr ${DIR}/../results
 
-${DIR}/run_benchmarks_low_prec_nhwc_layout.sh
-${DIR}/run_benchmarks_low_prec_padded_nhwc_layout.sh
-${DIR}/run_benchmarks_low_prec_padded.sh
 ${DIR}/run_benchmarks_low_prec.sh
+${DIR}/run_benchmarks_low_prec_nhwc_layout.sh
+${DIR}/run_benchmarks_low_prec_padded.sh
+${DIR}/run_benchmarks_low_prec_padded_nhwc_layout.sh
 # ${DIR}/run_benchmarks_low_prec_profile.sh
 
 
