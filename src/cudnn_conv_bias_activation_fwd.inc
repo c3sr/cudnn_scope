@@ -65,6 +65,13 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   const double coef                      = 1;
   const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
+  static constexpr auto layout = Layout::NCHW;
+// #ifdef LOW_PRECISION_NHWC_MODE
+//       (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
+// #else  // LOW_PRECISION_NHWC_MODE
+//       (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
+// #endif // LOW_PRECISION_NHWC_MODE
+
   MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
     state.SkipWithError(BENCHMARK_NAME " failed to cudnnCreateConvolutionDescriptor");
@@ -106,7 +113,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   cudnnSetConvolutionMathType(convolution_descriptor, (cudnnMathType_t) math_type);
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  MEM_ALIGNED_128 auto x_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto x_tensor = Tensor<T, layout>(state,
                                             {/*batch_size=*/batch_size,
                                              /*channels=*/channels,
                                              /*image_height=*/height,
@@ -116,7 +123,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t x_descriptor = x_tensor.get();
 
-  MEM_ALIGNED_128 const auto w_filter = Filter<T>(state,
+  MEM_ALIGNED_128 const auto w_filter = Filter<T, layout>(state,
                                                   {/*out_channels=*/num_filters,
                                                    /*in_channels=*/channels,
                                                    /*kernel_height=*/filter_height,
@@ -137,7 +144,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
     return;
   }
 
-  MEM_ALIGNED_128 auto y_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto y_tensor = Tensor<T, layout>(state,
                                             {/*batch_size=*/out_n,
                                              /*channels=*/out_c,
                                              /*image_height=*/out_h,
@@ -147,7 +154,7 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   }
   MEM_ALIGNED_128 cudnnTensorDescriptor_t y_descriptor = y_tensor.get();
 
-  MEM_ALIGNED_128 auto bias_tensor = Tensor<T>(state,
+  MEM_ALIGNED_128 auto bias_tensor = Tensor<T, layout>(state,
                                                {/*batch_size=*/1,
                                                 /*channels=*/out_c,
                                                 /*image_height=*/1,
