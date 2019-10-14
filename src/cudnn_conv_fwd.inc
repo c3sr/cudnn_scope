@@ -47,12 +47,12 @@ void iLAYER_CUDNN_CONV_FWD_Impl(benchmark::State& state) {
   int math_type = 0;
 #endif // CUDNN_SUPPORTS_TENSOR_OPS
 
-  static constexpr auto layout = Layout::NCHW;
-// #ifdef LOW_PRECISION_NHWC_MODE
-//       (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
-// #else  // LOW_PRECISION_NHWC_MODE
-//       (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
-// #endif // LOW_PRECISION_NHWC_MODE
+  static constexpr auto layout = 
+#ifdef LOW_PRECISION_NHWC_MODE
+      (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
+#else  // LOW_PRECISION_NHWC_MODE
+      (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
+#endif // LOW_PRECISION_NHWC_MODE
 
   MEM_ALIGNED_128 const T alpha                          = detail::one<T>();
   MEM_ALIGNED_128 const T beta                           = detail::zero<T>();

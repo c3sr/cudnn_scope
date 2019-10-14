@@ -65,12 +65,12 @@ static void iLAYER_CUDNN_CONV_BIAS_ACTIVATION_FWD_Impl(benchmark::State& state) 
   const double coef                      = 1;
   const cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION; // CUDNN_CONVOLUTION;
 
-  static constexpr auto layout = Layout::NCHW;
-// #ifdef LOW_PRECISION_NHWC_MODE
-//       (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
-// #else  // LOW_PRECISION_NHWC_MODE
-//       (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
-// #endif // LOW_PRECISION_NHWC_MODE
+  static constexpr auto layout = 
+#ifdef LOW_PRECISION_NHWC_MODE
+      (std::is_integral<T>::value || is_half_v<T> ? Layout::NHWC : Layout::NCHW);
+#else  // LOW_PRECISION_NHWC_MODE
+      (std::is_integral<T>::value ? Layout::NHWC : Layout::NCHW);
+#endif // LOW_PRECISION_NHWC_MODE
 
   MEM_ALIGNED_128 cudnnConvolutionDescriptor_t convolution_descriptor;
   if (PRINT_IF_ERROR(cudnnCreateConvolutionDescriptor(&convolution_descriptor))) {
